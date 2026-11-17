@@ -1,0 +1,345 @@
+@import "tailwindcss";
+
+/*
+  TOKEN DESAIN — SRC Alfiamart
+  Merah #D6212A sebagai warna merek dan dominan.
+  Putih sebagai latar bersih.
+  Abu netral #F4F4F5 sebagai latar halaman.
+  Kuning #FFC72C hanya sebagai aksen label harga (gaya rak toko).
+  Hijau #1E7B4F untuk status sukses.
+*/
+@theme {
+  --font-sans:  "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-tag:   "Barlow Condensed", "Arial Narrow", sans-serif;
+
+  /* Merek */
+  --color-brand:        #D6212A;   /* merah utama */
+  --color-brand-press:  #B51A22;   /* merah hover/tekan */
+  --color-brand-light:  #FDECEC;   /* latar merah tipis */
+
+  /* Teks */
+  --color-ink:          #1F2328;   /* teks utama */
+  --color-slate:        #5F6670;   /* teks sekunder */
+
+  /* Permukaan */
+  --color-surface:      #F4F4F5;   /* latar halaman */
+  --color-white:        #FFFFFF;
+
+  /* Garis */
+  --color-line:         #E3E5E8;
+
+  /* Aksen harga (rak toko) */
+  --color-tag:          #FFC72C;
+  --color-tag-ink:      #3A2A00;   /* teks gelap di atas kuning — kontras AA */
+
+  /* Status */
+  --color-ok:           #1E7B4F;   /* hijau sukses */
+  --color-ok-light:     #DCF0E6;
+  --color-bad:          #A01520;   /* merah lebih gelap untuk error — beda dari merek */
+  --color-bad-light:    #FCEAEA;
+  --color-warn:         #92600A;   /* teks kuning gelap — kontras AA di atas putih */
+
+  /* Fokus */
+  --color-focus:        #D6212A;
+
+  /* Radius */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-full: 9999px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  BASE                                                                */
+/* ------------------------------------------------------------------ */
+html { background: var(--color-surface); color: var(--color-ink); }
+body { font-family: var(--font-sans); font-size: 15px; line-height: 1.5; }
+
+/* Fokus terlihat jelas, bukan hanya outline tipis */
+:where(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  LABEL HARGA  — ciri khas rak minimarket                            */
+/* ------------------------------------------------------------------ */
+.price-tag {
+  font-family: var(--font-tag);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  background: var(--color-tag);
+  color: var(--color-tag-ink);
+  border-radius: var(--radius-sm);
+  padding: 0 0.45rem;
+  line-height: 1.4;
+  display: inline-block;
+  letter-spacing: 0.01em;
+}
+
+/* ------------------------------------------------------------------ */
+/*  TOMBOL                                                              */
+/* ------------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  min-height: 44px;        /* target sentuh WCAG */
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Merah penuh — aksi utama */
+.btn-primary {
+  background: var(--color-brand);
+  color: #fff;
+  border-color: var(--color-brand);
+}
+.btn-primary:hover:not(:disabled) { background: var(--color-brand-press); border-color: var(--color-brand-press); }
+
+/* Outline putih */
+.btn-secondary {
+  background: #fff;
+  color: var(--color-ink);
+  border-color: var(--color-line);
+}
+.btn-secondary:hover:not(:disabled) { background: var(--color-surface); }
+
+/* Tindakan merusak — merah gelap outline */
+.btn-danger {
+  background: #fff;
+  color: var(--color-bad);
+  border-color: #E6BCBC;
+}
+.btn-danger:hover:not(:disabled) { background: var(--color-bad-light); }
+
+/* Tombol kecil (di dalam tabel/kartu) — target tetap 44px lebar minimum */
+.btn-sm {
+  padding: 0.3rem 0.7rem;
+  min-height: 36px;
+  font-size: 0.85rem;
+}
+
+/* Tombol ikon bulat */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  cursor: pointer;
+  color: var(--color-ink);
+}
+.btn-icon:hover:not(:disabled) { background: var(--color-surface); }
+.btn-icon-primary {
+  background: var(--color-brand);
+  color: #fff;
+  border-color: var(--color-brand);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+.btn-icon-primary:hover:not(:disabled) { background: var(--color-brand-press); }
+
+/* ------------------------------------------------------------------ */
+/*  FORM                                                                */
+/* ------------------------------------------------------------------ */
+.field {
+  width: 100%;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  background: #fff;
+  min-height: 44px;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+  transition: border-color 0.12s;
+}
+.field:focus { border-color: var(--color-brand); outline: none; }
+.field:disabled { background: var(--color-surface); color: var(--color-slate); }
+
+.label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.3rem; color: var(--color-ink); }
+.hint  { color: var(--color-slate); font-size: 0.82rem; }
+.error-text { color: var(--color-bad); font-size: 0.85rem; }
+
+/* ------------------------------------------------------------------ */
+/*  CHIP KATEGORI                                                       */
+/* ------------------------------------------------------------------ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.9rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1.5px solid var(--color-line);
+  background: #fff;
+  color: var(--color-slate);
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 36px;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+}
+.chip:hover { border-color: var(--color-brand); color: var(--color-brand); }
+.chip-active {
+  background: var(--color-brand);
+  color: #fff;
+  border-color: var(--color-brand);
+}
+
+/* ------------------------------------------------------------------ */
+/*  HEADER MERAH                                                        */
+/* ------------------------------------------------------------------ */
+.top-bar {
+  background: var(--color-brand);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+/* ------------------------------------------------------------------ */
+/*  KARTU PRODUK                                                        */
+/* ------------------------------------------------------------------ */
+.product-card {
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Placeholder gambar produk */
+.img-placeholder {
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  color: var(--color-slate);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------ */
+/*  STATUS BADGE                                                        */
+/* ------------------------------------------------------------------ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.badge-pending  { background: #FFF3CD; color: #92600A; }
+.badge-ok       { background: var(--color-ok-light); color: var(--color-ok); }
+.badge-fail     { background: var(--color-bad-light); color: var(--color-bad); border: 1px solid #F4B8B8; }
+
+/* ------------------------------------------------------------------ */
+/*  BOTTOM BAR KASIR (ponsel)                                           */
+/* ------------------------------------------------------------------ */
+.cart-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 30;
+  background: var(--color-brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  gap: 0.75rem;
+  min-height: 60px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  BOTTOM SHEET (keranjang kasir ponsel)                               */
+/* ------------------------------------------------------------------ */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(31, 35, 40, 0.5);
+}
+.sheet {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 50;
+  background: #fff;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  max-height: 85vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--color-line);
+  margin: 0.6rem auto 0;
+}
+
+/* ------------------------------------------------------------------ */
+/*  NAV TAB BAWAH (ponsel)                                              */
+/* ------------------------------------------------------------------ */
+.tab-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 20;
+  background: #fff;
+  border-top: 1px solid var(--color-line);
+  display: flex;
+}
+.tab-bar a, .tab-bar button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-slate);
+  min-height: 56px;
+  text-decoration: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+.tab-bar a.active-tab, .tab-bar button.active-tab {
+  color: var(--color-brand);
+}
+
+/* ------------------------------------------------------------------ */
+/*  ANIMASI REDUCED MOTION                                              */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

@@ -1,0 +1,74 @@
+import Joi from 'joi';
+
+const price = Joi.number().integer().min(0).max(100_000_000).messages({
+  'number.base': 'Harga harus berupa angka',
+  'number.integer': 'Harga harus bilangan bulat (rupiah)',
+  'number.min': 'Harga tidak boleh negatif',
+});
+
+export const loginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(1).required(),
+});
+
+export const productCreateSchema = Joi.object({
+  sku: Joi.string().trim().max(50).required(),
+  name: Joi.string().trim().min(1).max(150).required(),
+  category: Joi.string().trim().max(60).default('Lainnya'),
+  unit: Joi.string().trim().max(20).default('pcs'),
+  price: price.required(),
+});
+
+export const productUpdateSchema = Joi.object({
+  name: Joi.string().trim().min(1).max(150),
+  category: Joi.string().trim().max(60),
+  unit: Joi.string().trim().max(20),
+  price,
+  is_active: Joi.boolean(),
+}).min(1);
+
+export const productListQuery = Joi.object({
+  q: Joi.string().trim().allow(''),
+  category: Joi.string().trim(),
+  page: Joi.number().integer().min(1).default(1),
+  limit: Joi.number().integer().min(1).max(200).default(50),
+});
+
+export const idParam = Joi.object({ id: Joi.string().guid().required() });
+export const historyIdParam = Joi.object({ id: Joi.number().integer().min(1).required() });
+
+export const importSchema = Joi.object({
+  rows: Joi.array().items(Joi.object().unknown(true)).min(1).max(1000).required(),
+});
+export const importRowSchema = Joi.object({
+  sku: Joi.string().trim().max(50).required(),
+  name: Joi.string().trim().min(1).max(150).required(),
+  category: Joi.string().trim().max(60).default('Lainnya'),
+  unit: Joi.string().trim().max(20).default('pcs'),
+  price,
+}).required();
+
+export const transactionSchema = Joi.object({
+  client_id: Joi.string().guid().required(),
+  payment_method: Joi.string().valid('tunai', 'qris', 'transfer').required(),
+  // Toleransi 5 menit untuk jam perangkat kasir yang sedikit lebih maju dari server
+  occurred_at: Joi.date().iso().required().custom((value, helpers) =>
+    (value.getTime() > Date.now() + 5 * 60 * 1000 ? helpers.message('Waktu transaksi tidak boleh di masa depan') : value)),
+  items: Joi.array().items(Joi.object({
+    product_id: Joi.string().guid().required(),
+    qty: Joi.number().integer().min(1).max(1000).required(),
+    // harga yang dilihat kasir saat transaksi (penting untuk transaksi offline).
+    // Jika tidak dikirim, server memakai harga produk saat ini.
+    unit_price: price,
+  })).min(1).max(100).required(),
+});
+export const transactionBatchSchema = Joi.object({
+  transactions: Joi.array().min(1).max(50).required(),
+});
+
+export const dateRangeQuery = Joi.object({
+  from: Joi.date().iso(),
+  to: Joi.date().iso(),
+  page: Joi.number().integer().min(1).default(1),
+  limit: Joi.number().integer().min(1).max(500).default(100),
+});

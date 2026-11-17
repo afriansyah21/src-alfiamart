@@ -1,0 +1,172 @@
+openapi: 3.0.3
+info:
+  title: SRC Alfiamart API
+  version: 1.0.0
+  description: |
+    Kontrak API untuk FS, DS, dan AE (satu database terpadu: produk, harga, transaksi).
+    Semua respons: `{ success: true, data, meta? }` atau `{ success: false, error: { code, message, details? } }`.
+    Harga dalam rupiah (bilangan bulat). Waktu dalam format ISO 8601.
+    Perubahan yang merusak kontrak harus lewat versi baru (/api/v2) dan disepakati bersama.
+servers:
+  - url: http://localhost:3000/api/v1
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }
+    serviceKey: { type: apiKey, in: header, name: X-Service-Key }
+  schemas:
+    Error:
+      type: object
+      properties:
+        success: { type: boolean, example: false }
+        error:
+          type: object
+          properties:
+            code: { type: string, example: VALIDATION_ERROR }
+            message: { type: string }
+            details: { type: array, items: { type: object } }
+    Product:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        sku: { type: string, example: BRS-5KG }
+        name: { type: string, example: Beras 5 kg }
+        category: { type: string, example: Sembako }
+        unit: { type: string, example: karung }
+        price: { type: integer, example: 68000 }
+        is_active: { type: boolean }
+        updated_at: { type: string, format: date-time }
+    TransactionInput:
+      type: object
+      required: [client_id, payment_method, occurred_at, items]
+      properties:
+        client_id: { type: string, format: uuid, description: "Dibuat di perangkat kasir; kunci idempotensi" }
+        payment_method: { type: string, enum: [tunai, qris, transfer], description: "Hanya dicatat, tidak ada pembayaran sungguhan" }
+        occurred_at: { type: string, format: date-time, description: "Waktu transaksi di perangkat (toleransi 5 menit ke depan untuk selisih jam perangkat)" }
+        items:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required: [product_id, qty]
+            properties:
+              product_id: { type: string, format: uuid }
+              qty: { type: integer, minimum: 1 }
+              unit_price: { type: integer, description: "Harga yang dilihat kasir; bila kosong memakai harga saat ini" }
+    ImportReport:
+      type: object
+      properties:
+        total: { type: integer }
+        created: { type: integer }
+        updated: { type: integer }
+        unchanged: { type: integer }
+        failed: { type: integer }
+        errors:
+          type: array
+          items: { type: object, properties: { row: { type: integer }, sku: { type: string, nullable: true }, message: { type: string } } }
+paths:
+  /health:
+    get: { summary: Cek layanan, responses: { "200": { description: ok } } }
+  /auth/login:
+    post:
+      summary: Login owner/kasir
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [email, password], properties: { email: { type: string }, password: { type: string } } } } } }
+      responses:
+        "200": { description: "{ token, user }" }
+        "401": { description: Email atau kata sandi salah }
+  /auth/me:
+    get: { summary: Profil pengguna login, security: [{ bearer: [] }], responses: { "200": { description: ok } } }
+  /catalog:
+    get:
+      summary: "Katalog publik (pelanggan, tanpa login), hanya produk aktif"
+      parameters:
+        - { name: q, in: query, schema: { type: string } }
+        - { name: category, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, default: 50, maximum: 200 } }
+      responses: { "200": { description: "data: Product[] (tanpa is_active), meta: { page, limit, total }" } }
+  /catalog/categories:
+    get: { summary: Daftar kategori aktif beserta jumlah produk, responses: { "200": { description: "[{ category, total }]" } } }
+  /products:
+    get:
+      summary: "Daftar produk (kasir hanya produk aktif; owner semua)"
+      security: [{ bearer: [] }]
+      parameters:
+        - { name: q, in: query, schema: { type: string } }
+        - { name: category, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses: { "200": { description: "Product[]" } }
+    post:
+      summary: Tambah produk (owner)
+      security: [{ bearer: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [sku, name, price], properties: { sku: { type: string }, name: { type: string }, category: { type: string }, unit: { type: string }, price: { type: integer, minimum: 0 } } } } } }
+      responses: { "201": { description: Product }, "400": { description: Validasi gagal }, "409": { description: "SKU_EXISTS" } }
+  /products/{id}:
+    parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+    get: { summary: Detail produk, security: [{ bearer: [] }], responses: { "200": { description: Product }, "404": { description: Tidak ditemukan } } }
+    patch:
+      summary: Ubah produk (owner); perubahan harga otomatis masuk riwayat
+      security: [{ bearer: [] }]
+      requestBody: { content: { application/json: { schema: { type: object, properties: { name: { type: string }, category: { type: string }, unit: { type: string }, price: { type: integer }, is_active: { type: boolean } } } } } }
+      responses: { "200": { description: Product } }
+    delete: { summary: Nonaktifkan produk (owner), security: [{ bearer: [] }], responses: { "204": { description: Berhasil } } }
+  /products/{id}/price-history:
+    get:
+      summary: Riwayat perubahan harga (owner)
+      security: [{ bearer: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { "200": { description: "[{ id, old_price, new_price, source, reverted, changed_at, changed_by }]" } }
+  /products/import:
+    post:
+      summary: "Impor massal (owner). Front-end mem-parse CSV/Excel lalu mengirim baris JSON: {sku, name, category?, unit?, price}"
+      security: [{ bearer: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [rows], properties: { rows: { type: array, maxItems: 1000, items: { type: object } } } } } } }
+      responses: { "200": { description: ImportReport } }
+  /price-history/{id}/revert:
+    post:
+      summary: Batalkan perubahan harga terakhir sebuah produk (owner)
+      security: [{ bearer: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: integer } }]
+      responses: { "200": { description: Product }, "409": { description: "ALREADY_REVERTED | NOT_LATEST | NOT_REVERTIBLE" } }
+  /transactions:
+    post:
+      summary: Simpan satu transaksi (idempoten berdasarkan client_id)
+      security: [{ bearer: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/TransactionInput" } } } }
+      responses: { "201": { description: Transaksi baru }, "200": { description: "Duplikat (meta.duplicate = true)" }, "422": { description: PRODUCT_NOT_FOUND } }
+    get:
+      summary: "Daftar transaksi (kasir hanya milik sendiri)"
+      security: [{ bearer: [] }]
+      parameters:
+        - { name: from, in: query, schema: { type: string, format: date-time } }
+        - { name: to, in: query, schema: { type: string, format: date-time } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses: { "200": { description: ok } }
+  /transactions/batch:
+    post:
+      summary: "Sinkronisasi offline: maksimal 50 transaksi. Hasil per transaksi: synced | duplicate | failed"
+      security: [{ bearer: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [transactions], properties: { transactions: { type: array, items: { $ref: "#/components/schemas/TransactionInput" } } } } } } }
+      responses: { "200": { description: "{ results: [{client_id, status, error?}], summary: {synced, duplicate, failed} }" } }
+  /transactions/{id}:
+    get:
+      summary: Detail transaksi beserta item
+      security: [{ bearer: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { "200": { description: ok }, "404": { description: Tidak ditemukan } }
+  /export/products:
+    get:
+      summary: "Untuk DS/AE: seluruh produk (termasuk nonaktif). Basis pengetahuan RAG (AE) dan analisis (DS)"
+      security: [{ serviceKey: [] }, { bearer: [] }]
+      responses: { "200": { description: "Array of Product" } }
+  /export/transactions:
+    get:
+      summary: "Untuk DS: satu baris per item transaksi (datar, siap pandas)"
+      security: [{ serviceKey: [] }, { bearer: [] }]
+      parameters:
+        - { name: from, in: query, schema: { type: string, format: date-time } }
+        - { name: to, in: query, schema: { type: string, format: date-time } }
+        - { name: page, in: query, schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer, maximum: 5000, default: 1000 } }
+      responses: { "200": { description: "[{ transaction_id, occurred_at, payment_method, product_id, sku, product_name, category, unit_price, qty, subtotal }]" } }
