@@ -8,7 +8,7 @@ import Modal from '../components/Modal.jsx';
 import { useToast } from '../components/Toast.jsx';
 import {
   Search, Upload, Plus, Pencil, History, PowerOff, PowerIcon, AlertCircle,
-  Package, ChevronLeft, ChevronRight,
+  Package, ChevronLeft, ChevronRight, Tag, Boxes, ArrowUpDown, Filter
 } from 'lucide-react';
 
 const LIMIT = 20;
@@ -58,179 +58,243 @@ export default function Products() {
     } catch (err) { toast.error(errorMessage(err)); }
   };
 
+  // Statistik ringkas untuk Owner
+  const activeCount = data.rows.filter(r => r.is_active).length;
+
   return (
-    <div>
-      {/* ── Judul + aksi ── */}
-      <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+    <div className="space-y-6">
+      {/* ── Header Halaman & Quick Actions ── */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-[#E2E8F0] pb-5">
         <div>
-          <h1 className="text-xl font-bold">Produk &amp; Harga</h1>
-          <p className="text-sm text-[#5F6670]">Ubah harga di sini — langsung berlaku di kasir dan katalog.</p>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">Katalog Produk &amp; Harga</h1>
+            <span className="inline-flex items-center rounded-full bg-[#FFFBEB] px-2.5 py-0.5 text-xs font-semibold text-[#B45309] border border-[#FDE68A]">
+              Owner Portal
+            </span>
+          </div>
+          <p className="mt-1 text-sm text-[#64748B]">
+            Kelola master SKU, pengaturan harga serentak untuk kasir dan katalog pelanggan.
+          </p>
         </div>
-        <div className="flex gap-2">
+
+        <div className="flex flex-wrap items-center gap-2.5">
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-secondary text-sm font-semibold"
             onClick={() => setDialog({ type: 'import' })}
           >
-            <Upload size={16} />
-            Impor CSV
+            <Upload size={16} className="text-[#64748B]" />
+            <span>Impor CSV</span>
           </button>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary text-sm font-semibold"
             onClick={() => setDialog({ type: 'form' })}
           >
-            <Plus size={16} />
-            Tambah produk
+            <Plus size={17} />
+            <span>Tambah Produk</span>
           </button>
         </div>
       </div>
 
-      {/* ── Filter cari + kategori ── */}
-      <div className="mb-4 grid gap-2 sm:grid-cols-[1fr_14rem]">
-        <div className="relative">
-          <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#5F6670]" />
-          <label htmlFor="search" className="sr-only">Cari produk</label>
-          <input
-            id="search"
-            type="search"
-            className="field pl-9"
-            placeholder="Cari nama atau SKU"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="cat" className="sr-only">Filter kategori</label>
-          <select
-            id="cat"
-            className="field"
-            value={category}
-            onChange={(e) => { setCategory(e.target.value); setPage(1); }}
-          >
-            <option value="">Semua kategori</option>
-            {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
+      {/* ── Filter & Search Bar Card ── */}
+      <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-xs">
+        <div className="grid gap-3 sm:grid-cols-[1fr_16rem]">
+          <div className="relative">
+            <Search size={18} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+            <label htmlFor="search" className="sr-only">Cari produk</label>
+            <input
+              id="search"
+              type="search"
+              className="field pl-10 h-11 text-sm placeholder:text-[#94A3B8]"
+              placeholder="Cari berdasarkan nama produk atau SKU..."
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+          </div>
+          <div className="relative">
+            <Filter size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+            <label htmlFor="cat" className="sr-only">Filter kategori</label>
+            <select
+              id="cat"
+              className="field pl-9 h-11 text-sm font-medium text-[#334155]"
+              value={category}
+              onChange={(e) => { setCategory(e.target.value); setPage(1); }}
+            >
+              <option value="">Semua Kategori</option>
+              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* ── Error banner ── */}
+      {/* ── Error Banner ── */}
       {error && (
         <div
           role="alert"
-          className="mb-4 flex items-start justify-between gap-3 rounded-lg border border-[#F4B8B8] bg-[#FCEAEA] px-4 py-3 text-sm text-[#A01520]"
+          className="flex items-center justify-between gap-3 rounded-xl border border-[#FECACA] bg-[#FEF2F2] p-4 text-sm text-[#991B1B]"
         >
-          <span className="flex items-start gap-2">
-            <AlertCircle size={16} className="mt-0.5 shrink-0" />
-            {error}
-          </span>
-          <button type="button" className="btn btn-secondary btn-sm shrink-0" onClick={load}>Coba lagi</button>
+          <div className="flex items-center gap-2.5">
+            <AlertCircle size={18} className="text-[#DC2626] shrink-0" />
+            <span className="font-medium">{error}</span>
+          </div>
+          <button type="button" className="btn btn-secondary btn-sm" onClick={load}>Coba Lagi</button>
         </div>
       )}
 
-      {/* ── Tabel produk ── */}
-      <div className="overflow-hidden rounded-xl border border-[#E3E5E8] bg-white">
+      {/* ── Tabel & List Produk ── */}
+      <div className="overflow-hidden rounded-xl border border-[#E2E8F0] bg-white shadow-xs">
         {loading && data.rows.length === 0 ? (
-          <p className="p-6 text-sm text-[#5F6670]">Memuat produk…</p>
+          <div className="p-12 text-center">
+            <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-[#D6212A] border-t-transparent" />
+            <p className="mt-2 text-sm text-[#64748B]">Memuat daftar produk...</p>
+          </div>
         ) : data.rows.length === 0 && !error ? (
           <div className="flex flex-col items-center py-16 text-center">
-            <Package size={48} className="mb-3 text-[#E3E5E8]" />
-            <p className="font-semibold">
-              {debouncedQ || category ? 'Tidak ada produk yang cocok.' : 'Belum ada produk.'}
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#F1F5F9] text-[#94A3B8] mb-3">
+              <Package size={26} />
+            </div>
+            <p className="font-semibold text-[#0F172A]">
+              {debouncedQ || category ? 'Tidak ada produk yang cocok' : 'Belum ada data produk'}
             </p>
-            <p className="mt-1 text-sm text-[#5F6670]">
+            <p className="mt-1 text-sm text-[#64748B]">
               {debouncedQ || category
-                ? 'Coba kata kunci atau kategori lain.'
-                : 'Tambahkan satu per satu atau impor dari CSV.'}
+                ? 'Silakan gunakan kata kunci atau kategori yang berbeda.'
+                : 'Mulai dengan menambahkan produk baru atau lakukan impor dari file CSV.'}
             </p>
           </div>
         ) : (
-          <ul className="divide-y divide-[#E3E5E8]" aria-busy={loading}>
-            {data.rows.map((p) => (
-              <li
-                key={p.id}
-                className={`flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 ${!p.is_active ? 'bg-[#F4F4F5]' : ''}`}
-              >
-                {/* Info produk */}
-                <div className="min-w-0 flex-1 basis-48">
-                  <p className={`truncate font-semibold ${!p.is_active ? 'text-[#5F6670]' : ''}`}>{p.name}</p>
-                  <p className="text-xs text-[#5F6670]">
-                    {p.sku} &middot; {p.category} &middot; per {p.unit}
-                    {!p.is_active && (
-                      <span className="ml-2 rounded bg-[#E3E5E8] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#5F6670]">
-                        Nonaktif
-                      </span>
-                    )}
-                  </p>
-                </div>
-
-                {/* Harga */}
-                <span
-                  className="price-tag text-xl sm:min-w-32 sm:text-right"
-                  aria-label={`Harga ${rupiah(p.price)}`}
-                >
-                  {rupiah(p.price)}
-                </span>
-
-                {/* Aksi */}
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-sm"
-                    onClick={() => setDialog({ type: 'form', product: p })}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm" aria-busy={loading}>
+              <thead className="bg-[#F8FAFC] border-b border-[#E2E8F0] text-xs font-semibold uppercase tracking-wider text-[#475569]">
+                <tr>
+                  <th scope="col" className="px-5 py-3.5">Produk</th>
+                  <th scope="col" className="px-4 py-3.5">Kategori &amp; Satuan</th>
+                  <th scope="col" className="px-4 py-3.5 text-right">Harga Toko</th>
+                  <th scope="col" className="px-4 py-3.5 text-center">Status</th>
+                  <th scope="col" className="px-5 py-3.5 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E2E8F0]">
+                {data.rows.map((p) => (
+                  <tr
+                    key={p.id}
+                    className={`transition-colors hover:bg-[#F8FAFC]/80 ${!p.is_active ? 'bg-[#F8FAFC]/50 opacity-75' : ''}`}
                   >
-                    <Pencil size={14} />
-                    Ubah
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-sm"
-                    onClick={() => setDialog({ type: 'history', product: p })}
-                  >
-                    <History size={14} />
-                    Riwayat
-                  </button>
-                  {p.is_active ? (
-                    /* Nonaktifkan — dipisah visual (btn-danger) */
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => setDialog({ type: 'deactivate', product: p })}
-                    >
-                      <PowerOff size={14} />
-                      Nonaktifkan
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => setActive(p, true)}
-                    >
-                      <PowerIcon size={14} />
-                      Aktifkan
-                    </button>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
+                    {/* Nama & SKU */}
+                    <td className="px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#F1F5F9] border border-[#E2E8F0] text-xs font-bold text-[#475569]">
+                          {p.sku.slice(0, 3)}
+                        </div>
+                        <div className="min-w-0">
+                          <p className={`font-semibold ${p.is_active ? 'text-[#0F172A]' : 'text-[#64748B] line-through'}`}>
+                            {p.name}
+                          </p>
+                          <span className="font-mono text-xs text-[#94A3B8]">
+                            SKU: {p.sku}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Kategori & Satuan */}
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <div className="flex flex-col">
+                        <span className="font-medium text-[#334155]">{p.category}</span>
+                        <span className="text-xs text-[#64748B]">per {p.unit}</span>
+                      </div>
+                    </td>
+
+                    {/* Harga (Bersih tanpa blok kuning) */}
+                    <td className="px-4 py-4 text-right whitespace-nowrap">
+                      <div className="flex flex-col items-end">
+                        <span className="text-base font-bold font-mono text-[#D6212A]">
+                          {rupiah(p.price)}
+                        </span>
+                        <span className="text-[11px] text-[#94A3B8]">termasuk PPN</span>
+                      </div>
+                    </td>
+
+                    {/* Status */}
+                    <td className="px-4 py-4 text-center whitespace-nowrap">
+                      {p.is_active ? (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ECFDF5] px-2.5 py-1 text-xs font-medium text-[#047857] border border-[#A7F3D0]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" />
+                          Aktif
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F1F5F9] px-2.5 py-1 text-xs font-medium text-[#64748B] border border-[#E2E8F0]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#94A3B8]" />
+                          Nonaktif
+                        </span>
+                      )}
+                    </td>
+
+                    {/* Aksi */}
+                    <td className="px-5 py-4 text-right whitespace-nowrap">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          type="button"
+                          className="btn-icon"
+                          title="Ubah Produk"
+                          onClick={() => setDialog({ type: 'form', product: p })}
+                        >
+                          <Pencil size={15} />
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-icon"
+                          title="Riwayat Perubahan Harga"
+                          onClick={() => setDialog({ type: 'history', product: p })}
+                        >
+                          <History size={15} />
+                        </button>
+                        {p.is_active ? (
+                          <button
+                            type="button"
+                            className="btn-icon text-[#DC2626] hover:bg-[#FEF2F2] hover:border-[#FECACA]"
+                            title="Nonaktifkan Produk"
+                            onClick={() => setDialog({ type: 'deactivate', product: p })}
+                          >
+                            <PowerOff size={15} />
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="btn-icon text-[#047857] hover:bg-[#ECFDF5] hover:border-[#A7F3D0]"
+                            title="Aktifkan Kembali"
+                            onClick={() => setActive(p, true)}
+                          >
+                            <PowerIcon size={15} />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
       {/* ── Paginasi ── */}
       {data.meta.total > LIMIT && (
-        <div className="mt-4 flex items-center justify-between">
-          <p className="text-sm text-[#5F6670]">
-            {data.meta.total} produk &middot; halaman {page} dari {totalPages}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-1">
+          <p className="text-xs text-[#64748B]">
+            Menampilkan <strong className="text-[#0F172A]">{data.rows.length}</strong> dari{' '}
+            <strong className="text-[#0F172A]">{data.meta.total}</strong> total produk (Halaman {page} dari {totalPages})
           </p>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               type="button"
               className="btn btn-secondary btn-sm"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
             >
-              <ChevronLeft size={14} /> Sebelumnya
+              <ChevronLeft size={15} />
+              <span>Sebelumnya</span>
             </button>
             <button
               type="button"
@@ -238,13 +302,14 @@ export default function Products() {
               disabled={page >= totalPages}
               onClick={() => setPage((p) => p + 1)}
             >
-              Berikutnya <ChevronRight size={14} />
+              <span>Berikutnya</span>
+              <ChevronRight size={15} />
             </button>
           </div>
         </div>
       )}
 
-      {/* ── Dialog ── */}
+      {/* ── Dialog Modals ── */}
       {dialog?.type === 'form' && (
         <ProductForm product={dialog.product} categories={categories} onClose={close} onSaved={() => { close(); refresh(); }} />
       )}
@@ -256,15 +321,18 @@ export default function Products() {
       )}
       {dialog?.type === 'deactivate' && (
         <Modal title="Nonaktifkan produk?" onClose={close}>
-          <p className="text-sm text-[#1F2328]">
-            <strong>{dialog.product.name}</strong> tidak akan tampil di kasir dan katalog.
-            Riwayat transaksi tetap tersimpan dan produk bisa diaktifkan kembali kapan saja.
-          </p>
-          <div className="mt-5 flex justify-end gap-2">
-            <button type="button" className="btn btn-secondary" onClick={close}>Batal</button>
-            <button type="button" className="btn btn-danger" onClick={() => setActive(dialog.product, false)}>
-              <PowerOff size={15} /> Nonaktifkan
-            </button>
+          <div className="space-y-4">
+            <p className="text-sm text-[#334155] leading-relaxed">
+              Produk <strong className="text-[#0F172A]">{dialog.product.name}</strong> tidak akan lagi muncul di katalog maupun mesin kasir.
+              Data riwayat transaksi lama tetap aman dan produk bisa diaktifkan kembali sewaktu-waktu.
+            </p>
+            <div className="flex justify-end gap-2.5 pt-2 border-t border-[#E2E8F0]">
+              <button type="button" className="btn btn-secondary" onClick={close}>Batal</button>
+              <button type="button" className="btn btn-danger" onClick={() => setActive(dialog.product, false)}>
+                <PowerOff size={15} />
+                <span>Nonaktifkan</span>
+              </button>
+            </div>
           </div>
         </Modal>
       )}

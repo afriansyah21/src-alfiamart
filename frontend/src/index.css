@@ -2,14 +2,13 @@
 
 /*
   TOKEN DESAIN — SRC Alfiamart
-  Merah #D6212A sebagai warna merek dan dominan.
-  Putih sebagai latar bersih.
-  Abu netral #F4F4F5 sebagai latar halaman.
-  Kuning #FFC72C hanya sebagai aksen label harga (gaya rak toko).
-  Hijau #1E7B4F untuk status sukses.
+  Modern Minimarket POS & Management System
+  - Merah brand dominan (#D6212A)
+  - Aksen kuning lembut (#FFC72C / #FFE894) untuk highlight/tag aksen
+  - Tipografi harga bersih, modern, tegas tanpa background blok kuning norak
 */
 @theme {
-  --font-sans:  "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans:  "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-tag:   "Barlow Condensed", "Arial Narrow", sans-serif;
 
   /* Merek */
@@ -18,34 +17,33 @@
   --color-brand-light:  #FDECEC;   /* latar merah tipis */
 
   /* Teks */
-  --color-ink:          #1F2328;   /* teks utama */
-  --color-slate:        #5F6670;   /* teks sekunder */
+  --color-ink:          #111827;   /* teks utama deep slate */
+  --color-slate:        #64748B;   /* teks sekunder neutral */
 
   /* Permukaan */
-  --color-surface:      #F4F4F5;   /* latar halaman */
-  --color-white:        #FFFFFF;
+  --color-surface:      #F8FAFC;   /* latar halaman segar & clean */
+  --color-card:         #FFFFFF;
+  --color-line:         #E2E8F0;
 
-  /* Garis */
-  --color-line:         #E3E5E8;
-
-  /* Aksen harga (rak toko) */
-  --color-tag:          #FFC72C;
-  --color-tag-ink:      #3A2A00;   /* teks gelap di atas kuning — kontras AA */
+  /* Aksen Kuning (Soft & Modern, bukan blok norak) */
+  --color-accent-amber: #F59E0B;
+  --color-accent-gold:  #FFC72C;
+  --color-accent-light: #FFFBEB;
 
   /* Status */
-  --color-ok:           #1E7B4F;   /* hijau sukses */
-  --color-ok-light:     #DCF0E6;
-  --color-bad:          #A01520;   /* merah lebih gelap untuk error — beda dari merek */
-  --color-bad-light:    #FCEAEA;
-  --color-warn:         #92600A;   /* teks kuning gelap — kontras AA di atas putih */
+  --color-ok:           #10B981;   /* emerald */
+  --color-ok-light:     #ECFDF5;
+  --color-bad:          #EF4444;   /* rose red */
+  --color-bad-light:    #FEF2F2;
 
   /* Fokus */
   --color-focus:        #D6212A;
 
   /* Radius */
-  --radius-sm:   4px;
-  --radius-md:   8px;
-  --radius-lg:   12px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
   --radius-full: 9999px;
 }
 
@@ -53,192 +51,221 @@
 /*  BASE                                                                */
 /* ------------------------------------------------------------------ */
 html { background: var(--color-surface); color: var(--color-ink); }
-body { font-family: var(--font-sans); font-size: 15px; line-height: 1.5; }
+body { font-family: var(--font-sans); font-size: 14.5px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 
-/* Fokus terlihat jelas, bukan hanya outline tipis */
 :where(button, a, input, select, textarea):focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
 /* ------------------------------------------------------------------ */
-/*  LABEL HARGA  — ciri khas rak minimarket                            */
+/*  LABEL HARGA ELEGAN (HILANGKAN BLOK KUNING NORAK)                   */
+/*  Sekarang menggunakan tipografi tegas, bersih, dan modern              */
 /* ------------------------------------------------------------------ */
 .price-tag {
   font-family: var(--font-tag);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  background: var(--color-tag);
-  color: var(--color-tag-ink);
-  border-radius: var(--radius-sm);
-  padding: 0 0.45rem;
-  line-height: 1.4;
-  display: inline-block;
-  letter-spacing: 0.01em;
+  color: #D6212A;
+  background: transparent;
+  padding: 0;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.price-tag-badge {
+  font-family: var(--font-tag);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #B45309;
+  background: #FEF3C7;
+  border: 1px solid #FDE68A;
+  border-radius: 6px;
+  padding: 0.1rem 0.5rem;
 }
 
 /* ------------------------------------------------------------------ */
-/*  TOMBOL                                                              */
+/*  TOMBOL & KONTROL                                                    */
 /* ------------------------------------------------------------------ */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   border-radius: var(--radius-md);
-  padding: 0.5rem 1rem;
+  padding: 0.55rem 1.15rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   border: 1px solid transparent;
   cursor: pointer;
-  min-height: 44px;        /* target sentuh WCAG */
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  min-height: 42px;
+  transition: all 0.15s ease-in-out;
   white-space: nowrap;
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* Merah penuh — aksi utama */
 .btn-primary {
-  background: var(--color-brand);
-  color: #fff;
-  border-color: var(--color-brand);
+  background: linear-gradient(135deg, #E02831 0%, #C71923 100%);
+  color: #ffffff;
+  border: 1px solid #B51A22;
+  box-shadow: 0 1px 2px rgba(214, 33, 42, 0.2);
 }
-.btn-primary:hover:not(:disabled) { background: var(--color-brand-press); border-color: var(--color-brand-press); }
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #C71923 0%, #A91018 100%);
+  box-shadow: 0 4px 8px rgba(214, 33, 42, 0.25);
+  transform: translateY(-0.5px);
+}
 
-/* Outline putih */
 .btn-secondary {
-  background: #fff;
-  color: var(--color-ink);
-  border-color: var(--color-line);
+  background: #ffffff;
+  color: #334155;
+  border: 1px solid #CBD5E1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
-.btn-secondary:hover:not(:disabled) { background: var(--color-surface); }
+.btn-secondary:hover:not(:disabled) {
+  background: #F8FAFC;
+  border-color: #94A3B8;
+  color: #0F172A;
+}
 
-/* Tindakan merusak — merah gelap outline */
 .btn-danger {
-  background: #fff;
-  color: var(--color-bad);
-  border-color: #E6BCBC;
+  background: #FFF1F2;
+  color: #BE123C;
+  border: 1px solid #FECDD3;
 }
-.btn-danger:hover:not(:disabled) { background: var(--color-bad-light); }
+.btn-danger:hover:not(:disabled) {
+  background: #FFE4E6;
+  border-color: #FDA4AF;
+}
 
-/* Tombol kecil (di dalam tabel/kartu) — target tetap 44px lebar minimum */
 .btn-sm {
-  padding: 0.3rem 0.7rem;
-  min-height: 36px;
-  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
+  min-height: 34px;
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
 }
 
-/* Tombol ikon bulat */
 .btn-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   width: 36px;
   height: 36px;
-  border: 1px solid var(--color-line);
-  background: #fff;
+  border: 1px solid #E2E8F0;
+  background: #ffffff;
   cursor: pointer;
-  color: var(--color-ink);
+  color: #475569;
+  transition: all 0.15s;
 }
-.btn-icon:hover:not(:disabled) { background: var(--color-surface); }
-.btn-icon-primary {
-  background: var(--color-brand);
-  color: #fff;
-  border-color: var(--color-brand);
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-full);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: none;
+.btn-icon:hover:not(:disabled) {
+  background: #F1F5F9;
+  color: #0F172A;
+  border-color: #CBD5E1;
 }
-.btn-icon-primary:hover:not(:disabled) { background: var(--color-brand-press); }
 
 /* ------------------------------------------------------------------ */
-/*  FORM                                                                */
+/*  FORM FIELD                                                          */
 /* ------------------------------------------------------------------ */
 .field {
   width: 100%;
-  border: 1.5px solid var(--color-line);
+  border: 1.5px solid #E2E8F0;
   border-radius: var(--radius-md);
-  padding: 0.5rem 0.75rem;
-  background: #fff;
-  min-height: 44px;
-  font-size: 0.95rem;
-  color: var(--color-ink);
-  transition: border-color 0.12s;
+  padding: 0.55rem 0.85rem;
+  background: #ffffff;
+  min-height: 42px;
+  font-size: 0.92rem;
+  color: #0F172A;
+  transition: all 0.15s;
 }
-.field:focus { border-color: var(--color-brand); outline: none; }
-.field:disabled { background: var(--color-surface); color: var(--color-slate); }
+.field:focus {
+  border-color: #D6212A;
+  box-shadow: 0 0 0 3px rgba(214, 33, 42, 0.12);
+  outline: none;
+}
+.field:disabled { background: #F1F5F9; color: #94A3B8; }
 
-.label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.3rem; color: var(--color-ink); }
-.hint  { color: var(--color-slate); font-size: 0.82rem; }
-.error-text { color: var(--color-bad); font-size: 0.85rem; }
+.label { display: block; font-weight: 600; font-size: 0.84rem; margin-bottom: 0.35rem; color: #1E293B; }
+.hint  { color: #64748B; font-size: 0.8rem; }
+.error-text { color: #DC2626; font-size: 0.83rem; }
 
 /* ------------------------------------------------------------------ */
-/*  CHIP KATEGORI                                                       */
+/*  CHIPS KATEGORI                                                      */
 /* ------------------------------------------------------------------ */
 .chip {
   display: inline-flex;
   align-items: center;
-  padding: 0.3rem 0.9rem;
+  gap: 0.35rem;
+  padding: 0.4rem 0.95rem;
   border-radius: var(--radius-full);
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 600;
-  border: 1.5px solid var(--color-line);
-  background: #fff;
-  color: var(--color-slate);
+  border: 1px solid #E2E8F0;
+  background: #ffffff;
+  color: #475569;
   cursor: pointer;
   white-space: nowrap;
   min-height: 36px;
-  transition: background 0.1s, border-color 0.1s, color 0.1s;
+  transition: all 0.15s;
 }
-.chip:hover { border-color: var(--color-brand); color: var(--color-brand); }
+.chip:hover {
+  border-color: #CBD5E1;
+  background: #F8FAFC;
+  color: #0F172A;
+}
 .chip-active {
-  background: var(--color-brand);
-  color: #fff;
-  border-color: var(--color-brand);
+  background: #D6212A;
+  color: #ffffff;
+  border-color: #D6212A;
+  box-shadow: 0 2px 4px rgba(214, 33, 42, 0.25);
+}
+.chip-active:hover {
+  background: #B51A22;
+  color: #ffffff;
+  border-color: #B51A22;
 }
 
 /* ------------------------------------------------------------------ */
-/*  HEADER MERAH                                                        */
+/*  HEADER DAN NAVBAR                                                   */
 /* ------------------------------------------------------------------ */
 .top-bar {
-  background: var(--color-brand);
+  background: #D6212A;
+  border-bottom: 3px solid #FFC72C; /* Aksen kuning minimarket di garis bawah */
   color: #fff;
   position: sticky;
   top: 0;
   z-index: 30;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* ------------------------------------------------------------------ */
 /*  KARTU PRODUK                                                        */
 /* ------------------------------------------------------------------ */
 .product-card {
-  background: #fff;
-  border: 1px solid var(--color-line);
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
   border-radius: var(--radius-lg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px -4px rgba(15, 23, 42, 0.08);
+  border-color: #CBD5E1;
 }
 
-/* Placeholder gambar produk */
 .img-placeholder {
-  background: var(--color-surface);
+  background: #F1F5F9;
   display: flex;
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  color: var(--color-slate);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  color: #64748B;
+  position: relative;
 }
 
 /* ------------------------------------------------------------------ */
@@ -247,74 +274,75 @@ body { font-family: var(--font-sans); font-size: 15px; line-height: 1.5; }
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.15rem 0.55rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
-.badge-pending  { background: #FFF3CD; color: #92600A; }
-.badge-ok       { background: var(--color-ok-light); color: var(--color-ok); }
-.badge-fail     { background: var(--color-bad-light); color: var(--color-bad); border: 1px solid #F4B8B8; }
+.badge-pending  { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+.badge-ok       { background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; }
+.badge-fail     { background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
 
 /* ------------------------------------------------------------------ */
-/*  BOTTOM BAR KASIR (ponsel)                                           */
+/*  BOTTOM BAR & SHEET KASIR                                            */
 /* ------------------------------------------------------------------ */
 .cart-bar {
   position: fixed;
   inset-inline: 0;
   bottom: 0;
   z-index: 30;
-  background: var(--color-brand);
+  background: #1E293B;
+  border-top: 3px solid #FFC72C;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1.25rem;
   gap: 0.75rem;
-  min-height: 60px;
+  min-height: 64px;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* ------------------------------------------------------------------ */
-/*  BOTTOM SHEET (keranjang kasir ponsel)                               */
-/* ------------------------------------------------------------------ */
 .sheet-backdrop {
   position: fixed;
   inset: 0;
   z-index: 40;
-  background: rgba(31, 35, 40, 0.5);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(2px);
 }
 .sheet {
   position: fixed;
   inset-inline: 0;
   bottom: 0;
   z-index: 50;
-  background: #fff;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  max-height: 85vh;
+  background: #ffffff;
+  border-radius: 20px 20px 0 0;
+  max-height: 88vh;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.2);
 }
 .sheet-handle {
-  width: 36px;
-  height: 4px;
+  width: 44px;
+  height: 5px;
   border-radius: var(--radius-full);
-  background: var(--color-line);
-  margin: 0.6rem auto 0;
+  background: #CBD5E1;
+  margin: 0.75rem auto 0;
 }
 
 /* ------------------------------------------------------------------ */
-/*  NAV TAB BAWAH (ponsel)                                              */
+/*  NAV TAB BAWAH (Mobile)                                              */
 /* ------------------------------------------------------------------ */
 .tab-bar {
   position: fixed;
   inset-inline: 0;
   bottom: 0;
   z-index: 20;
-  background: #fff;
-  border-top: 1px solid var(--color-line);
+  background: #ffffff;
+  border-top: 1px solid #E2E8F0;
   display: flex;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
 }
 .tab-bar a, .tab-bar button {
   flex: 1;
@@ -322,19 +350,30 @@ body { font-family: var(--font-sans); font-size: 15px; line-height: 1.5; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.15rem;
-  font-size: 0.7rem;
+  gap: 0.2rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: var(--color-slate);
-  min-height: 56px;
+  color: #64748B;
+  min-height: 58px;
   text-decoration: none;
   border: none;
   background: none;
   cursor: pointer;
   padding: 0;
+  transition: color 0.15s;
 }
 .tab-bar a.active-tab, .tab-bar button.active-tab {
-  color: var(--color-brand);
+  color: #D6212A;
+  position: relative;
+}
+.tab-bar a.active-tab::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 32px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: #D6212A;
 }
 
 /* ------------------------------------------------------------------ */
