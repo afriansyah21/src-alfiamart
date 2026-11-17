@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import api, { errorMessage } from '../api/client.js';
 import { rupiah } from '../format.js';
-import { useAuth } from '../auth.jsx';
-import { Search, Store, Package, AlertCircle, ChevronLeft, ChevronRight, Tag } from 'lucide-react';
+import { getStoredBanners } from '../banners.js';
+import { Search, Package, AlertCircle, ChevronLeft, ChevronRight, Tag, ShoppingBag, Sparkles } from 'lucide-react';
 
 const LIMIT = 24;
 
@@ -14,7 +13,7 @@ function initials(name) {
 }
 
 export default function Katalog() {
-  const { user } = useAuth();
+  const [banners, setBanners] = useState(getStoredBanners);
   const [q, setQ] = useState('');
   const [debounced, setDebounced] = useState('');
   const [category, setCategory] = useState('');
@@ -23,6 +22,24 @@ export default function Katalog() {
   const [data, setData] = useState({ rows: [], total: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // State untuk Carousel Iklan
+  const [activeBanner, setActiveBanner] = useState(0);
+
+  // Dengarkan perubahan banner dari menu Kelola Katalog Owner
+  useEffect(() => {
+    const handleUpdate = () => setBanners(getStoredBanners());
+    window.addEventListener('banners:updated', handleUpdate);
+    return () => window.removeEventListener('banners:updated', handleUpdate);
+  }, []);
+
+  // Auto-play Carousel tiap 4.5 detik
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveBanner((prev) => (prev + 1) % banners.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [banners.length]);
 
   useEffect(() => {
     const t = setTimeout(() => { setDebounced(q); setPage(1); }, 300);
@@ -47,27 +64,14 @@ export default function Katalog() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      {/* ── Bilah Atas Merah & Aksen Garis Emas ── */}
+      {/* ── Bilah Atas Merah & Pencarian ── */}
       <header className="top-bar">
         <div className="mx-auto max-w-6xl px-4 pb-3.5 pt-3">
           <div className="mb-3.5 flex items-center justify-between">
             <div className="flex items-center gap-2.5 text-white">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-[#D6212A]">
-                <Store size={19} className="stroke-[2.5]" />
-              </div>
-              <div>
-                <span className="text-base font-extrabold tracking-tight">SRC Alfiamart</span>
-                <span className="ml-2 inline-flex rounded bg-[#FFC72C] px-1.5 py-0.2 text-[10px] font-black uppercase text-[#3A2A00]">
-                  Katalog
-                </span>
-              </div>
+              <img src="/putih.png" alt="Logo SRC Alfiamart" className="h-8 w-auto max-w-[110px] object-contain -translate-y-0.5" />
+              <span className="text-base font-extrabold tracking-tight leading-none">SRC Alfiamart</span>
             </div>
-            <Link
-              to={user ? (user.role === 'owner' ? '/produk' : '/kasir') : '/login'}
-              className="rounded-lg border border-white/25 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-white/20 transition-all"
-            >
-              {user ? 'Kembali ke Aplikasi' : 'Masuk Staf'}
-            </Link>
           </div>
 
           {/* Kolom Cari Putih Bersih */}
@@ -77,147 +81,251 @@ export default function Katalog() {
             <input
               id="q-katalog"
               type="search"
-              className="h-11 w-full rounded-xl border-0 bg-white pl-10 pr-4 text-sm text-[#0F172A] shadow-sm placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-white/80"
+              className="h-11 w-full rounded-xl border-0 bg-white !pl-11 pr-4 text-sm text-[#0F172A] shadow-sm placeholder:text-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-white/80"
               placeholder="Cari produk kebutuhan Anda di sini..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
           </div>
         </div>
+      </header>
 
-        {/* Chip Kategori Geser Horizontal */}
-        <div className="overflow-x-auto scrollbar-none border-t border-white/10 bg-[#C71923]">
-          <div className="mx-auto max-w-6xl flex gap-2 px-4 py-2.5">
+      {/* ── Konten Utama ── */}
+      <main className="mx-auto max-w-6xl px-4 py-6 space-y-6">
+
+        {/* ── CAROUSEL IKLAN PROMO (5 Slide Mirip Contoh) ── */}
+        <section aria-label="Iklan dan Promo" className="space-y-3">
+          <div className="relative overflow-hidden rounded-2xl border border-[#E2E8F0] shadow-xs">
+            {/* Slide Container */}
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(-${activeBanner * 100}%)` }}
+            >
+              {banners.map((b) => (
+                <div
+                  key={b.id}
+                  className={`w-full shrink-0 h-44 sm:h-56 md:h-64 bg-gradient-to-r ${b.bg} relative p-6 sm:p-8 flex items-center text-white overflow-hidden`}
+                >
+                  {/* Background Ilustrasi Abstrak Toko */}
+                  <div className="absolute right-0 top-0 bottom-0 w-1/2 opacity-15 pointer-events-none flex items-center justify-center">
+                    <Sparkles size={180} />
+                  </div>
+
+                  {/* Jika ada gambar iklan PNG/JPG sungguhan */}
+                  {b.imgUrl ? (
+                    <img src={b.imgUrl} alt={b.title} className="absolute inset-0 h-full w-full object-cover" />
+                  ) : (
+                    /* Tampilan Placeholder Iklan Elegan */
+                    <div className="relative z-10 max-w-lg space-y-2">
+                      <span
+                        className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#3A2A00]"
+                        style={{ backgroundColor: b.accent }}
+                      >
+                        <Sparkles size={13} />
+                        {b.tag}
+                      </span>
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight leading-tight">
+                        {b.title}
+                      </h2>
+                      <p className="text-xs sm:text-sm text-white/85 font-medium leading-relaxed">
+                        {b.subtitle}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Tombol Navigasi Panah Kiri/Kanan */}
             <button
               type="button"
-              className={`chip ${category === '' ? 'chip-active' : ''}`}
-              onClick={() => { setCategory(''); setPage(1); }}
+              onClick={() => setActiveBanner((prev) => (prev === 0 ? banners.length - 1 : prev - 1))}
+              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition-all cursor-pointer shadow-sm"
+              aria-label="Slide sebelumnya"
             >
-              Semua
+              <ChevronLeft size={20} />
             </button>
+            <button
+              type="button"
+              onClick={() => setActiveBanner((prev) => (prev + 1) % banners.length)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition-all cursor-pointer shadow-sm"
+              aria-label="Slide berikutnya"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+
+          {/* Indikator Titik (Dots Slider ala Minimarket) */}
+          <div className="flex items-center justify-center gap-1.5 pt-1">
+            {banners.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActiveBanner(idx)}
+                className={`h-2 rounded-full transition-all cursor-pointer ${
+                  activeBanner === idx
+                    ? 'w-6 bg-[#0284C7]'
+                    : 'w-2 bg-[#CBD5E1] hover:bg-[#94A3B8]'
+                }`}
+                aria-label={`Pilih slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* ── KATEGORI BELANJA (Mirip Gambar Acuan) ── */}
+        <section aria-label="Kategori Belanja" className="space-y-3.5">
+          <div className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#E0F2FE] text-[#0284C7]">
+              <ShoppingBag size={14} />
+            </div>
+            <h2 className="text-base font-bold text-[#0F172A] tracking-tight">Kategori Belanja</h2>
+          </div>
+
+          {/* Grid/Scroll Card Kategori Mirip Alfagift */}
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5">
+            <button
+              type="button"
+              onClick={() => { setCategory(''); setPage(1); }}
+              className={`flex items-center justify-center p-3 rounded-xl border text-center transition-all cursor-pointer min-h-[52px] ${
+                category === ''
+                  ? 'border-[#D6212A] bg-[#FEF2F2] shadow-xs'
+                  : 'border-[#E2E8F0] bg-white hover:border-[#CBD5E1] hover:bg-[#F8FAFC]'
+              }`}
+            >
+              <span className={`text-xs font-bold leading-tight ${category === '' ? 'text-[#D6212A]' : 'text-[#334155]'}`}>
+                Semua
+              </span>
+            </button>
+
             {categories.map((c) => (
               <button
                 key={c}
                 type="button"
-                className={`chip ${category === c ? 'chip-active' : ''}`}
                 onClick={() => { setCategory(c); setPage(1); }}
+                className={`flex items-center justify-center p-3 rounded-xl border text-center transition-all cursor-pointer min-h-[52px] ${
+                  category === c
+                    ? 'border-[#D6212A] bg-[#FEF2F2] shadow-xs'
+                    : 'border-[#E2E8F0] bg-white hover:border-[#CBD5E1] hover:bg-[#F8FAFC]'
+                }`}
               >
-                {c}
+                <span className={`text-xs font-bold leading-tight line-clamp-2 ${category === c ? 'text-[#D6212A]' : 'text-[#334155]'}`}>
+                  {c}
+                </span>
               </button>
             ))}
           </div>
-        </div>
-      </header>
+        </section>
 
-      {/* ── Konten Grid Produk ── */}
-      <main className="mx-auto max-w-6xl px-4 py-6">
-        {!loading && !error && data.total > 0 && (
-          <div className="mb-4 flex items-center justify-between text-xs text-[#64748B]">
-            <span>
-              Menampilkan <strong className="text-[#0F172A]">{data.total}</strong> produk aktif
-              {category && <span> dalam kategori <strong className="text-[#0F172A]">{category}</strong></span>}
-            </span>
-          </div>
-        )}
-
-        {error && (
-          <div
-            role="alert"
-            className="mb-5 flex items-start gap-2.5 rounded-xl border border-[#FECACA] bg-[#FEF2F2] p-4 text-sm text-[#991B1B]"
-          >
-            <AlertCircle size={18} className="mt-0.5 shrink-0 text-[#DC2626]" />
-            <span>{error}</span>
-          </div>
-        )}
-
-        {loading && data.rows.length === 0 && (
-          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div key={i} className="product-card animate-pulse">
-                <div className="img-placeholder bg-[#E2E8F0]" />
-                <div className="p-3.5 space-y-2">
-                  <div className="h-3.5 w-4/5 rounded bg-[#E2E8F0]" />
-                  <div className="h-3 w-1/2 rounded bg-[#E2E8F0]" />
-                  <div className="h-5 w-2/3 rounded bg-[#E2E8F0] mt-3" />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {!loading && data.rows.length === 0 && !error && (
-          <div className="flex flex-col items-center py-20 text-center">
-            <Package size={52} className="mb-3 text-[#CBD5E1]" />
-            <p className="font-bold text-base text-[#0F172A]">Produk Tidak Ditemukan</p>
-            <p className="mt-1 text-xs text-[#64748B]">Coba periksa ejaan atau gunakan filter kategori lainnya.</p>
-          </div>
-        )}
-
-        {data.rows.length > 0 && (
-          <div
-            className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-            aria-busy={loading}
-          >
-            {data.rows.map((p) => (
-              <article key={p.id} className="product-card">
-                {/* Gambar Placeholder Bersih & Modern */}
-                <div className="img-placeholder bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] border-b border-[#E2E8F0]">
-                  <span className="font-bold text-xl tracking-wider text-[#94A3B8]">
-                    {initials(p.name)}
-                  </span>
-                  <div className="absolute bottom-2 left-2 rounded-md bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-[#64748B] border border-[#E2E8F0]">
-                    {p.category}
-                  </div>
-                </div>
-
-                <div className="flex flex-1 flex-col p-3.5">
-                  <p className="line-clamp-2 text-sm font-semibold text-[#1E293B] leading-snug">
-                    {p.name}
-                  </p>
-                  <span className="mt-0.5 text-xs text-[#94A3B8]">
-                    per {p.unit}
-                  </span>
-
-                  <div className="mt-auto pt-3 border-t border-[#F1F5F9]">
-                    {/* Harga Bersih Elegan Tanpa Blok Kuning Norak */}
-                    <span className="text-base font-bold font-mono text-[#D6212A]">
-                      {rupiah(p.price)}
-                    </span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-
-        {/* Paginasi */}
-        {data.total > LIMIT && (
-          <div className="mt-8 flex items-center justify-between border-t border-[#E2E8F0] pt-4">
-            <p className="text-xs text-[#64748B]">
-              Halaman {page} dari {pages}
-            </p>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                disabled={page <= 1}
-                onClick={() => setPage((p) => p - 1)}
-              >
-                <ChevronLeft size={15} />
-                <span>Sebelumnya</span>
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                disabled={page >= pages}
-                onClick={() => setPage((p) => p + 1)}
-              >
-                <span>Berikutnya</span>
-                <ChevronRight size={15} />
-              </button>
+        {/* ── DAFTAR PRODUK SESUAI KATEGORI ── */}
+        <section aria-label="Daftar Produk" className="space-y-4 pt-2">
+          {!loading && !error && data.total > 0 && (
+            <div className="flex items-center justify-between text-xs text-[#64748B] border-b border-[#E2E8F0] pb-2">
+              <span>
+                Menampilkan <strong className="text-[#0F172A]">{data.total}</strong> produk
+                {category && <span> dalam kategori <strong className="text-[#0F172A]">{category}</strong></span>}
+              </span>
             </div>
-          </div>
-        )}
+          )}
+
+          {error && (
+            <div
+              role="alert"
+              className="flex items-start gap-2.5 rounded-xl border border-[#FECACA] bg-[#FEF2F2] p-4 text-sm text-[#991B1B]"
+            >
+              <AlertCircle size={18} className="mt-0.5 shrink-0 text-[#DC2626]" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {loading && data.rows.length === 0 && (
+            <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div key={i} className="product-card animate-pulse">
+                  <div className="img-placeholder bg-[#E2E8F0]" />
+                  <div className="p-3.5 space-y-2">
+                    <div className="h-3.5 w-4/5 rounded bg-[#E2E8F0]" />
+                    <div className="h-3 w-1/2 rounded bg-[#E2E8F0]" />
+                    <div className="h-5 w-2/3 rounded bg-[#E2E8F0] mt-3" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {!loading && data.rows.length === 0 && !error && (
+            <div className="flex flex-col items-center py-16 text-center">
+              <Package size={52} className="mb-3 text-[#CBD5E1]" />
+              <p className="font-bold text-base text-[#0F172A]">Produk Tidak Ditemukan</p>
+              <p className="mt-1 text-xs text-[#64748B]">Coba periksa ejaan atau pilih kategori lainnya.</p>
+            </div>
+          )}
+
+          {data.rows.length > 0 && (
+            <div
+              className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              aria-busy={loading}
+            >
+              {data.rows.map((p) => (
+                <article key={p.id} className="product-card">
+                  {/* Gambar Placeholder Bersih */}
+                  <div className="img-placeholder bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] border-b border-[#E2E8F0]">
+                    <span className="font-bold text-xl tracking-wider text-[#94A3B8]">
+                      {initials(p.name)}
+                    </span>
+                    <div className="absolute bottom-2 left-2 rounded-md bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-[#64748B] border border-[#E2E8F0]">
+                      {p.category}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-1 flex-col p-3.5">
+                    <p className="line-clamp-2 text-sm font-semibold text-[#1E293B] leading-snug">
+                      {p.name}
+                    </p>
+                    <span className="mt-0.5 text-xs text-[#94A3B8]">
+                      per {p.unit}
+                    </span>
+
+                    <div className="mt-auto pt-3 border-t border-[#F1F5F9]">
+                      <span className="text-base font-bold font-mono text-[#D6212A]">
+                        {rupiah(p.price)}
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+
+          {/* Paginasi */}
+          {data.total > LIMIT && (
+            <div className="mt-8 flex items-center justify-between border-t border-[#E2E8F0] pt-4">
+              <p className="text-xs text-[#64748B]">
+                Halaman {page} dari {pages}
+              </p>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  disabled={page <= 1}
+                  onClick={() => setPage((p) => p - 1)}
+                >
+                  <ChevronLeft size={15} />
+                  <span>Sebelumnya</span>
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  disabled={page >= pages}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  <span>Berikutnya</span>
+                  <ChevronRight size={15} />
+                </button>
+              </div>
+            </div>
+          )}
+        </section>
       </main>
     </div>
   );

@@ -47,7 +47,6 @@ export default function Kasir() {
   const [online, setOnline]         = useState(navigator.onLine);
   const [syncing, setSyncing]       = useState(false);
   const [serverDown, setServerDown] = useState(false);
-  const [sheetOpen, setSheetOpen]   = useState(false);
 
   const reloadOutbox = useCallback(async () => setOutbox(await getOutbox()), []);
 
@@ -130,7 +129,6 @@ export default function Kasir() {
       items: lines.map((l) => ({ product_id: l.id, name: l.name, qty: l.qty, unit_price: l.price })),
     });
     setCart({});
-    setSheetOpen(false);
     await reloadOutbox();
     toast.success(online ? 'Transaksi berhasil disimpan' : 'Tersimpan di perangkat (offline)');
     if (navigator.onLine) doSync();
@@ -147,7 +145,7 @@ export default function Kasir() {
   const shown    = filtered.slice(0, SHOW_MAX);
 
   return (
-    <div className="space-y-6 pb-28 lg:pb-8">
+    <div className="space-y-6 pb-12">
       {/* ── Status Bar Kasir & Sinkronisasi ── */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#E2E8F0] bg-white p-3.5 shadow-xs">
         <div className="flex items-center gap-3">
@@ -205,7 +203,7 @@ export default function Kasir() {
             <input
               id="cari"
               type="search"
-              className="field pl-10 h-12 text-sm shadow-xs placeholder:text-[#94A3B8]"
+              className="field !pl-11 h-12 text-sm shadow-xs placeholder:text-[#94A3B8]"
               placeholder="Ketik nama produk atau scan SKU..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -280,11 +278,11 @@ export default function Kasir() {
           )}
         </section>
 
-        {/* ---- Bagian Kanan: Keranjang Kasir POS (Desktop Sticky) ---- */}
+        {/* ---- Bagian Kanan: Keranjang Kasir POS ---- */}
         <section
           id="keranjang"
           aria-label="Keranjang"
-          className="hidden lg:flex flex-col rounded-2xl border border-[#E2E8F0] bg-white shadow-xs sticky top-20 h-fit max-h-[calc(100vh-6rem)] overflow-hidden"
+          className="flex flex-col rounded-2xl border border-[#E2E8F0] bg-white shadow-xs sticky top-20 h-fit max-h-[calc(100vh-6rem)] overflow-hidden"
         >
           {/* Header Keranjang */}
           <div className="flex items-center justify-between border-b border-[#E2E8F0] px-5 py-4 bg-[#F8FAFC]">
@@ -452,123 +450,6 @@ export default function Kasir() {
           </div>
         )}
       </section>
-
-      {/* ── Cart Bar Mobile (Bottom Bar Floating) ── */}
-      <button
-        type="button"
-        className="cart-bar lg:hidden cursor-pointer"
-        onClick={() => setSheetOpen(true)}
-        aria-label={`Buka keranjang, ${count} barang, total ${rupiah(total)}`}
-      >
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-[#FFC72C]">
-            <ShoppingCart size={20} />
-          </div>
-          <div className="text-left">
-            <span className="block text-xs text-[#94A3B8]">{count} Barang dipilih</span>
-            <span className="font-bold font-mono text-base text-white" data-testid="total">{rupiah(total)}</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider text-[#FFC72C] bg-white/10 px-3 py-1.5 rounded-lg">
-          <span>Checkout</span>
-          <span>&rarr;</span>
-        </div>
-      </button>
-
-      {/* ── Bottom Sheet Keranjang Kasir Mobile ── */}
-      {sheetOpen && (
-        <>
-          <div className="sheet-backdrop lg:hidden" onClick={() => setSheetOpen(false)} aria-hidden="true" />
-          <div className="sheet lg:hidden" role="dialog" aria-modal="true" aria-label="Keranjang belanja">
-            <div className="sheet-handle" />
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2E8F0]">
-              <div className="flex items-center gap-2">
-                <ShoppingCart size={18} className="text-[#D6212A]" />
-                <h2 className="font-bold text-base text-[#0F172A]">Detail Keranjang ({count} item)</h2>
-              </div>
-              <button type="button" className="btn-icon" onClick={() => setSheetOpen(false)} aria-label="Tutup keranjang">
-                <X size={18} />
-              </button>
-            </div>
-
-            <div className="px-5 py-4 space-y-4">
-              {lines.length === 0 ? (
-                <p className="py-8 text-center text-sm text-[#94A3B8]">Keranjang masih kosong.</p>
-              ) : (
-                <div className="divide-y divide-[#E2E8F0] max-h-64 overflow-y-auto">
-                  {lines.map((l) => (
-                    <div key={l.id} className="py-3">
-                      <div className="flex justify-between items-start">
-                        <span className="font-semibold text-sm text-[#0F172A]">{l.name}</span>
-                        <span className="font-mono font-bold text-sm text-[#D6212A]">{rupiah(l.price * l.qty)}</span>
-                      </div>
-                      <div className="mt-2 flex items-center justify-between">
-                        <div className="flex items-center gap-2 border border-[#E2E8F0] rounded-lg p-1 bg-[#F8FAFC]">
-                          <button
-                            type="button"
-                            className="flex h-7 w-7 items-center justify-center rounded-md bg-white text-[#475569]"
-                            onClick={() => (l.qty > 1 ? setQty(l.id, l.qty - 1) : remove(l.id))}
-                          >
-                            {l.qty > 1 ? <Minus size={13} /> : <Trash2 size={13} className="text-[#DC2626]" />}
-                          </button>
-                          <span className="w-8 text-center font-bold text-xs">{l.qty}</span>
-                          <button
-                            type="button"
-                            className="flex h-7 w-7 items-center justify-center rounded-md bg-white text-[#475569]"
-                            onClick={() => setQty(l.id, l.qty + 1)}
-                          >
-                            <Plus size={13} />
-                          </button>
-                        </div>
-                        <span className="text-xs text-[#64748B]">@ {rupiah(l.price)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Total Sheet */}
-              <div className="border-t border-[#E2E8F0] pt-3 flex items-baseline justify-between">
-                <span className="text-sm font-semibold text-[#475569]">Total Pembayaran</span>
-                <span className="text-2xl font-black font-mono text-[#D6212A]">{rupiah(total)}</span>
-              </div>
-
-              {/* Metode Bayar Mobile */}
-              <div>
-                <span className="block text-xs font-semibold text-[#475569] uppercase tracking-wider mb-2">
-                  Metode Pembayaran
-                </span>
-                <div className="grid grid-cols-3 gap-2">
-                  {PAYMENTS.map(({ id, label, icon: Icon }) => (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => setPayment(id)}
-                      className={`flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-xl text-xs font-semibold border cursor-pointer ${
-                        payment === id
-                          ? 'bg-[#D6212A] text-white border-[#D6212A]'
-                          : 'bg-white text-[#475569] border-[#CBD5E1]'
-                      }`}
-                    >
-                      <Icon size={16} />
-                      <span>{label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                type="button"
-                className="btn btn-primary w-full h-12 text-base font-bold shadow-sm"
-                disabled={lines.length === 0}
-                onClick={submit}
-              >
-                Simpan Transaksi
-              </button>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 }

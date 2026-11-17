@@ -8,7 +8,7 @@ import Modal from '../components/Modal.jsx';
 import { useToast } from '../components/Toast.jsx';
 import {
   Search, Upload, Plus, Pencil, History, PowerOff, PowerIcon, AlertCircle,
-  Package, ChevronLeft, ChevronRight, Tag, Boxes, ArrowUpDown, Filter
+  Package, ChevronLeft, ChevronRight, Tag, Boxes, ArrowUpDown, Filter, Trash2
 } from 'lucide-react';
 
 const LIMIT = 20;
@@ -55,6 +55,21 @@ export default function Products() {
       await api.patch(`/products/${product.id}`, { is_active: active });
       toast.success(active ? `${product.name} diaktifkan kembali` : `${product.name} dinonaktifkan`);
       close(); refresh();
+    } catch (err) { toast.error(errorMessage(err)); }
+  };
+
+  const deleteProduct = async (product) => {
+    try {
+      await api.delete(`/products/${product.id}`);
+      toast.success(`Produk ${product.name} berhasil dihapus`);
+      // Update state data lokal langsung agar baris langsung hilang
+      setData((prev) => ({
+        ...prev,
+        rows: prev.rows.filter((r) => r.id !== product.id),
+        meta: { ...prev.meta, total: Math.max(0, (prev.meta?.total || 1) - 1) }
+      }));
+      close();
+      refresh();
     } catch (err) { toast.error(errorMessage(err)); }
   };
 
@@ -106,7 +121,7 @@ export default function Products() {
             <input
               id="search"
               type="search"
-              className="field pl-10 h-11 text-sm placeholder:text-[#94A3B8]"
+              className="field !pl-11 h-11 text-sm placeholder:text-[#94A3B8]"
               placeholder="Cari berdasarkan nama produk atau SKU..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -117,7 +132,7 @@ export default function Products() {
             <label htmlFor="cat" className="sr-only">Filter kategori</label>
             <select
               id="cat"
-              className="field pl-9 h-11 text-sm font-medium text-[#334155]"
+              className="field !pl-10 h-11 text-sm font-medium text-[#334155]"
               value={category}
               onChange={(e) => { setCategory(e.target.value); setPage(1); }}
             >
@@ -253,7 +268,7 @@ export default function Products() {
                         {p.is_active ? (
                           <button
                             type="button"
-                            className="btn-icon text-[#DC2626] hover:bg-[#FEF2F2] hover:border-[#FECACA]"
+                            className="btn-icon text-[#B45309] hover:bg-[#FFFBEB] hover:border-[#FDE68A]"
                             title="Nonaktifkan Produk"
                             onClick={() => setDialog({ type: 'deactivate', product: p })}
                           >
@@ -269,6 +284,14 @@ export default function Products() {
                             <PowerIcon size={15} />
                           </button>
                         )}
+                        <button
+                          type="button"
+                          className="btn-icon text-[#DC2626] hover:bg-[#FEF2F2] hover:border-[#FECACA]"
+                          title="Hapus Produk"
+                          onClick={() => setDialog({ type: 'delete', product: p })}
+                        >
+                          <Trash2 size={15} />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -331,6 +354,23 @@ export default function Products() {
               <button type="button" className="btn btn-danger" onClick={() => setActive(dialog.product, false)}>
                 <PowerOff size={15} />
                 <span>Nonaktifkan</span>
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
+      {dialog?.type === 'delete' && (
+        <Modal title="Hapus produk?" onClose={close}>
+          <div className="space-y-4">
+            <p className="text-sm text-[#334155] leading-relaxed">
+              Apakah Anda yakin ingin menghapus produk <strong className="text-[#0F172A]">{dialog.product.name}</strong> ({dialog.product.sku})?
+              Produk akan dihapus dari daftar katalog aktif dan kasir.
+            </p>
+            <div className="flex justify-end gap-2.5 pt-2 border-t border-[#E2E8F0]">
+              <button type="button" className="btn btn-secondary" onClick={close}>Batal</button>
+              <button type="button" className="btn btn-danger" onClick={() => deleteProduct(dialog.product)}>
+                <Trash2 size={15} />
+                <span>Hapus Produk</span>
               </button>
             </div>
           </div>

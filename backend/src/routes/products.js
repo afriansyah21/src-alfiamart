@@ -96,11 +96,23 @@ router.patch('/:id', requireRole('owner'), validate(idParam, 'params'), validate
   } catch (err) { next(err); }
 });
 
-// Hapus = nonaktifkan (riwayat transaksi tetap utuh)
+// Hapus produk permanen (atau nonaktifkan bila sudah memiliki transaksi)
 router.delete('/:id', requireRole('owner'), validate(idParam, 'params'), async (req, res, next) => {
   try {
-    const { rows } = await query('UPDATE products SET is_active = FALSE, updated_at = now() WHERE id = $1 RETURNING id', [req.valid.params.id]);
-    if (!rows[0]) throw notFound('Produk tidak ditemukan');
+    const { id } = req.valid.params;
+    await withTransaction(async (c) => {
+      // Cek apakah produk pernah digunakan dalam transaksi
+      const hasTx = (await c.query('SELECT 1 FROM transaction_items WHERE product_id = $1 LIMIT 1', [id])).rows.length > 0;
+      if (hasTx) {
+        // Jika ada transaksi, jangan hapus fisik agar integrity laporan kasir tetap utuh, tandai is_active = FALSE
+        await c.query('UPDATE products SET is_active = FALSE, updated_at = now() WHERE id = $1', [id]);
+      } else {
+        // Jika belum pernah ditransaksikan, hapus fisik sepenuhnya dari database
+        await c.query('DELETE FROM price_history WHERE product_id = $1', [id]);
+        const del = await c.query('DELETE FROM products WHERE id = $1 RETURNING id', [id]);
+        if (!del.rows[0]) throw notFound('Produk tidak ditemukan');
+      }
+    });
     res.status(204).end();
   } catch (err) { next(err); }
 });
