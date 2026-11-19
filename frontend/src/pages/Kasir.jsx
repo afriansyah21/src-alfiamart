@@ -4,6 +4,7 @@ import { dateTime, rupiah } from '../format.js';
 import { deleteOutbox, getMeta, getOutbox, getProducts, putOutbox } from '../offline/db.js';
 import { refreshProducts, syncOutbox } from '../offline/sync.js';
 import { useToast } from '../components/Toast.jsx';
+import { useAuth } from '../auth.jsx';
 import {
   Search, ShoppingCart, Wifi, WifiOff, RefreshCw, Send,
   Plus, Minus, Trash2, AlertCircle, Package, X, CheckCircle2,
@@ -37,6 +38,7 @@ function initials(name) {
 }
 
 export default function Kasir() {
+  const { user } = useAuth();
   const toast = useToast();
   const [products, setProducts]     = useState([]);
   const [updatedAt, setUpdatedAt]   = useState(null);
@@ -110,19 +112,63 @@ export default function Kasir() {
 
   /* ---- Kalkulasi Keranjang ---- */
   const byId  = useMemo(() => new Map(products.map((p) => [p.id, p])), [products]);
+  const isCabang2 = user?.username === 'alfiamartdua';
+  const branchStockKey = isCabang2 ? 'stock_alfiamart2' : 'stock_alfiamart1';
+
+  const getAvailableStock = useCallback((p) => {
+    if (!p) return 0;
+    // Jika ada stok per cabang, gunakan stok cabang kasir saat ini; jika tidak, fallback ke stock
+    const stockVal = p[branchStockKey] !== undefined ? p[branchStockKey] : p.stock;
+    return Math.max(0, Number(stockVal) || 0);
+  }, [branchStockKey]);
+
   const lines = Object.values(cart).map((l) => ({ ...l, price: byId.get(l.id)?.price ?? l.price }));
   const total = lines.reduce((s, l) => s + l.price * l.qty, 0);
   const count = lines.reduce((s, l) => s + l.qty, 0);
 
-  const add    = (p) => setCart((c) => ({ ...c, [p.id]: { id: p.id, name: p.name, price: p.price, qty: Math.min(1000, (c[p.id]?.qty || 0) + 1) } }));
-  const setQty = (id, qty) => setCart((c) => {
-    if (!Number.isFinite(qty) || qty < 1) return c;
-    return { ...c, [id]: { ...c[id], qty: Math.min(1000, Math.floor(qty)) } };
-  });
+  const add = (p) => {
+    const maxStock = getAvailableStock(p);
+    if (maxStock <= 0) {
+      toast.error(`Stok ${p.name} di toko ini habis`);
+      return;
+    }
+    setCart((c) => {
+      const curQty = c[p.id]?.qty || 0;
+      if (curQty >= maxStock) {
+        toast.error(`Maksimal penambahan tercapai. Stok ${p.name} hanya tersedia ${maxStock} ${p.unit}`);
+        return c;
+      }
+      return { ...c, [p.id]: { id: p.id, name: p.name, price: p.price, qty: curQty + 1 } };
+    });
+  };
+
+  const setQty = (id, qty) => {
+    const p = byId.get(id);
+    const maxStock = getAvailableStock(p);
+    setCart((c) => {
+      if (!Number.isFinite(qty) || qty < 1) return c;
+      const targetQty = Math.floor(qty);
+      if (targetQty > maxStock) {
+        toast.error(`Stok ${p?.name || 'produk'} tidak mencukupi. Tersedia: ${maxStock}`);
+        return { ...c, [id]: { ...c[id], qty: maxStock } };
+      }
+      return { ...c, [id]: { ...c[id], qty: targetQty } };
+    });
+  };
+
   const remove = (id) => setCart((c) => { const { [id]: _, ...rest } = c; return rest; });
 
   const submit = async () => {
     if (lines.length === 0) return;
+    // Validasi stok sebelum submit
+    for (const l of lines) {
+      const p = byId.get(l.id);
+      const maxStock = getAvailableStock(p);
+      if (l.qty > maxStock) {
+        toast.error(`Jumlah ${l.name} (${l.qty}) melebihi stok yang tersedia (${maxStock})`);
+        return;
+      }
+    }
     const now = new Date().toISOString();
     await putOutbox({
       client_id: uuid(), payment_method: payment, occurred_at: now, created_at: now, status: 'tertunda', total,
@@ -226,11 +272,19 @@ export default function Kasir() {
             <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 xl:grid-cols-4">
               {shown.map((p) => {
                 const inCart = cart[p.id]?.qty;
+                const avail = getAvailableStock(p);
+                const isOutOfStock = avail <= 0;
+                const isMaxInCart = (inCart || 0) >= avail;
                 return (
                   <button
                     key={p.id}
                     type="button"
-                    className="product-card group text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D6212A]"
+                    disabled={isOutOfStock || isMaxInCart}
+                    className={`product-card group text-left transition-all ${
+                      isOutOfStock || isMaxInCart
+                        ? 'opacity-60 cursor-not-allowed border-dashed bg-[#F8FAFC]'
+                        : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D6212A]'
+                    }`}
                     onClick={() => add(p)}
                     aria-label={`Tambah ${p.name}, ${rupiah(p.price)}`}
                   >
@@ -239,11 +293,23 @@ export default function Kasir() {
                       <span className="font-bold text-xl tracking-wider text-[#94A3B8] group-hover:text-[#D6212A] transition-colors">
                         {initials(p.name)}
                       </span>
-                      {inCart && (
+                      {inCart ? (
                         <div className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#D6212A] text-[11px] font-bold text-white shadow-xs">
                           {inCart}
                         </div>
-                      )}
+                      ) : null}
+                      {/* Badge Stok Tersedia */}
+                      <div className="absolute bottom-2 left-2">
+                        <span
+                          className={`rounded px-1.5 py-0.5 text-[10px] font-bold font-mono ${
+                            isOutOfStock
+                              ? 'bg-[#FEF2F2] text-[#DC2626] border border-[#FECACA]'
+                              : 'bg-white/90 text-[#334155] border border-[#E2E8F0] shadow-2xs'
+                          }`}
+                        >
+                          Stok: {avail}
+                        </span>
+                      </div>
                     </div>
 
                     {/* Informasi Produk & Harga Bersih */}
@@ -260,7 +326,13 @@ export default function Kasir() {
                         <span className="text-base font-bold font-mono text-[#D6212A]">
                           {rupiah(p.price)}
                         </span>
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F1F5F9] text-[#475569] group-hover:bg-[#D6212A] group-hover:text-white transition-all">
+                        <div
+                          className={`flex h-7 w-7 items-center justify-center rounded-full transition-all ${
+                            isOutOfStock || isMaxInCart
+                              ? 'bg-[#E2E8F0] text-[#94A3B8]'
+                              : 'bg-[#F1F5F9] text-[#475569] group-hover:bg-[#D6212A] group-hover:text-white'
+                          }`}
+                        >
                           <Plus size={15} />
                         </div>
                       </div>
@@ -306,48 +378,61 @@ export default function Kasir() {
                 <p className="text-xs text-[#94A3B8] mt-0.5">Pilih produk di sebelah kiri untuk menambah.</p>
               </div>
             ) : (
-              lines.map((l) => (
-                <div key={l.id} className="py-3 first:pt-0 last:pb-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="font-semibold text-sm text-[#1E293B] line-clamp-1">{l.name}</p>
-                    <span className="font-mono font-bold text-sm text-[#0F172A] shrink-0">
-                      {rupiah(l.price * l.qty)}
-                    </span>
-                  </div>
-
-                  <div className="mt-2 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 border border-[#E2E8F0] rounded-lg p-0.5 bg-[#F8FAFC]">
-                      <button
-                        type="button"
-                        className="flex h-6 w-6 items-center justify-center rounded-md bg-white hover:bg-[#F1F5F9] text-[#475569] shadow-xs"
-                        aria-label={`Kurangi ${l.name}`}
-                        onClick={() => (l.qty > 1 ? setQty(l.id, l.qty - 1) : remove(l.id))}
-                      >
-                        {l.qty > 1 ? <Minus size={13} /> : <Trash2 size={13} className="text-[#DC2626]" />}
-                      </button>
-                      <input
-                        aria-label={`Jumlah ${l.name}`}
-                        className="w-10 text-center font-semibold text-xs bg-transparent border-0 focus:outline-none"
-                        inputMode="numeric"
-                        value={l.qty}
-                        onChange={(e) => setQty(l.id, Number(e.target.value))}
-                      />
-                      <button
-                        type="button"
-                        className="flex h-6 w-6 items-center justify-center rounded-md bg-white hover:bg-[#F1F5F9] text-[#475569] shadow-xs"
-                        aria-label={`Tambah ${l.name}`}
-                        onClick={() => setQty(l.id, l.qty + 1)}
-                      >
-                        <Plus size={13} />
-                      </button>
+              lines.map((l) => {
+                const p = byId.get(l.id);
+                const avail = getAvailableStock(p);
+                const isMax = l.qty >= avail;
+                return (
+                  <div key={l.id} className="py-3 first:pt-0 last:pb-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <p className="font-semibold text-sm text-[#1E293B] line-clamp-1">{l.name}</p>
+                        <span className="text-[11px] text-[#64748B]">Sisa stok: {avail}</span>
+                      </div>
+                      <span className="font-mono font-bold text-sm text-[#0F172A] shrink-0">
+                        {rupiah(l.price * l.qty)}
+                      </span>
                     </div>
 
-                    <span className="text-xs text-[#64748B]">
-                      @ {rupiah(l.price)}
-                    </span>
+                    <div className="mt-2 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 border border-[#E2E8F0] rounded-lg p-0.5 bg-[#F8FAFC]">
+                        <button
+                          type="button"
+                          className="flex h-6 w-6 items-center justify-center rounded-md bg-white hover:bg-[#F1F5F9] text-[#475569] shadow-xs"
+                          aria-label={`Kurangi ${l.name}`}
+                          onClick={() => (l.qty > 1 ? setQty(l.id, l.qty - 1) : remove(l.id))}
+                        >
+                          {l.qty > 1 ? <Minus size={13} /> : <Trash2 size={13} className="text-[#DC2626]" />}
+                        </button>
+                        <input
+                          aria-label={`Jumlah ${l.name}`}
+                          className="w-10 text-center font-semibold text-xs bg-transparent border-0 focus:outline-none"
+                          inputMode="numeric"
+                          value={l.qty}
+                          onChange={(e) => setQty(l.id, Number(e.target.value))}
+                        />
+                        <button
+                          type="button"
+                          disabled={isMax}
+                          className={`flex h-6 w-6 items-center justify-center rounded-md shadow-xs ${
+                            isMax
+                              ? 'bg-[#E2E8F0] text-[#94A3B8] cursor-not-allowed'
+                              : 'bg-white hover:bg-[#F1F5F9] text-[#475569] cursor-pointer'
+                          }`}
+                          aria-label={`Tambah ${l.name}`}
+                          onClick={() => setQty(l.id, l.qty + 1)}
+                        >
+                          <Plus size={13} />
+                        </button>
+                      </div>
+
+                      <span className="text-xs text-[#64748B]">
+                        @ {rupiah(l.price)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
 

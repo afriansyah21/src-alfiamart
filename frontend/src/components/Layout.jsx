@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
-import { LayoutGrid, ShoppingCart, LogOut, Store, BookOpen, ShieldCheck } from 'lucide-react';
+import { LayoutGrid, ShoppingCart, LogOut, Store, BookOpen, ShieldCheck, Boxes } from 'lucide-react';
 
 export default function Layout() {
   const { user, logout } = useAuth();
@@ -34,23 +34,36 @@ export default function Layout() {
             </div>
           </div>
 
-          {/* Navigasi Header Modern (Katalog Owner, Kelola Katalog) */}
-          {user.role === 'owner' && (
-            <nav className="flex items-center gap-1.5" aria-label="Menu utama">
-              <NavLink to="/produk" className={desktopNavClass}>
-                <LayoutGrid size={17} />
-                <span>Katalog Owner</span>
-              </NavLink>
-              <NavLink to="/kelola-katalog" className={desktopNavClass}>
-                <BookOpen size={17} />
-                <span>Kelola Katalog</span>
-              </NavLink>
-              <NavLink to="/kasir" className={desktopNavClass}>
-                <ShoppingCart size={17} />
-                <span>Kasir POS</span>
-              </NavLink>
-            </nav>
-          )}
+          {/* Navigasi Header Modern (Katalog Owner, Kelola Katalog, Kasir POS, Ketersediaan Stok) */}
+          <nav className="flex items-center gap-1.5" aria-label="Menu utama">
+            {user.role === 'owner' ? (
+              <>
+                <NavLink to="/produk" className={desktopNavClass}>
+                  <LayoutGrid size={17} />
+                  <span>Katalog Owner</span>
+                </NavLink>
+                <NavLink to="/kelola-katalog" className={desktopNavClass}>
+                  <BookOpen size={17} />
+                  <span>Kelola Katalog</span>
+                </NavLink>
+                <NavLink to="/kasir" className={desktopNavClass}>
+                  <ShoppingCart size={17} />
+                  <span>Kasir POS</span>
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink to="/kasir" className={desktopNavClass}>
+                  <ShoppingCart size={17} />
+                  <span>Kasir POS</span>
+                </NavLink>
+                <NavLink to="/stok-cabang" className={desktopNavClass}>
+                  <Boxes size={17} />
+                  <span>Ketersediaan Stok</span>
+                </NavLink>
+              </>
+            )}
+          </nav>
 
           {/* User Profile & Logout */}
           <div className="flex items-center gap-3">

@@ -25,11 +25,20 @@ export async function createTransaction(payload, user) {
     if (existing) return { duplicate: true, transaction: existing };
 
     const ids = [...new Set(payload.items.map((i) => i.product_id))];
-    const { rows: products } = await c.query('SELECT id, name, price FROM products WHERE id = ANY($1::uuid[])', [ids]);
+    const { rows: products } = await c.query(
+      'SELECT id, name, price, stock, stock_alfiamart1, stock_alfiamart2 FROM products WHERE id = ANY($1::uuid[]) FOR UPDATE',
+      [ids]
+    );
     const byId = new Map(products.map((p) => [p.id, p]));
+    const isCabang2 = user?.username === 'alfiamartdua';
+
     const lines = payload.items.map((item) => {
       const p = byId.get(item.product_id);
       if (!p) throw new ApiError(422, 'PRODUCT_NOT_FOUND', `Produk ${item.product_id} tidak ditemukan`);
+      const currentBranchStock = isCabang2 ? (p.stock_alfiamart2 ?? 0) : (p.stock_alfiamart1 ?? 0);
+      if (item.qty > currentBranchStock) {
+        throw new ApiError(400, 'INSUFFICIENT_STOCK', `Stok ${p.name} di cabang tidak mencukupi (tersedia: ${currentBranchStock}, diminta: ${item.qty})`);
+      }
       const unitPrice = item.unit_price ?? p.price;
       return { product_id: p.id, name: p.name, unit_price: unitPrice, qty: item.qty, subtotal: unitPrice * item.qty };
     });

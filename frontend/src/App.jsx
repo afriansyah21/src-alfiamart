@@ -4,6 +4,7 @@ import Layout from './components/Layout.jsx';
 import Login from './pages/Login.jsx';
 import Products from './pages/Products.jsx';
 import Kasir from './pages/Kasir.jsx';
+import StokCabang from './pages/StokCabang.jsx';
 import Katalog from './pages/Katalog.jsx';
 import KelolaKatalog from './pages/KelolaKatalog.jsx';
 
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/produk" element={<Protected roles={['owner']}><Products /></Protected>} />
         <Route path="/kelola-katalog" element={<Protected roles={['owner']}><KelolaKatalog /></Protected>} />
         <Route path="/kasir" element={<Kasir />} />
+        <Route path="/stok-cabang" element={<StokCabang />} />
       </Route>
       <Route path="/katalog" element={<Katalog />} />
       <Route path="*" element={<Navigate to={user ? (user.role === 'owner' ? '/produk' : '/kasir') : '/login'} replace />} />
