@@ -6,8 +6,14 @@ const price = Joi.number().integer().min(0).max(100_000_000).messages({
   'number.min': 'Harga tidak boleh negatif',
 });
 
+const stock = Joi.number().integer().min(0).max(1_000_000).messages({
+  'number.base': 'Stok harus berupa angka',
+  'number.integer': 'Stok harus bilangan bulat',
+  'number.min': 'Stok tidak boleh negatif',
+});
+
 export const loginSchema = Joi.object({
-  email: Joi.string().email().required(),
+  username: Joi.string().trim().min(1).max(100).required(),
   password: Joi.string().min(1).required(),
 });
 
@@ -17,6 +23,9 @@ export const productCreateSchema = Joi.object({
   category: Joi.string().trim().max(60).default('Lainnya'),
   unit: Joi.string().trim().max(20).default('pcs'),
   price: price.required(),
+  stock: stock.default(2),
+  stock_alfiamart1: stock.default(1),
+  stock_alfiamart2: stock.default(1),
 });
 
 export const productUpdateSchema = Joi.object({
@@ -24,6 +33,9 @@ export const productUpdateSchema = Joi.object({
   category: Joi.string().trim().max(60),
   unit: Joi.string().trim().max(20),
   price,
+  stock,
+  stock_alfiamart1: stock,
+  stock_alfiamart2: stock,
   is_active: Joi.boolean(),
 }).min(1);
 

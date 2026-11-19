@@ -8,7 +8,7 @@ export function requireAuth(req, _res, next) {
   if (!token) return next(unauthorized());
   try {
     const payload = jwt.verify(token, config.jwtSecret);
-    req.user = { id: payload.sub, role: payload.role, name: payload.name };
+    req.user = { id: payload.sub, role: payload.role, name: payload.name, username: payload.username };
     next();
   } catch {
     next(unauthorized('Sesi tidak valid atau sudah berakhir, silakan login ulang'));

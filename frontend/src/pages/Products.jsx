@@ -186,6 +186,9 @@ export default function Products() {
                   <th scope="col" className="px-5 py-3.5">Produk</th>
                   <th scope="col" className="px-4 py-3.5">Kategori &amp; Satuan</th>
                   <th scope="col" className="px-4 py-3.5 text-right">Harga Toko</th>
+                  <th scope="col" className="px-3 py-3.5 text-center">Stok Alfiamart 1</th>
+                  <th scope="col" className="px-3 py-3.5 text-center">Stok Alfiamart 2</th>
+                  <th scope="col" className="px-3 py-3.5 text-center">Stok Total</th>
                   <th scope="col" className="px-4 py-3.5 text-center">Status</th>
                   <th scope="col" className="px-5 py-3.5 text-right">Aksi</th>
                 </tr>
@@ -229,6 +232,45 @@ export default function Products() {
                         </span>
                         <span className="text-[11px] text-[#94A3B8]">termasuk PPN</span>
                       </div>
+                    </td>
+
+                    {/* Stok Alfiamart 1 */}
+                    <td className="px-3 py-4 text-center whitespace-nowrap">
+                      {(p.stock_alfiamart1 ?? 0) > 0 ? (
+                        <span className="inline-flex items-center gap-1 rounded-md bg-[#F1F5F9] px-2.5 py-1 text-xs font-semibold font-mono text-[#334155] border border-[#E2E8F0]">
+                          {p.stock_alfiamart1} {p.unit}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 rounded-md bg-[#FEF2F2] px-2 py-0.5 text-xs font-semibold text-[#DC2626] border border-[#FECACA]">
+                          0
+                        </span>
+                      )}
+                    </td>
+
+                    {/* Stok Alfiamart 2 */}
+                    <td className="px-3 py-4 text-center whitespace-nowrap">
+                      {(p.stock_alfiamart2 ?? 0) > 0 ? (
+                        <span className="inline-flex items-center gap-1 rounded-md bg-[#F1F5F9] px-2.5 py-1 text-xs font-semibold font-mono text-[#334155] border border-[#E2E8F0]">
+                          {p.stock_alfiamart2} {p.unit}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 rounded-md bg-[#FEF2F2] px-2 py-0.5 text-xs font-semibold text-[#DC2626] border border-[#FECACA]">
+                          0
+                        </span>
+                      )}
+                    </td>
+
+                    {/* Stok Total */}
+                    <td className="px-3 py-4 text-center whitespace-nowrap">
+                      {(p.stock ?? 0) > 0 ? (
+                        <span className="inline-flex items-center gap-1 rounded-md bg-[#EFF6FF] px-2.5 py-1 text-xs font-bold font-mono text-[#1D4ED8] border border-[#BFDBFE]">
+                          {p.stock} {p.unit}
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 rounded-md bg-[#FEF2F2] px-2.5 py-1 text-xs font-bold text-[#DC2626] border border-[#FECACA]">
+                          Habis (0)
+                        </span>
+                      )}
                     </td>
 
                     {/* Status */}

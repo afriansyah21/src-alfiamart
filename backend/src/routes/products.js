@@ -7,7 +7,7 @@ import {
   productCreateSchema, productUpdateSchema, productListQuery, idParam, historyIdParam, importSchema, importRowSchema,
 } from '../schemas.js';
 
-const FIELDS = 'id, sku, name, category, unit, price, is_active, created_at, updated_at';
+const FIELDS = 'id, sku, name, category, unit, price, stock, stock_alfiamart1, stock_alfiamart2, is_active, created_at, updated_at';
 
 async function searchProducts({ q, category, page, limit }, { onlyActive }) {
   const where = [];
@@ -64,9 +64,13 @@ router.post('/', requireRole('owner'), validate(productCreateSchema), async (req
   try {
     const p = req.valid.body;
     const product = await withTransaction(async (c) => {
+      const s1 = p.stock_alfiamart1 !== undefined ? p.stock_alfiamart1 : (p.stock !== undefined ? p.stock : 1);
+      const s2 = p.stock_alfiamart2 !== undefined ? p.stock_alfiamart2 : 1;
+      const totalStock = p.stock !== undefined ? p.stock : (s1 + s2);
       const { rows } = await c.query(
-        `INSERT INTO products (sku, name, category, unit, price) VALUES ($1,$2,$3,$4,$5) RETURNING ${FIELDS}`,
-        [p.sku, p.name, p.category, p.unit, p.price]);
+        `INSERT INTO products (sku, name, category, unit, price, stock, stock_alfiamart1, stock_alfiamart2)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING ${FIELDS}`,
+        [p.sku, p.name, p.category, p.unit, p.price, totalStock, s1, s2]);
       await c.query(`INSERT INTO price_history (product_id, old_price, new_price, changed_by, source) VALUES ($1, NULL, $2, $3, 'manual')`,
         [rows[0].id, p.price, req.user.id]);
       return rows[0];
@@ -83,9 +87,26 @@ router.patch('/:id', requireRole('owner'), validate(idParam, 'params'), validate
       const cur = (await c.query('SELECT * FROM products WHERE id = $1 FOR UPDATE', [id])).rows[0];
       if (!cur) throw notFound('Produk tidak ditemukan');
       const next = { ...cur, ...changes };
+      
+      // Hitung ulang total stok jika cabang diubah
+      if (changes.stock_alfiamart1 !== undefined || changes.stock_alfiamart2 !== undefined) {
+        const s1 = next.stock_alfiamart1 ?? 0;
+        const s2 = next.stock_alfiamart2 ?? 0;
+        next.stock = s1 + s2;
+      } else if (changes.stock !== undefined && changes.stock_alfiamart1 === undefined && changes.stock_alfiamart2 === undefined) {
+        // Jika hanya total stock yang diubah manual, sesuaikan s1 & s2 proporsional atau simpan langsung
+        next.stock = changes.stock;
+      }
+
+      // Bila total stock diset 0, otomatis nonaktifkan jika tidak diset secara eksplisit
+      if (next.stock === 0 && changes.is_active === undefined) {
+        next.is_active = false;
+      }
       const { rows } = await c.query(
-        `UPDATE products SET name=$2, category=$3, unit=$4, price=$5, is_active=$6, updated_at=now() WHERE id=$1 RETURNING ${FIELDS}`,
-        [id, next.name, next.category, next.unit, next.price, next.is_active]);
+        `UPDATE products 
+         SET name=$2, category=$3, unit=$4, price=$5, stock=$6, stock_alfiamart1=$7, stock_alfiamart2=$8, is_active=$9, updated_at=now() 
+         WHERE id=$1 RETURNING ${FIELDS}`,
+        [id, next.name, next.category, next.unit, next.price, next.stock, next.stock_alfiamart1, next.stock_alfiamart2, next.is_active]);
       if (changes.price !== undefined && changes.price !== cur.price) {
         await c.query(`INSERT INTO price_history (product_id, old_price, new_price, changed_by, source) VALUES ($1,$2,$3,$4,'manual')`,
           [id, cur.price, changes.price, req.user.id]);

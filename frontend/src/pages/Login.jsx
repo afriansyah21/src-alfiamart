@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Navigate, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
 import { errorMessage } from '../api/client.js';
-import { Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { User, Lock, Eye, EyeOff, AlertCircle, ArrowRight, ShieldCheck, MapPin } from 'lucide-react';
 
 export default function Login() {
   const { user, login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -20,7 +20,7 @@ export default function Login() {
     setError('');
     setBusy(true);
     try {
-      const u = await login(email.trim(), password);
+      const u = await login(username.trim(), password);
       navigate(u.role === 'owner' ? '/produk' : '/kasir', { replace: true });
     } catch (err) {
       setError(errorMessage(err));
@@ -36,7 +36,13 @@ export default function Login() {
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5">
           <div className="flex items-center gap-3 text-white">
             <img src="/putih.png" alt="Logo SRC Alfiamart" className="h-8 w-auto max-w-[110px] object-contain -translate-y-0.5" />
-            <span className="text-base font-extrabold tracking-tight leading-none">SRC Alfiamart</span>
+            <div>
+              <span className="text-base font-extrabold tracking-tight leading-none block">SRC Alfiamart</span>
+              <span className="text-[11px] text-white/80 font-normal flex items-center gap-1 mt-0.5">
+                <MapPin size={11} className="text-[#FFC72C]" />
+                Kec. Adipala, Kab. Cilacap
+              </span>
+            </div>
           </div>
         </div>
       </header>
@@ -54,27 +60,27 @@ export default function Login() {
               </div>
               <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">Selamat Datang</h1>
               <p className="text-sm text-[#64748B]">
-                Masukkan kredensial akun Anda untuk mengelola kasir dan produk toko.
+                SRC Alfiamart Adipala, Cilacap. Masukkan username dan kata sandi Anda.
               </p>
             </div>
 
             <form onSubmit={submit} className="space-y-4" noValidate>
-              {/* Input Email */}
+              {/* Input Username */}
               <div>
-                <label htmlFor="email" className="label text-xs uppercase tracking-wider text-[#475569]">
-                  Alamat Email
+                <label htmlFor="username" className="label text-xs uppercase tracking-wider text-[#475569]">
+                  Username
                 </label>
                 <div className="relative">
-                  <Mail size={18} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+                  <User size={18} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
                   <input
-                    id="email"
-                    type="email"
+                    id="username"
+                    type="text"
                     autoComplete="username"
                     className="field !pl-11 h-12 text-sm placeholder:text-[#94A3B8]"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     required
-                    placeholder="nama@email.com"
+                    placeholder="Masukkan username akun"
                   />
                 </div>
               </div>
@@ -122,7 +128,7 @@ export default function Login() {
               <button
                 type="submit"
                 className="btn btn-primary w-full h-12 text-base font-bold shadow-sm mt-2"
-                disabled={busy || !email || !password}
+                disabled={busy || !username || !password}
               >
                 {busy ? (
                   <div className="flex items-center gap-2">

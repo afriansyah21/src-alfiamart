@@ -47,6 +47,34 @@ export async function createTransaction(payload, user) {
       await c.query(
         'INSERT INTO transaction_items (transaction_id, product_id, product_name, unit_price, qty, subtotal) VALUES ($1,$2,$3,$4,$5,$6)',
         [ins.rows[0].id, l.product_id, l.name, l.unit_price, l.qty, l.subtotal]);
+
+      // Pengurangan stok otomatis saat transaksi berhasil disimpan
+      // Jika kasir adalah alfiamartsatu, kurangi stock_alfiamart1
+      // Jika kasir adalah alfiamartdua, kurangi stock_alfiamart2
+      // Update juga total stock = stock_alfiamart1 + stock_alfiamart2
+      // Jika total stok habis (<= 0), otomatis set is_active = FALSE
+      if (user?.username === 'alfiamartdua') {
+        await c.query(
+          `UPDATE products 
+           SET stock_alfiamart2 = GREATEST(0, stock_alfiamart2 - $2),
+               stock = GREATEST(0, stock_alfiamart1 + GREATEST(0, stock_alfiamart2 - $2)),
+               is_active = CASE WHEN (stock_alfiamart1 + GREATEST(0, stock_alfiamart2 - $2)) <= 0 THEN FALSE ELSE is_active END,
+               updated_at = now()
+           WHERE id = $1`,
+          [l.product_id, l.qty]
+        );
+      } else {
+        // Default untuk alfiamartsatu atau lainnya
+        await c.query(
+          `UPDATE products 
+           SET stock_alfiamart1 = GREATEST(0, stock_alfiamart1 - $2),
+               stock = GREATEST(0, GREATEST(0, stock_alfiamart1 - $2) + stock_alfiamart2),
+               is_active = CASE WHEN (GREATEST(0, stock_alfiamart1 - $2) + stock_alfiamart2) <= 0 THEN FALSE ELSE is_active END,
+               updated_at = now()
+           WHERE id = $1`,
+          [l.product_id, l.qty]
+        );
+      }
     }
     return { duplicate: false, transaction: await loadTransaction(c, 't.id = $1', ins.rows[0].id) };
   });
