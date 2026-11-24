@@ -1,0 +1,781 @@
+id,text,intent,produk,harga,periode,cabang,group_id,sumber,split
+INT-0001,Berapa harga gas 3 kg sekarang?,tanya_produk,gas 3 kg,,,,tanya_produk-01,template,test
+INT-0002,Harga minyak goreng 2 liter berapa ya?,tanya_produk,minyak goreng 2 liter,,,,tanya_produk-02,template,test
+INT-0003,Gula pasir dijual berapa di toko?,tanya_produk,gula pasir,,,,tanya_produk-03,template,train
+INT-0004,Cek harga saos sambal dong,tanya_produk,saos sambal,,,,tanya_produk-04,template,train
+INT-0005,Tolong infoin harga jual indomie goreng,tanya_produk,indomie goreng,,,,tanya_produk-05,template,train
+INT-0006,Sekarang telur harganya berapa?,tanya_produk,telur,,,,tanya_produk-06,template,test
+INT-0007,Harga telur di sistem udah berapa?,tanya_produk,telur,,,,tanya_produk-07,template,train
+INT-0008,Beras 5 kg sekarang dijual berapaan?,tanya_produk,beras 5 kg,,,,tanya_produk-08,template,train
+INT-0009,Harga eceran saos sambal berapa?,tanya_produk,saos sambal,,,,tanya_produk-09,template,train
+INT-0010,Mau tau harga terbaru minyak goreng 2 liter,tanya_produk,minyak goreng 2 liter,,,,tanya_produk-10,template,train
+INT-0011,Tepung terigu masih ada stoknya?,tanya_produk,tepung terigu,,,,tanya_produk-11,template,train
+INT-0012,Stok saos sambal di cab 1 tinggal berapa?,tanya_produk,saos sambal,,,alfiamart1,tanya_produk-12,template,train
+INT-0013,Cek stok aqua 600ml di cabang 1,tanya_produk,aqua 600ml,,,alfiamart1,tanya_produk-13,template,train
+INT-0014,Di cabang satu minyak goreng masih ada nggak?,tanya_produk,minyak goreng,,,alfiamart1,tanya_produk-14,template,train
+INT-0015,Sisa susu bubuk di cab 1 berapa?,tanya_produk,susu bubuk,,,alfiamart1,tanya_produk-15,template,train
+INT-0016,Stok telur ayam masih banyak nggak?,tanya_produk,telur ayam,,,,tanya_produk-16,template,train
+INT-0017,Kecap manis udah habis belum?,tanya_produk,kecap manis,,,,tanya_produk-17,template,test
+INT-0018,Berapa stok gas 3 kg di semua cabang?,tanya_produk,gas 3 kg,,,,tanya_produk-18,template,train
+INT-0019,Ada kecap manis di daftar produk nggak?,tanya_produk,kecap manis,,,,tanya_produk-19,template,train
+INT-0020,Kode barang sabun cuci piring apa?,tanya_produk,sabun cuci piring,,,,tanya_produk-20,template,train
+INT-0021,Aqua 600ml masuk kategori apa?,tanya_produk,aqua 600ml,,,,tanya_produk-21,template,train
+INT-0022,Satuan jual telur apa?,tanya_produk,telur,,,,tanya_produk-22,template,train
+INT-0023,Info produk air galon dong,tanya_produk,air galon,,,,tanya_produk-23,template,test
+INT-0024,Coba lihat detail sabun mandi,tanya_produk,sabun mandi,,,,tanya_produk-24,template,train
+INT-0025,Harga indomie goreng sama di semua cabang kan?,tanya_produk,indomie goreng,,,,tanya_produk-25,template,test
+INT-0026,Produk apa aja yang stoknya mau habis di cabang satu?,tanya_produk,,,,alfiamart1,tanya_produk-26,template,train
+INT-0027,Produk apa aja yang stoknya kosong?,tanya_produk,,,,,tanya_produk-27,manual,train
+INT-0028,Ada produk apa aja di kategori sembako?,tanya_produk,,,,,tanya_produk-28,manual,train
+INT-0029,Berapa harga kopi sachet sekarang?,tanya_produk,kopi sachet,,,,tanya_produk-01,template,test
+INT-0030,"bot, hrg telur ayam berapa ya?",tanya_produk,telur ayam,,,,tanya_produk-02,augmentasi,test
+INT-0031,Teh pucuk dijual berapa di toko?,tanya_produk,teh pucuk,,,,tanya_produk-03,template,train
+INT-0032,cek hagra mie instan dong,tanya_produk,mie instan,,,,tanya_produk-04,augmentasi,train
+INT-0033,Tolong infoin harga jual roti tawar,tanya_produk,roti tawar,,,,tanya_produk-05,template,train
+INT-0034,Sekarang minyak goreng 2 liter harganya berapa?,tanya_produk,minyak goreng 2 liter,,,,tanya_produk-06,template,test
+INT-0035,hrg air galon di sistem udah brp,tanya_produk,air galon,,,,tanya_produk-07,augmentasi,train
+INT-0036,beras skrg dijual berapaan nih,tanya_produk,beras,,,,tanya_produk-08,augmentasi,train
+INT-0037,Harga eceran indomie goreng berapa?,tanya_produk,indomie goreng,,,,tanya_produk-09,template,train
+INT-0038,Mau tau hrg terrbaru biskuit,tanya_produk,biskuit,,,,tanya_produk-10,augmentasi,train
+INT-0039,bot sabun cuci piring masih ada stoknya,tanya_produk,sabun cuci piring,,,,tanya_produk-11,augmentasi,train
+INT-0040,Stok deterjen di alfiamart 1 tinggal berapa?,tanya_produk,deterjen,,,alfiamart1,tanya_produk-12,template,train
+INT-0041,Cek stok air galon di cab 2 nih,tanya_produk,air galon,,,alfiamart2,tanya_produk-13,augmentasi,train
+INT-0042,di cabaang dua mie instan masih ada nggak?,tanya_produk,mie instan,,,alfiamart2,tanya_produk-14,augmentasi,train
+INT-0043,Sisa susu bubuk di cabang satu berapa?,tanya_produk,susu bubuk,,,alfiamart1,tanya_produk-15,template,train
+INT-0044,stok beras masih banyak gak,tanya_produk,beras,,,,tanya_produk-16,augmentasi,train
+INT-0045,eh bot shampo sachet udah habis bleum,tanya_produk,shampo sachet,,,,tanya_produk-17,augmentasi,test
+INT-0046,Berapa stok tepung terigu di semua cab?,tanya_produk,tepung terigu,,,,tanya_produk-18,augmentasi,train
+INT-0047,koed barang tepung terigu apa ya?,tanya_produk,tepung terigu,,,,tanya_produk-20,augmentasi,train
+INT-0048,pasta gigi masuk ktaegori apa?,tanya_produk,pasta gigi,,,,tanya_produk-21,augmentasi,train
+INT-0049,Satuan jual telur ayam apa?,tanya_produk,telur ayam,,,,tanya_produk-22,template,train
+INT-0050,Coba lihat detail beras,tanya_produk,beras,,,,tanya_produk-24,template,train
+INT-0051,Hrg telur sama di semua cabang kan nih,tanya_produk,telur,,,,tanya_produk-25,augmentasi,test
+INT-0052,Produk apa aja yang stoknya mau habis di cabang 2?,tanya_produk,,,,alfiamart2,tanya_produk-26,template,train
+INT-0053,produk apa aja yg stoknya kosng,tanya_produk,,,,,tanya_produk-27,augmentasi,train
+INT-0054,ada produk apa aja di ktaegori sembako?,tanya_produk,,,,,tanya_produk-28,augmentasi,train
+INT-0055,Berapa harga kopi kapal api sekarang?,tanya_produk,kopi kapal api,,,,tanya_produk-01,template,test
+INT-0056,Harga air galon breapa ya?,tanya_produk,air galon,,,,tanya_produk-02,augmentasi,test
+INT-0057,Indomie goreng dijual berapa di toko?,tanya_produk,indomie goreng,,,,tanya_produk-03,template,train
+INT-0058,"bot, cek harga minyak goreng 2 liter dogn",tanya_produk,minyak goreng 2 liter,,,,tanya_produk-04,augmentasi,train
+INT-0059,tlg infoin hrg jual minyak goreng,tanya_produk,minyak goreng,,,,tanya_produk-05,augmentasi,train
+INT-0060,Sekarang sabun cuci piring harganya berapa?,tanya_produk,sabun cuci piring,,,,tanya_produk-06,template,test
+INT-0061,hrg minyak goreng di sistem udh brp?,tanya_produk,minyak goreng,,,,tanya_produk-07,augmentasi,train
+INT-0062,Roti tawar sekarang dijual berapaan?,tanya_produk,roti tawar,,,,tanya_produk-08,template,train
+INT-0063,Harga eceran kopi kapal api berapa?,tanya_produk,kopi kapal api,,,,tanya_produk-09,template,train
+INT-0064,"bot, mau tau harga terbaru telur",tanya_produk,telur,,,,tanya_produk-10,augmentasi,train
+INT-0065,biskuit masih ada stoknya donk?,tanya_produk,biskuit,,,,tanya_produk-11,augmentasi,train
+INT-0066,Stok indomie goreng di cab 2 tinggal berapa?,tanya_produk,indomie goreng,,,alfiamart2,tanya_produk-12,template,train
+INT-0067,Cek stok shampo sachet di cabang 2,tanya_produk,shampo sachet,,,alfiamart2,tanya_produk-13,template,train
+INT-0068,"haol bot, di cab 1 indomie goreng masih ada nggak?",tanya_produk,indomie goreng,,,alfiamart1,tanya_produk-14,augmentasi,train
+INT-0069,Sisa kecap manis di caabang 2 berapa?,tanya_produk,kecap manis,,,alfiamart2,tanya_produk-15,augmentasi,train
+INT-0070,Stok biskuit masih banyak nggak?,tanya_produk,biskuit,,,,tanya_produk-16,template,train
+INT-0071,kopi sachet dah habis blm nih?,tanya_produk,kopi sachet,,,,tanya_produk-17,augmentasi,test
+INT-0072,brp stok saos sambal di semua cab?,tanya_produk,saos sambal,,,,tanya_produk-18,augmentasi,train
+INT-0073,Ada air galon di datfar produk nggak nih?,tanya_produk,air galon,,,,tanya_produk-19,augmentasi,train
+INT-0074,Kode barang gula apa?,tanya_produk,gula,,,,tanya_produk-20,template,train
+INT-0075,susu kental manis massuk kategori apa?,tanya_produk,susu kental manis,,,,tanya_produk-21,augmentasi,train
+INT-0076,satuan jul susu bubuk apa,tanya_produk,susu bubuk,,,,tanya_produk-22,augmentasi,train
+INT-0077,"eh bot, info produk mentega donk",tanya_produk,mentega,,,,tanya_produk-23,augmentasi,test
+INT-0078,Coba lihat detail telur ayam,tanya_produk,telur ayam,,,,tanya_produk-24,augmentasi,train
+INT-0079,hrg deterjen sm di semua cabang kan,tanya_produk,deterjen,,,,tanya_produk-25,augmentasi,test
+INT-0080,Poduk apa aja yang stoknya mau habis di toko 2,tanya_produk,,,,alfiamart2,tanya_produk-26,augmentasi,train
+INT-0081,bot produk apa aja yg stoknya kosong,tanya_produk,,,,,tanya_produk-27,augmentasi,train
+INT-0082,"eh bot, ada produk apa aja di kategori sembako?",tanya_produk,,,,,tanya_produk-28,augmentasi,train
+INT-0083,Brp harga teh pucuk skgr nih?,tanya_produk,teh pucuk,,,,tanya_produk-01,augmentasi,test
+INT-0084,halo bot harga susu bubuk brp ya,tanya_produk,susu bubuk,,,,tanya_produk-02,augmentasi,test
+INT-0085,Gas 3 kg dijual berapa di toko?,tanya_produk,gas 3 kg,,,,tanya_produk-03,template,train
+INT-0086,Cek harga pasta gigi dnk,tanya_produk,pasta gigi,,,,tanya_produk-04,augmentasi,train
+INT-0087,tolong infoin hrg juaal sabun mandi,tanya_produk,sabun mandi,,,,tanya_produk-05,augmentasi,train
+INT-0088,halo bot sekaragn gula pasir harganya brp,tanya_produk,gula pasir,,,,tanya_produk-06,augmentasi,test
+INT-0089,hrg mie instan di sistem dah brp?,tanya_produk,mie instan,,,,tanya_produk-07,augmentasi,train
+INT-0090,saos sambal skrang dijual berapaan?,tanya_produk,saos sambal,,,,tanya_produk-08,augmentasi,train
+INT-0091,Harga eceran deterjen berapa?,tanya_produk,deterjen,,,,tanya_produk-09,template,train
+INT-0092,haol bot mau tau hrg terbaru minyak goreng 2 liter,tanya_produk,minyak goreng 2 liter,,,,tanya_produk-10,augmentasi,train
+INT-0093,Roti tawar masih ada stoknya?,tanya_produk,roti tawar,,,,tanya_produk-11,template,train
+INT-0094,"halo bot, stko mie instan di alfiamart 2 tinggal brp?",tanya_produk,mie instan,,,alfiamart2,tanya_produk-12,augmentasi,train
+INT-0095,Cek sotk telur di cab 1,tanya_produk,telur,,,alfiamart1,tanya_produk-13,augmentasi,train
+INT-0096,Di cabang satu beras masih ada nggak?,tanya_produk,beras,,,alfiamart1,tanya_produk-14,template,train
+INT-0097,Sisa air galon di toko 2 berapa?,tanya_produk,air galon,,,alfiamart2,tanya_produk-15,template,train
+INT-0098,Stok mie instan masih banyak gak?,tanya_produk,mie instan,,,,tanya_produk-16,augmentasi,train
+INT-0099,Biskuit udah habis belum?,tanya_produk,biskuit,,,,tanya_produk-17,template,test
+INT-0100,Berapa stok minyak goreng 2 liter di semuua cabang,tanya_produk,minyak goreng 2 liter,,,,tanya_produk-18,augmentasi,train
+INT-0101,eh bot ada shampo sachet di daftaar produk gak,tanya_produk,shampo sachet,,,,tanya_produk-19,augmentasi,train
+INT-0102,"eh bot, kode barang kopi sachet apa?",tanya_produk,kopi sachet,,,,tanya_produk-20,augmentasi,train
+INT-0103,tepung terigu masuk kategori apa ya,tanya_produk,tepung terigu,,,,tanya_produk-21,augmentasi,train
+INT-0104,Satuan jual kopi sachet apa?,tanya_produk,kopi sachet,,,,tanya_produk-22,template,train
+INT-0105,ino produk minyak goreng 2 liter dong ya,tanya_produk,minyak goreng 2 liter,,,,tanya_produk-23,augmentasi,test
+INT-0106,Coba lihat detail kopi sachet,tanya_produk,kopi sachet,,,,tanya_produk-24,template,train
+INT-0107,halo bot harga garam sama di semua cabang kan,tanya_produk,garam,,,,tanya_produk-25,augmentasi,test
+INT-0108,Produk apa aja yg stoknya mau habis di afliamart 2,tanya_produk,,,,alfiamart2,tanya_produk-26,augmentasi,train
+INT-0109,produk apa aja yg stoknya kosong?,tanya_produk,,,,,tanya_produk-27,augmentasi,train
+INT-0110,ada prdouk apa aja di kategori sembako,tanya_produk,,,,,tanya_produk-28,augmentasi,train
+INT-0111,Berapa hrg indomie goreng skrang?,tanya_produk,indomie goreng,,,,tanya_produk-01,augmentasi,test
+INT-0112,Harga roti tawar berapa ya?,tanya_produk,roti tawar,,,,tanya_produk-02,template,test
+INT-0113,Sabun cuci piring dijual brp di toko ya,tanya_produk,sabun cuci piring,,,,tanya_produk-03,augmentasi,train
+INT-0114,cek harga roti tawar dong nih,tanya_produk,roti tawar,,,,tanya_produk-04,augmentasi,train
+INT-0115,Tlg infoin harga jual gas 3 kg,tanya_produk,gas 3 kg,,,,tanya_produk-05,augmentasi,train
+INT-0116,Sekarang air galon harganya berapa?,tanya_produk,air galon,,,,tanya_produk-06,template,test
+INT-0117,Hrg beras 5 kg di sistem dah brp?,tanya_produk,beras 5 kg,,,,tanya_produk-07,augmentasi,train
+INT-0118,kopi sachet srg dijual berapaan?,tanya_produk,kopi sachet,,,,tanya_produk-08,augmentasi,train
+INT-0119,hrg ecerna minyak goreng 2 liter berapa?,tanya_produk,minyak goreng 2 liter,,,,tanya_produk-09,augmentasi,train
+INT-0120,mau tau harga trbaru telur,tanya_produk,telur,,,,tanya_produk-10,augmentasi,train
+INT-0121,Mentega masih ada stoknya?,tanya_produk,mentega,,,,tanya_produk-11,template,train
+INT-0122,stok sabun cuci piring di cabang 1 tinggal berapa nih,tanya_produk,sabun cuci piring,,,alfiamart1,tanya_produk-12,augmentasi,train
+INT-0123,Cek stok teh pucuk di cabang 2,tanya_produk,teh pucuk,,,alfiamart2,tanya_produk-13,template,train
+INT-0124,Di cab 2 sabun mandi masih ada nggak?,tanya_produk,sabun mandi,,,alfiamart2,tanya_produk-14,template,train
+INT-0125,Sisa kecap manis di cab 2 berapa?,tanya_produk,kecap manis,,,alfiamart2,tanya_produk-15,augmentasi,train
+INT-0126,stok garam masih banyak ngga?,tanya_produk,garam,,,,tanya_produk-16,augmentasi,train
+INT-0127,"eh bot, tepung terigu udh habis belum?",tanya_produk,tepung terigu,,,,tanya_produk-17,augmentasi,test
+INT-0128,Berapa stok pasta gigi di semua cabang?,tanya_produk,pasta gigi,,,,tanya_produk-18,template,train
+INT-0129,Ada roti tawar di daftar produk nggak?,tanya_produk,roti tawar,,,,tanya_produk-19,template,train
+INT-0130,Kode barang minyak goreng 2 liter apa dong?,tanya_produk,minyak goreng 2 liter,,,,tanya_produk-20,augmentasi,train
+INT-0131,Ubah harga pasta gigi jadi empat belas ribu,ubah_harga,pasta gigi,14000,,,ubah_harga-01,template,train
+INT-0132,Ganti harga minyak goreng ke 21000,ubah_harga,minyak goreng,21000,,,ubah_harga-02,template,train
+INT-0133,Tolong naikin harga indomie goreng jadi 4.500,ubah_harga,indomie goreng,4500,,,ubah_harga-03,template,train
+INT-0134,Turunin harga air galon ke rp21.000,ubah_harga,air galon,21000,,,ubah_harga-04,template,train
+INT-0135,"Harga sabun mandi sekarang lima ribu ya, tolong diupdate",ubah_harga,sabun mandi,5000,,,ubah_harga-05,template,train
+INT-0136,Update harga minyak goreng 2 liter jadi Rp 41.000,ubah_harga,minyak goreng 2 liter,41000,,,ubah_harga-06,template,train
+INT-0137,Set harga jual susu kental manis 10k,ubah_harga,susu kental manis,10000,,,ubah_harga-07,template,train
+INT-0138,Mulai sekarang mentega dijual sepuluh ribu,ubah_harga,mentega,10000,,,ubah_harga-08,template,train
+INT-0139,"Biskuit naik jadi Rp 9.000, tolong ubah",ubah_harga,biskuit,9000,,,ubah_harga-09,template,train
+INT-0140,"Harga gas 3 kg dari pusat jadi 19rb, update ya",ubah_harga,gas 3 kg,19000,,,ubah_harga-10,template,train
+INT-0141,"Benerin harga biskuit, harusnya rp9.500",ubah_harga,biskuit,9500,,,ubah_harga-11,template,train
+INT-0142,Koreksi harga gas 3 kg jadi 23.000,ubah_harga,gas 3 kg,23000,,,ubah_harga-12,template,train
+INT-0143,Beras 5 kg jadi 72000,ubah_harga,beras 5 kg,72000,,,ubah_harga-13,template,test
+INT-0144,Perbarui harga mie instan menjadi 4.000,ubah_harga,mie instan,4000,,,ubah_harga-14,template,train
+INT-0145,Harga baru minyak goreng 2 liter: 36 ribu,ubah_harga,minyak goreng 2 liter,36000,,,ubah_harga-15,template,test
+INT-0146,Bisa tolong ubah harga beras 5 kg jadi 76rb?,ubah_harga,beras 5 kg,76000,,,ubah_harga-16,template,train
+INT-0147,"Naikkan harga kopi kapal api ke 3,5rb di semua cabang",ubah_harga,kopi kapal api,3500,,,ubah_harga-17,template,test
+INT-0148,Turunkan harga sabun mandi jadi Rp6.000 buat promo,ubah_harga,sabun mandi,6000,,,ubah_harga-18,template,train
+INT-0149,"Harga mentega salah input, balikin ke 9.500",ubah_harga,mentega,9500,,,ubah_harga-19,template,train
+INT-0150,"Ganti harga shampo sachet dong, jadi 1,5rb",ubah_harga,shampo sachet,1500,,,ubah_harga-20,template,train
+INT-0151,Tolong ganti harga indomie goreng,ubah_harga,indomie goreng,,,,ubah_harga-21,template,train
+INT-0152,Mau ubah harga gula,ubah_harga,gula,,,,ubah_harga-22,template,train
+INT-0153,Harga kecap manis perlu diganti nih,ubah_harga,kecap manis,,,,ubah_harga-23,template,train
+INT-0154,Batalin perubahan harga kopi kapal api yang terakhir,ubah_harga,kopi kapal api,,,,ubah_harga-24,template,test
+INT-0155,Kembalikan harga telur ayam ke harga sebelumnya,ubah_harga,telur ayam,,,,ubah_harga-25,template,test
+INT-0156,Undo perubahan harga air galon tadi,ubah_harga,air galon,,,,ubah_harga-26,template,train
+INT-0157,Ubah harga air galon jadi dua puluh ribu,ubah_harga,air galon,20000,,,ubah_harga-01,template,train
+INT-0158,Gantti hrg tepung terigu ke 12 ribu,ubah_harga,tepung terigu,12000,,,ubah_harga-02,augmentasi,train
+INT-0159,"eh bot, tolong naikin hrg deterjen jadi 3500",ubah_harga,deterjen,3500,,,ubah_harga-03,augmentasi,train
+INT-0160,"halo bot, turrunin harga deterjen ke rp3.500",ubah_harga,deterjen,3500,,,ubah_harga-04,augmentasi,train
+INT-0161,"Harga kopi sachet sekarang Rp500 ya, tolong diupdate",ubah_harga,kopi sachet,500,,,ubah_harga-05,template,train
+INT-0162,update harga beras 5 kg jd 78rb,ubah_harga,beras 5 kg,78000,,,ubah_harga-06,augmentasi,train
+INT-0163,set hrg jual saos sambal rp10.500,ubah_harga,saos sambal,10500,,,ubah_harga-07,augmentasi,train
+INT-0164,Mulai sekarang air galon dijual 19.000,ubah_harga,air galon,19000,,,ubah_harga-08,template,train
+INT-0165,"Beras 5 kg naik jadi Rp72.000, tolong ubah",ubah_harga,beras 5 kg,72000,,,ubah_harga-09,template,train
+INT-0166,"hrg gas 3 kg dr pusat jadi 24 ribu, update ya",ubah_harga,gas 3 kg,24000,,,ubah_harga-10,augmentasi,train
+INT-0167,bot benerin haarga telur ayam harusnya 31rb,ubah_harga,telur ayam,31000,,,ubah_harga-11,augmentasi,train
+INT-0168,Koreksi hrg saos sambal jd Rp8.500,ubah_harga,saos sambal,8500,,,ubah_harga-12,augmentasi,train
+INT-0169,Deterjen jadi empat ribu lima ratus,ubah_harga,deterjen,4500,,,ubah_harga-13,template,test
+INT-0170,"eh bot, perbarui harga susu bubuk menjadi rp43.000",ubah_harga,susu bubuk,43000,,,ubah_harga-14,augmentasi,train
+INT-0171,harga bau garam: 5k,ubah_harga,garam,5000,,,ubah_harga-15,augmentasi,test
+INT-0172,bs tlg ubah hrg kopi kapal api jd rp500,ubah_harga,kopi kapal api,500,,,ubah_harga-16,augmentasi,train
+INT-0173,Naikkan harga deterjen ke 3500 di semua cabang,ubah_harga,deterjen,3500,,,ubah_harga-17,template,test
+INT-0174,turunkan harga garam jadi 5000 buat promo ya,ubah_harga,garam,5000,,,ubah_harga-18,augmentasi,train
+INT-0175,"Harga kopi kapal api salah input, balikin ke 2.500",ubah_harga,kopi kapal api,2500,,,ubah_harga-19,template,train
+INT-0176,eh bot ganti hrg tepung terigu dong jadi 15rb,ubah_harga,tepung terigu,15000,,,ubah_harga-20,augmentasi,train
+INT-0177,Tolong ganti harga aqua 600ml,ubah_harga,aqua 600ml,,,,ubah_harga-21,template,train
+INT-0178,mau ubha harga teh pucuk nih,ubah_harga,teh pucuk,,,,ubah_harga-22,augmentasi,train
+INT-0179,Harga roti tawar perlu diganti nih,ubah_harga,roti tawar,,,,ubah_harga-23,template,train
+INT-0180,batalin perubahan hrg aqua 600ml yang terakhir,ubah_harga,aqua 600ml,,,,ubah_harga-24,augmentasi,test
+INT-0181,kembalikan hrg kecap manis ke hrg sebelumnya doong,ubah_harga,kecap manis,,,,ubah_harga-25,augmentasi,test
+INT-0182,Undo perubahan harga susu bubuk tadi,ubah_harga,susu bubuk,,,,ubah_harga-26,template,train
+INT-0183,ubah harga garam jaadi tiga ribu lima ratus,ubah_harga,garam,3500,,,ubah_harga-01,augmentasi,train
+INT-0184,Gati hrg minyak goreng ke 18rb,ubah_harga,minyak goreng,18000,,,ubah_harga-02,augmentasi,train
+INT-0185,tlg naikin hrg gas 3 kg jd rp21.000,ubah_harga,gas 3 kg,21000,,,ubah_harga-03,augmentasi,train
+INT-0186,turuinn harga sabun cuci piring ke 19000,ubah_harga,sabun cuci piring,19000,,,ubah_harga-04,augmentasi,train
+INT-0187,"halo bot, harga pasta gigi sekarang 11.000 ya, tolong diupdate",ubah_harga,pasta gigi,11000,,,ubah_harga-05,augmentasi,train
+INT-0188,"update harga biskuit jadi 7,5rb nih",ubah_harga,biskuit,7500,,,ubah_harga-06,augmentasi,train
+INT-0189,set harga jual mie instan 3k dong,ubah_harga,mie instan,3000,,,ubah_harga-07,augmentasi,train
+INT-0190,Mulai sekarang beras 5 kg dijual 77.000,ubah_harga,beras 5 kg,77000,,,ubah_harga-08,template,train
+INT-0191,"teh pucuk niak jd lima ribu lima ratus, tlg ubah",ubah_harga,teh pucuk,5500,,,ubah_harga-09,augmentasi,train
+INT-0192,bot hrg mie instan dari pusat jd 2 ribu update ya,ubah_harga,mie instan,2000,,,ubah_harga-10,augmentasi,train
+INT-0193,"Benerin harga mie instan, harusnya 5rb",ubah_harga,mie instan,5000,,,ubah_harga-11,template,train
+INT-0194,koreksi harga telur jadi 29rb nih,ubah_harga,telur,29000,,,ubah_harga-12,augmentasi,train
+INT-0195,Susu bubuk jd Rp46.000,ubah_harga,susu bubuk,46000,,,ubah_harga-13,augmentasi,test
+INT-0196,Perbarui harga roti tawar menjadi 18.000,ubah_harga,roti tawar,18000,,,ubah_harga-14,template,train
+INT-0197,Hrg baru garam: rp3.000,ubah_harga,garam,3000,,,ubah_harga-15,augmentasi,test
+INT-0198,Bisa tolong ubah harga pasta gigi jadi Rp10.000?,ubah_harga,pasta gigi,10000,,,ubah_harga-16,template,train
+INT-0199,Naikkan hargga biskuit ke Rp8.500 di semua cabang,ubah_harga,biskuit,8500,,,ubah_harga-17,augmentasi,test
+INT-0200,Turunkan harga deterjen jadi 6rb buat promo,ubah_harga,deterjen,6000,,,ubah_harga-18,template,train
+INT-0201,"Harga mie instan salah input, balikin ke rp2.500",ubah_harga,mie instan,2500,,,ubah_harga-19,template,train
+INT-0202,ganti hrg telur dong jd 31k nih,ubah_harga,telur,31000,,,ubah_harga-20,augmentasi,train
+INT-0203,tolong ganti hrg tepung terigu,ubah_harga,tepung terigu,,,,ubah_harga-21,augmentasi,train
+INT-0204,Mau ubah harga kopi kapal api,ubah_harga,kopi kapal api,,,,ubah_harga-22,template,train
+INT-0205,Harga gula pasir perlu diganti nih,ubah_harga,gula pasir,,,,ubah_harga-23,template,train
+INT-0206,Batalin perubahan harga minyak goreng yang terakhir,ubah_harga,minyak goreng,,,,ubah_harga-24,template,test
+INT-0207,kembalikan hrg saos sambal ke harga sebelumnya ya,ubah_harga,saos sambal,,,,ubah_harga-25,augmentasi,test
+INT-0208,eh bot undo prubahan harga kecap manis tadi,ubah_harga,kecap manis,,,,ubah_harga-26,augmentasi,train
+INT-0209,"Ubah harga biskuit jd 7,5rb",ubah_harga,biskuit,7500,,,ubah_harga-01,augmentasi,train
+INT-0210,ganti hara indomie goreng ke dua ribu,ubah_harga,indomie goreng,2000,,,ubah_harga-02,augmentasi,train
+INT-0211,"halo bot, tolong naikin hrg mie instan jd 4k",ubah_harga,mie instan,4000,,,ubah_harga-03,augmentasi,train
+INT-0212,turuin hrg pasta gigi ke rp15.000 ya,ubah_harga,pasta gigi,15000,,,ubah_harga-04,augmentasi,train
+INT-0213,hrg kopi kapal api sekarang 2.500 ya tlg diupdate,ubah_harga,kopi kapal api,2500,,,ubah_harga-05,augmentasi,train
+INT-0214,Update harga indomie goreng jadi 3rb,ubah_harga,indomie goreng,3000,,,ubah_harga-06,template,train
+INT-0215,Set harga jual deterjen 4.5rb,ubah_harga,deterjen,4500,,,ubah_harga-07,template,train
+INT-0216,Mulai sekarang beras 5 kg dijual 72rb,ubah_harga,beras 5 kg,72000,,,ubah_harga-08,template,train
+INT-0217,"bot, kecap manis naik jadi 11.000, tolong ubah",ubah_harga,kecap manis,11000,,,ubah_harga-09,augmentasi,train
+INT-0218,"hrg susu bubuk dr pusat jd 43.000, update ya",ubah_harga,susu bubuk,43000,,,ubah_harga-10,augmentasi,train
+INT-0219,"benerni harga kecap manis, harusnya 13rb",ubah_harga,kecap manis,13000,,,ubah_harga-11,augmentasi,train
+INT-0220,Koreksi harga mie instan jadi Rp2.500,ubah_harga,mie instan,2500,,,ubah_harga-12,template,train
+INT-0221,kecap manis jd delapan ribu,ubah_harga,kecap manis,8000,,,ubah_harga-13,augmentasi,test
+INT-0222,perbaruui hrg mie instan menjadi 4.500 dong,ubah_harga,mie instan,4500,,,ubah_harga-14,augmentasi,train
+INT-0223,harga baur indomie goreng: rp 5.000,ubah_harga,indomie goreng,5000,,,ubah_harga-15,augmentasi,test
+INT-0224,Bisa tolong ubah harga pasta gigi jadi 15rb?,ubah_harga,pasta gigi,15000,,,ubah_harga-16,template,train
+INT-0225,Naikkan harga minyak goreng ke 23000 di semua cabang,ubah_harga,minyak goreng,23000,,,ubah_harga-17,template,test
+INT-0226,Turunkan harga aqua 600ml jadi 4.5rb buat promo,ubah_harga,aqua 600ml,4500,,,ubah_harga-18,template,train
+INT-0227,harga deterjen salah input balikin ke empat ribu ya,ubah_harga,deterjen,4000,,,ubah_harga-19,augmentasi,train
+INT-0228,"Ganti harga kopi sachet dong, jadi 1rb",ubah_harga,kopi sachet,1000,,,ubah_harga-20,template,train
+INT-0229,Tolong ganti harga air galon,ubah_harga,air galon,,,,ubah_harga-21,template,train
+INT-0230,Mau ubah harga minyak goreng 2 liter,ubah_harga,minyak goreng 2 liter,,,,ubah_harga-22,template,train
+INT-0231,hrg teh pucuk perlu digani nih,ubah_harga,teh pucuk,,,,ubah_harga-23,augmentasi,train
+INT-0232,Batalin perubahan harga telur yang terakhir,ubah_harga,telur,,,,ubah_harga-24,template,test
+INT-0233,Kembalikan harga kopi kapal api ke harga sebelumnya,ubah_harga,kopi kapal api,,,,ubah_harga-25,template,test
+INT-0234,undo perubahan hrg mie instan tadi,ubah_harga,mie instan,,,,ubah_harga-26,augmentasi,train
+INT-0235,Ubah harga indomie goreng jadi 4.500,ubah_harga,indomie goreng,4500,,,ubah_harga-01,template,train
+INT-0236,Ganti hrg minyak goreng 2 liter ke tiga puluh sembilan ribu donk,ubah_harga,minyak goreng 2 liter,39000,,,ubah_harga-02,augmentasi,train
+INT-0237,Tolong naikin harga beras 5 kg jadi 77 ribu,ubah_harga,beras 5 kg,77000,,,ubah_harga-03,template,train
+INT-0238,Turunin harga biskuit ke sembilan ribu,ubah_harga,biskuit,9000,,,ubah_harga-04,template,train
+INT-0239,"Hrg deterjen skrg rp6.500 ya, tlg diupdate",ubah_harga,deterjen,6500,,,ubah_harga-05,augmentasi,train
+INT-0240,update harga saos sambal jd 10500 nih,ubah_harga,saos sambal,10500,,,ubah_harga-06,augmentasi,train
+INT-0241,Set harga jual teh pucuk Rp 3.000,ubah_harga,teh pucuk,3000,,,ubah_harga-07,template,train
+INT-0242,Mulai sekarang kecap manis dijual Rp 7.000,ubah_harga,kecap manis,7000,,,ubah_harga-08,template,train
+INT-0243,"Kopi sachet naik jaadi Rp2.500, tolong ubah nih",ubah_harga,kopi sachet,2500,,,ubah_harga-09,augmentasi,train
+INT-0244,eh bot hrg kopi sachet dr pusat jadi 3.5rb update ya,ubah_harga,kopi sachet,3500,,,ubah_harga-10,augmentasi,train
+INT-0245,"benerin hrg mie instan, harusnya rp 3.000",ubah_harga,mie instan,3000,,,ubah_harga-11,augmentasi,train
+INT-0246,korekssi hrg mentega jd sembilan ribu lima ratus,ubah_harga,mentega,9500,,,ubah_harga-12,augmentasi,train
+INT-0247,indomie goreng jd 2.500,ubah_harga,indomie goreng,2500,,,ubah_harga-13,augmentasi,test
+INT-0248,perbarui harga kecap manis menjadi 11.000 dong,ubah_harga,kecap manis,11000,,,ubah_harga-14,augmentasi,train
+INT-0249,Harga baru kopi sachet 1500 nih,ubah_harga,kopi sachet,1500,,,ubah_harga-15,augmentasi,test
+INT-0250,bisa tolong ubh harga aqua 600ml jadi 3000?,ubah_harga,aqua 600ml,3000,,,ubah_harga-16,augmentasi,train
+INT-0251,naikkan hara gas 3 kg ke 24 ribu di semua cabang,ubah_harga,gas 3 kg,24000,,,ubah_harga-17,augmentasi,test
+INT-0252,Turunkan harga gas 3 kg jadi Rp21.000 buat promo,ubah_harga,gas 3 kg,21000,,,ubah_harga-18,template,train
+INT-0253,"Harga kopi sachet salah input, balikin ke Rp 1.500",ubah_harga,kopi sachet,1500,,,ubah_harga-19,template,train
+INT-0254,ganti hrg roti tawar dong jd 19rb,ubah_harga,roti tawar,19000,,,ubah_harga-20,augmentasi,train
+INT-0255,tlg ganti hrg indomie goreng donk,ubah_harga,indomie goreng,,,,ubah_harga-21,augmentasi,train
+INT-0256,Mau ubha harga kecap manis,ubah_harga,kecap manis,,,,ubah_harga-22,augmentasi,train
+INT-0257,Hrg air galon perlu diganti nih,ubah_harga,air galon,,,,ubah_harga-23,augmentasi,train
+INT-0258,Batalin perubahan harga garam yang terakhir,ubah_harga,garam,,,,ubah_harga-24,template,test
+INT-0259,kembalikan hrg garam ke hrg sebelumnya,ubah_harga,garam,,,,ubah_harga-25,augmentasi,test
+INT-0260,undo perubahan hrg sabun mandi tadi ya,ubah_harga,sabun mandi,,,,ubah_harga-26,augmentasi,train
+INT-0261,Berapa omzet kemaren?,cek_penjualan,,,kemarin,,cek_penjualan-01,template,train
+INT-0262,Total penjualan pekan ini berapa?,cek_penjualan,,,minggu_ini,,cek_penjualan-02,template,train
+INT-0263,Penjualan minggu kemarin dapet berapa?,cek_penjualan,,,minggu_lalu,,cek_penjualan-03,template,test
+INT-0264,Ada berapa transaksi bulan kemarin?,cek_penjualan,,,bulan_lalu,,cek_penjualan-04,template,test
+INT-0265,Produk apa yang paling laku hr ini?,cek_penjualan,,,hari_ini,,cek_penjualan-05,template,test
+INT-0266,Barang paling laris bulan lalu apa aja?,cek_penjualan,,,bulan_lalu,,cek_penjualan-06,template,train
+INT-0267,5 produk terlaris kemaren apa aja?,cek_penjualan,,,kemarin,,cek_penjualan-07,template,train
+INT-0268,Minyak goreng kejual berapa hr ini?,cek_penjualan,minyak goreng,,hari_ini,,cek_penjualan-08,template,train
+INT-0269,Berapa banyak kopi kapal api yang terjual bulan ini?,cek_penjualan,kopi kapal api,,bulan_ini,,cek_penjualan-09,template,train
+INT-0270,Omzet cabang 2 hari ini berapa?,cek_penjualan,,,hari_ini,alfiamart2,cek_penjualan-10,template,train
+INT-0271,Penjualan di alfiamart 1 minggu ini totalnya berapa?,cek_penjualan,,,minggu_ini,alfiamart1,cek_penjualan-11,template,train
+INT-0272,Rata-rata belanja per transaksi mgg ini berapa?,cek_penjualan,,,minggu_ini,,cek_penjualan-12,template,train
+INT-0273,Tunjukin riwayat transaksi mgg ini,cek_penjualan,,,minggu_ini,,cek_penjualan-13,template,train
+INT-0274,Lihat riwayat transaksi cabang 2 bulan ini,cek_penjualan,,,bulan_ini,alfiamart2,cek_penjualan-14,template,train
+INT-0275,Transaksi terbesar minggu kemarin berapa?,cek_penjualan,,,minggu_lalu,,cek_penjualan-15,template,train
+INT-0276,Total pemasukan kemaren berapa?,cek_penjualan,,,kemarin,,cek_penjualan-16,template,train
+INT-0277,Rekap penjualan bulan lalu dong,cek_penjualan,,,bulan_lalu,,cek_penjualan-17,template,train
+INT-0278,Minta laporan penjualan hr ini,cek_penjualan,,,hari_ini,,cek_penjualan-18,template,train
+INT-0279,Cabang mana yang omzetnya paling gede bln ini?,cek_penjualan,,,bulan_ini,,cek_penjualan-19,template,train
+INT-0280,Jam berapa toko paling rame minggu ini?,cek_penjualan,,,minggu_ini,,cek_penjualan-20,template,train
+INT-0281,Berapa transaksi yang dibayar pakai QRIS mgg ini?,cek_penjualan,,,minggu_ini,,cek_penjualan-21,template,test
+INT-0282,Metode bayar paling banyak dipakai 7 hari terakhir apa?,cek_penjualan,,,7_hari_terakhir,,cek_penjualan-22,template,train
+INT-0283,Riwayat perubahan harga biskuit,cek_penjualan,biskuit,,,,cek_penjualan-23,template,train
+INT-0284,Kapan terakhir harga mentega diubah?,cek_penjualan,mentega,,,,cek_penjualan-24,template,train
+INT-0285,Siapa yang terakhir ubah harga saos sambal?,cek_penjualan,saos sambal,,,,cek_penjualan-25,template,test
+INT-0286,Ada perubahan harga apa aja hari ini?,cek_penjualan,,,hari_ini,,cek_penjualan-26,template,train
+INT-0287,Omzet bln ini sudah tembus sejuta belum?,cek_penjualan,,,bulan_ini,,cek_penjualan-27,template,train
+INT-0288,Berapa omzet bulan lalu?,cek_penjualan,,,bulan_lalu,,cek_penjualan-01,template,train
+INT-0289,Total penjualan hr ini brp nih?,cek_penjualan,,,hari_ini,,cek_penjualan-02,augmentasi,train
+INT-0290,penjualan hr ini dapet brp?,cek_penjualan,,,hari_ini,,cek_penjualan-03,augmentasi,test
+INT-0291,Ada brp trx hr ini?,cek_penjualan,,,hari_ini,,cek_penjualan-04,augmentasi,test
+INT-0292,Produk apa yang paling laku bulan lalu?,cek_penjualan,,,bulan_lalu,,cek_penjualan-05,template,test
+INT-0293,barang paling laris bulan ini apa aja nih,cek_penjualan,,,bulan_ini,,cek_penjualan-06,augmentasi,train
+INT-0294,5 produk terlrais hr ini apa aja nih,cek_penjualan,,,hari_ini,,cek_penjualan-07,augmentasi,train
+INT-0295,halo bot pasta gigi kejual brp bln ini,cek_penjualan,pasta gigi,,bulan_ini,,cek_penjualan-08,augmentasi,train
+INT-0296,"halo bot, brp banyak sabun mandi yg terjual pekan lalu?",cek_penjualan,sabun mandi,,minggu_lalu,,cek_penjualan-09,augmentasi,train
+INT-0297,ommzet cabang satu bln ini berapa?,cek_penjualan,,,bulan_ini,alfiamart1,cek_penjualan-10,augmentasi,train
+INT-0298,penjualan di cab dua bln laalu totalnya brp donk?,cek_penjualan,,,bulan_lalu,alfiamart2,cek_penjualan-11,augmentasi,train
+INT-0299,Rata-rata belanja per trx bln ini brp,cek_penjualan,,,bulan_ini,,cek_penjualan-12,augmentasi,train
+INT-0300,tunjukin riwayat trx mgg ini,cek_penjualan,,,minggu_ini,,cek_penjualan-13,augmentasi,train
+INT-0301,Lihat riwayat transaksi cab 2 mgg ini dong,cek_penjualan,,,minggu_ini,alfiamart2,cek_penjualan-14,augmentasi,train
+INT-0302,totl pemasukan hr ini berapa,cek_penjualan,,,hari_ini,,cek_penjualan-16,augmentasi,train
+INT-0303,Rekap penjualan minggu kemarin dong,cek_penjualan,,,minggu_lalu,,cek_penjualan-17,template,train
+INT-0304,Minta laporan penjualan kemaern nih,cek_penjualan,,,kemarin,,cek_penjualan-18,augmentasi,train
+INT-0305,cab mna yang omzetnya paling gede mgg kemaren?,cek_penjualan,,,minggu_lalu,,cek_penjualan-19,augmentasi,train
+INT-0306,eh bot jam brp toko paling rame pekan lalu,cek_penjualan,,,minggu_lalu,,cek_penjualan-20,augmentasi,train
+INT-0307,"bot, brp trx yg dibayar pakai qris hr ini?",cek_penjualan,,,hari_ini,,cek_penjualan-21,augmentasi,test
+INT-0308,Metode bayar paling banyak dipakai pekan lalu apa?,cek_penjualan,,,minggu_lalu,,cek_penjualan-22,template,train
+INT-0309,Riwayat perubahan harga minyak goreng 2 liter,cek_penjualan,minyak goreng 2 liter,,,,cek_penjualan-23,template,train
+INT-0310,kapan terakhir hrg gula pasir diubah ya?,cek_penjualan,gula pasir,,,,cek_penjualan-24,augmentasi,train
+INT-0311,Siapa yang terakhir ubah harga susu kental manis?,cek_penjualan,susu kental manis,,,,cek_penjualan-25,template,test
+INT-0312,Ada perubahan harga apa aja seminggu terkahir,cek_penjualan,,,7_hari_terakhir,,cek_penjualan-26,augmentasi,train
+INT-0313,omset mingu lalu sudah tembus sejuta blm,cek_penjualan,,,minggu_lalu,,cek_penjualan-27,augmentasi,train
+INT-0314,Berapa omset pekan ini,cek_penjualan,,,minggu_ini,,cek_penjualan-01,augmentasi,train
+INT-0315,"eh bot, total penjualan pekan lalu brp?",cek_penjualan,,,minggu_lalu,,cek_penjualan-02,augmentasi,train
+INT-0316,Penjualan seminggu terakhir dapet berapa?,cek_penjualan,,,7_hari_terakhir,,cek_penjualan-03,template,test
+INT-0317,ada brp trx 7 hari terakhir?,cek_penjualan,,,7_hari_terakhir,,cek_penjualan-04,augmentasi,test
+INT-0318,Produk apa yang paling laku minggu ini?,cek_penjualan,,,minggu_ini,,cek_penjualan-05,template,test
+INT-0319,barang paling lars hr ini apa aja,cek_penjualan,,,hari_ini,,cek_penjualan-06,augmentasi,train
+INT-0320,5 produk terlaris hr ini apa aja?,cek_penjualan,,,hari_ini,,cek_penjualan-07,template,train
+INT-0321,kecap manis keual berapa hari ini?,cek_penjualan,kecap manis,,hari_ini,,cek_penjualan-08,augmentasi,train
+INT-0322,Berapa banyak sabun cuci piring yang terjual mgg ini?,cek_penjualan,sabun cuci piring,,minggu_ini,,cek_penjualan-09,template,train
+INT-0323,Omzet alfiamart 1 bulan ini berapa?,cek_penjualan,,,bulan_ini,alfiamart1,cek_penjualan-10,template,train
+INT-0324,halo bot penjualan di cab 2 minggu lalu toalnya berapa,cek_penjualan,,,minggu_lalu,alfiamart2,cek_penjualan-11,augmentasi,train
+INT-0325,Rata-rata belanja per transaksi kmrn berapa?,cek_penjualan,,,kemarin,,cek_penjualan-12,template,train
+INT-0326,Tunjukin riwayat trx bln kemaren,cek_penjualan,,,bulan_lalu,,cek_penjualan-13,augmentasi,train
+INT-0327,Lihat riwayat transaksi cabang 2 hari ini,cek_penjualan,,,hari_ini,alfiamart2,cek_penjualan-14,template,train
+INT-0328,Transaksi terbesar kemaren berapa?,cek_penjualan,,,kemarin,,cek_penjualan-15,template,train
+INT-0329,rekap penualan pekan ini dong,cek_penjualan,,,minggu_ini,,cek_penjualan-17,augmentasi,train
+INT-0330,Minta laporan pnejualan hr ini,cek_penjualan,,,hari_ini,,cek_penjualan-18,augmentasi,train
+INT-0331,Cabang mana yang omzetnya paling gede hr ini?,cek_penjualan,,,hari_ini,,cek_penjualan-19,template,train
+INT-0332,jam brp toko paling rame kmrn?,cek_penjualan,,,kemarin,,cek_penjualan-20,augmentasi,train
+INT-0333,brp trx yg dibayar paakai qris bulan lalu?,cek_penjualan,,,bulan_lalu,,cek_penjualan-21,augmentasi,test
+INT-0334,metode bayar paliing banyak dipakai bln ini apa?,cek_penjualan,,,bulan_ini,,cek_penjualan-22,augmentasi,train
+INT-0335,Riwayat perubahna hrg indomie goreng,cek_penjualan,indomie goreng,,,,cek_penjualan-23,augmentasi,train
+INT-0336,kapan terakhir hrg garam diubah,cek_penjualan,garam,,,,cek_penjualan-24,augmentasi,train
+INT-0337,Siapa yang terakhir ubah harga garam?,cek_penjualan,garam,,,,cek_penjualan-25,template,test
+INT-0338,Ada perubahhan hrg apa aja bln ini?,cek_penjualan,,,bulan_ini,,cek_penjualan-26,augmentasi,train
+INT-0339,omset 7 hari terakhir sudah tembus sejuta blm donk,cek_penjualan,,,7_hari_terakhir,,cek_penjualan-27,augmentasi,train
+INT-0340,Brp omset bln ini ya?,cek_penjualan,,,bulan_ini,,cek_penjualan-01,augmentasi,train
+INT-0341,Total penjualan bulan ini berapa?,cek_penjualan,,,bulan_ini,,cek_penjualan-02,template,train
+INT-0342,Pejualan hr ini dapet berapa,cek_penjualan,,,hari_ini,,cek_penjualan-03,augmentasi,test
+INT-0343,Ada berapa transaksi bulan ini?,cek_penjualan,,,bulan_ini,,cek_penjualan-04,template,test
+INT-0344,Produk apa yang paling laku 7 hari terakhir?,cek_penjualan,,,7_hari_terakhir,,cek_penjualan-05,template,test
+INT-0345,barang paling laris bln lalu apa aja?,cek_penjualan,,,bulan_lalu,,cek_penjualan-06,augmentasi,train
+INT-0346,5 prooduk terlaris pekan ini apa aja,cek_penjualan,,,minggu_ini,,cek_penjualan-07,augmentasi,train
+INT-0347,deterjen kejual brp pekan lalu,cek_penjualan,deterjen,,minggu_lalu,,cek_penjualan-08,augmentasi,train
+INT-0348,Berapa banyak gula pasir yang terjual seminggu terakhir?,cek_penjualan,gula pasir,,7_hari_terakhir,,cek_penjualan-09,template,train
+INT-0349,bot omset toko 2 bln lau brp,cek_penjualan,,,bulan_lalu,alfiamart2,cek_penjualan-10,augmentasi,train
+INT-0350,Penjualan di toko 1 minggu ini totalnya berapa?,cek_penjualan,,,minggu_ini,alfiamart1,cek_penjualan-11,template,train
+INT-0351,"eh bot, rata-rata belanja per transaksi minggu llau berapa?",cek_penjualan,,,minggu_lalu,,cek_penjualan-12,augmentasi,train
+INT-0352,Tunjukin riwayat transaksi hr ini,cek_penjualan,,,hari_ini,,cek_penjualan-13,template,train
+INT-0353,Lihat riwayat transaksi cabang dua minggu lalu,cek_penjualan,,,minggu_lalu,alfiamart2,cek_penjualan-14,template,train
+INT-0354,total pemasukan tujuh hr terakhir berapa?,cek_penjualan,,,7_hari_terakhir,,cek_penjualan-16,augmentasi,train
+INT-0355,Rekap penjualan tujuh hari terakhir dong,cek_penjualan,,,7_hari_terakhir,,cek_penjualan-17,template,train
+INT-0356,Minta laporan penjualan pekan lalu,cek_penjualan,,,minggu_lalu,,cek_penjualan-18,template,train
+INT-0357,Cabang mana yang omzetnya paling gede minggu kemarin?,cek_penjualan,,,minggu_lalu,,cek_penjualan-19,template,train
+INT-0358,Jam berapa toko paling rame minggu lalu?,cek_penjualan,,,minggu_lalu,,cek_penjualan-20,template,train
+INT-0359,berapa trx yg dibayar pakai qis bln lalu?,cek_penjualan,,,bulan_lalu,,cek_penjualan-21,augmentasi,test
+INT-0360,Metode bayar paling banyak dipakai pekan ini apa?,cek_penjualan,,,minggu_ini,,cek_penjualan-22,template,train
+INT-0361,Riwayat perubahan harga shampo sachet,cek_penjualan,shampo sachet,,,,cek_penjualan-23,template,train
+INT-0362,Kapan terakhir harga kopi kapal api diubah?,cek_penjualan,kopi kapal api,,,,cek_penjualan-24,template,train
+INT-0363,siapa yang terkahir ubah harga tepung terigu dong,cek_penjualan,tepung terigu,,,,cek_penjualan-25,augmentasi,test
+INT-0364,Ada perubahan harga apa aja minggu ini?,cek_penjualan,,,minggu_ini,,cek_penjualan-26,template,train
+INT-0365,"halo bot, omzet minggu kemarin sudah tembus sejuta belum?",cek_penjualan,,,minggu_lalu,,cek_penjualan-27,augmentasi,train
+INT-0366,Berapa omzet kemarin?,cek_penjualan,,,kemarin,,cek_penjualan-01,template,train
+INT-0367,Tootal penjualan hari ini berapa,cek_penjualan,,,hari_ini,,cek_penjualan-02,augmentasi,train
+INT-0368,penjualan bln ini dapet brp?,cek_penjualan,,,bulan_ini,,cek_penjualan-03,augmentasi,test
+INT-0369,Ada berapa transaksi kmrn?,cek_penjualan,,,kemarin,,cek_penjualan-04,template,test
+INT-0370,produk apa yg paling laku bulan kmrn,cek_penjualan,,,bulan_lalu,,cek_penjualan-05,augmentasi,test
+INT-0371,"halo bot, barang paling laris hr ini apa aja?",cek_penjualan,,,hari_ini,,cek_penjualan-06,augmentasi,train
+INT-0372,5 produk terlaris bulan ini apa aja?,cek_penjualan,,,bulan_ini,,cek_penjualan-07,template,train
+INT-0373,Roti tawar kejual berapa 7 hari terakhir?,cek_penjualan,roti tawar,,7_hari_terakhir,,cek_penjualan-08,template,train
+INT-0374,Berapa banyak telur yg terjual seminggu terakhir?,cek_penjualan,telur,,7_hari_terakhir,,cek_penjualan-09,augmentasi,train
+INT-0375,Omzet cabang 1 minggu ini berapa?,cek_penjualan,,,minggu_ini,alfiamart1,cek_penjualan-10,template,train
+INT-0376,pnejualan di cabang satu bulan lalu totalnya berapa?,cek_penjualan,,,bulan_lalu,alfiamart1,cek_penjualan-11,augmentasi,train
+INT-0377,Rata-rata belanja per trnsaksi bln ini brp ya,cek_penjualan,,,bulan_ini,,cek_penjualan-12,augmentasi,train
+INT-0378,Tunjukin riwayat transaksi kmrn,cek_penjualan,,,kemarin,,cek_penjualan-13,template,train
+INT-0379,lihhat riwayat trx toko 1 kmrn,cek_penjualan,,,kemarin,alfiamart1,cek_penjualan-14,augmentasi,train
+INT-0380,Trx terbesar pekn ini brp ya?,cek_penjualan,,,minggu_ini,,cek_penjualan-15,augmentasi,train
+INT-0381,Total pemasukan minggu lalu berapa ya?,cek_penjualan,,,minggu_lalu,,cek_penjualan-16,augmentasi,train
+INT-0382,Rekap penjualan mgg ini donk,cek_penjualan,,,minggu_ini,,cek_penjualan-17,augmentasi,train
+INT-0383,miinta laporan penjualan bln ini,cek_penjualan,,,bulan_ini,,cek_penjualan-18,augmentasi,train
+INT-0384,eh bot cabang mana yang omzetnya paling gede hr ini,cek_penjualan,,,hari_ini,,cek_penjualan-19,augmentasi,train
+INT-0385,bot jam berapa toko paling rame bulan lalu,cek_penjualan,,,bulan_lalu,,cek_penjualan-20,augmentasi,train
+INT-0386,Berapa transaksi yang dibayar pakai QRIS bln ini?,cek_penjualan,,,bulan_ini,,cek_penjualan-21,template,test
+INT-0387,Metode bayar paling banyak dipakai bln ini apa?,cek_penjualan,,,bulan_ini,,cek_penjualan-22,template,train
+INT-0388,riwayat perubahan hara sabun mandi,cek_penjualan,sabun mandi,,,,cek_penjualan-23,augmentasi,train
+INT-0389,kapan terakhir hrg roti tawar diubah,cek_penjualan,roti tawar,,,,cek_penjualan-24,augmentasi,train
+INT-0390,Siapa yang terakhir ubah harga kopi sachet dong?,cek_penjualan,kopi sachet,,,,cek_penjualan-25,augmentasi,test
+INT-0391,Kenapa omzet seminggu terakhir turun?,analisis_bisnis,,,7_hari_terakhir,,analisis_bisnis-01,template,train
+INT-0392,Kenapa penjualan 7 hari terakhir lebih sepi?,analisis_bisnis,,,7_hari_terakhir,,analisis_bisnis-02,template,test
+INT-0393,Kenapa untung bulan ini menurun?,analisis_bisnis,,,bulan_ini,,analisis_bisnis-03,template,train
+INT-0394,Apa penyebab penjualan kopi kapal api turun 7 hari terakhir?,analisis_bisnis,kopi kapal api,,7_hari_terakhir,,analisis_bisnis-04,template,train
+INT-0395,Kok saos sambal jarang laku sekarang?,analisis_bisnis,saos sambal,,,,analisis_bisnis-05,template,train
+INT-0396,Kenapa alfiamart 1 lebih sepi dari cabang lain?,analisis_bisnis,,,,alfiamart1,analisis_bisnis-06,template,test
+INT-0397,Kenapa omzet cabang dua beda jauh sama cabang lain?,analisis_bisnis,,,,alfiamart2,analisis_bisnis-07,template,train
+INT-0398,Kenapa transaksi mgg ini lebih sedikit dari biasanya?,analisis_bisnis,,,minggu_ini,,analisis_bisnis-08,template,train
+INT-0399,Apa yang bikin mentega laris mgg ini?,analisis_bisnis,mentega,,minggu_ini,,analisis_bisnis-09,template,train
+INT-0400,Jelasin kenapa minggu ini rame banget,analisis_bisnis,,,minggu_ini,,analisis_bisnis-10,template,train
+INT-0401,Produk apa yang sebaiknya dinaikin harganya?,analisis_bisnis,,,,,analisis_bisnis-11,manual,test
+INT-0402,Harga susu kental manis perlu diturunin nggak biar laku?,analisis_bisnis,susu kental manis,,,,analisis_bisnis-12,template,train
+INT-0403,Rekomendasi harga yang pas buat pasta gigi berapa?,analisis_bisnis,pasta gigi,,,,analisis_bisnis-13,template,train
+INT-0404,Apakah naikin harga roti tawar bakal bikin penjualan turun?,analisis_bisnis,roti tawar,,,,analisis_bisnis-14,template,train
+INT-0405,Saran dong biar penjualan naik,analisis_bisnis,,,,,analisis_bisnis-15,manual,train
+INT-0406,Gimana caranya biar omzet cabang satu naik?,analisis_bisnis,,,,alfiamart1,analisis_bisnis-16,template,train
+INT-0407,Strategi apa biar air galon lebih laku?,analisis_bisnis,air galon,,,,analisis_bisnis-17,template,train
+INT-0408,Perlu bikin promo apa bsk?,analisis_bisnis,,,besok,,analisis_bisnis-18,template,train
+INT-0409,Prediksi penjualan mgg depan berapa?,analisis_bisnis,,,minggu_depan,,analisis_bisnis-19,template,train
+INT-0410,Perkiraan omzet bsk kira-kira berapa?,analisis_bisnis,,,besok,,analisis_bisnis-20,template,train
+INT-0411,Beras perlu restock berapa buat minggu depan?,analisis_bisnis,beras,,minggu_depan,,analisis_bisnis-21,template,test
+INT-0412,Produk apa yang perlu distok lebih banyak besok?,analisis_bisnis,,,besok,,analisis_bisnis-22,template,train
+INT-0413,Produk mana yang kurang laku dan sebaiknya dikurangi stoknya?,analisis_bisnis,,,,,analisis_bisnis-23,manual,train
+INT-0414,Analisis penjualan minggu kemarin dong,analisis_bisnis,,,minggu_lalu,,analisis_bisnis-24,template,test
+INT-0415,Tren penjualan kecap manis hr ini gimana?,analisis_bisnis,kecap manis,,hari_ini,,analisis_bisnis-25,template,test
+INT-0416,Ringkasin kondisi toko kemaren,analisis_bisnis,,,kemarin,,analisis_bisnis-26,template,train
+INT-0417,Kasih insight penjualan minggu ini,analisis_bisnis,,,minggu_ini,,analisis_bisnis-27,template,train
+INT-0418,"Performa toko hr ini gimana, ada masalah nggak?",analisis_bisnis,,,hari_ini,,analisis_bisnis-28,template,train
+INT-0419,kenappa omzet kmrn turun,analisis_bisnis,,,kemarin,,analisis_bisnis-01,augmentasi,train
+INT-0420,Kenapa penjualan bulan kemarin lebih sepi?,analisis_bisnis,,,bulan_lalu,,analisis_bisnis-02,template,test
+INT-0421,Kenapa untung hr ini menurun?,analisis_bisnis,,,hari_ini,,analisis_bisnis-03,template,train
+INT-0422,Apa penyebab penjualan shampo sachet turun bln ini?,analisis_bisnis,shampo sachet,,bulan_ini,,analisis_bisnis-04,template,train
+INT-0423,Kok gula pasir jarang laku sekarang?,analisis_bisnis,gula pasir,,,,analisis_bisnis-05,template,train
+INT-0424,knp cab 2 lebih spei dr cab lain ya,analisis_bisnis,,,,alfiamart2,analisis_bisnis-06,augmentasi,test
+INT-0425,kenapa omset cabang 1 beeda jauh sama cab lain,analisis_bisnis,,,,alfiamart1,analisis_bisnis-07,augmentasi,train
+INT-0426,Kenapa trx pekan lalu lebih sedikit dari biasanya,analisis_bisnis,,,minggu_lalu,,analisis_bisnis-08,augmentasi,train
+INT-0427,"halo bot, apa yang bikin tepung terigu laris mgg ini?",analisis_bisnis,tepung terigu,,minggu_ini,,analisis_bisnis-09,augmentasi,train
+INT-0428,Jelasin kenapa hr ini rame banget,analisis_bisnis,,,hari_ini,,analisis_bisnis-10,template,train
+INT-0429,eh bot produk apa yang sebaiknya dinaikin harganya,analisis_bisnis,,,,,analisis_bisnis-11,augmentasi,test
+INT-0430,bot harga sabun mandi perlu diturunin nggak biar laku,analisis_bisnis,sabun mandi,,,,analisis_bisnis-12,augmentasi,train
+INT-0431,Rekomendasi harga yang pas buat mentega berapa?,analisis_bisnis,mentega,,,,analisis_bisnis-13,template,train
+INT-0432,Apakah naikin harga telur bakal bikin penjualan turun?,analisis_bisnis,telur,,,,analisis_bisnis-14,template,train
+INT-0433,eh bot saran dong biar penjualan naik,analisis_bisnis,,,,,analisis_bisnis-15,augmentasi,train
+INT-0434,Gimana caranya biar omzet toko 2 naik?,analisis_bisnis,,,,alfiamart2,analisis_bisnis-16,template,train
+INT-0435,"halo bot, strategi apa biar aqua 600ml lebih laku?",analisis_bisnis,aqua 600ml,,,,analisis_bisnis-17,augmentasi,train
+INT-0436,Perlu bikin promo apa besok?,analisis_bisnis,,,besok,,analisis_bisnis-18,template,train
+INT-0437,halo bot air galon perlu rstock brp buat bln depan,analisis_bisnis,air galon,,bulan_depan,,analisis_bisnis-21,augmentasi,test
+INT-0438,Produk apa yang perlu distok lebih banyak minggu depan?,analisis_bisnis,,,minggu_depan,,analisis_bisnis-22,template,train
+INT-0439,produk mana yg kurang laku dan sebaiknya dikurangi stoknya,analisis_bisnis,,,,,analisis_bisnis-23,augmentasi,train
+INT-0440,Analisis penjualan bln lalu dong,analisis_bisnis,,,bulan_lalu,,analisis_bisnis-24,template,test
+INT-0441,Tren penjualan biskuit kemaren gimana?,analisis_bisnis,biskuit,,kemarin,,analisis_bisnis-25,template,test
+INT-0442,Ringkasin kondisi toko hari ini,analisis_bisnis,,,hari_ini,,analisis_bisnis-26,template,train
+INT-0443,kasih insight penjualan tujuh hr terakhir,analisis_bisnis,,,7_hari_terakhir,,analisis_bisnis-27,augmentasi,train
+INT-0444,"Performa toko bln lalu gimana, ada masalah nggak?",analisis_bisnis,,,bulan_lalu,,analisis_bisnis-28,template,train
+INT-0445,napa osmet hr ini turun?,analisis_bisnis,,,hari_ini,,analisis_bisnis-01,augmentasi,train
+INT-0446,kenapa penjualan bln lalu lebih sepi?,analisis_bisnis,,,bulan_lalu,,analisis_bisnis-02,augmentasi,test
+INT-0447,kenapa untung bulaan kemarin menurun,analisis_bisnis,,,bulan_lalu,,analisis_bisnis-03,augmentasi,train
+INT-0448,apa penyebaab penjualan garam turun kemaren,analisis_bisnis,garam,,kemarin,,analisis_bisnis-04,augmentasi,train
+INT-0449,kok sabun mandi jarng laku skrang nih?,analisis_bisnis,sabun mandi,,,,analisis_bisnis-05,augmentasi,train
+INT-0450,Kenapa cabang dua lebih sepi dari cabang lain?,analisis_bisnis,,,,alfiamart2,analisis_bisnis-06,template,test
+INT-0451,knp omset cabang 1 beda jauh sm cab lain,analisis_bisnis,,,,alfiamart1,analisis_bisnis-07,augmentasi,train
+INT-0452,Apa yang bikin sabun cuci piring laris kemaren?,analisis_bisnis,sabun cuci piring,,kemarin,,analisis_bisnis-09,template,train
+INT-0453,Jelasin kenapa tujuh hari terakhir rame banget,analisis_bisnis,,,7_hari_terakhir,,analisis_bisnis-10,template,train
+INT-0454,produk apa yang sebaiknya dinaikin harganya dong,analisis_bisnis,,,,,analisis_bisnis-11,augmentasi,test
+INT-0455,Harga sabun mandi perlu diturunin nggak biar laku?,analisis_bisnis,sabun mandi,,,,analisis_bisnis-12,template,train
+INT-0456,"eh bot, rekomendasi hrg yang pas buat minyak goreng berapa?",analisis_bisnis,minyak goreng,,,,analisis_bisnis-13,augmentasi,train
+INT-0457,Apakah naikin harga telur ayam bakal bikin penjualan turun?,analisis_bisnis,telur ayam,,,,analisis_bisnis-14,template,train
+INT-0458,saran donk biar penjualan naik,analisis_bisnis,,,,,analisis_bisnis-15,augmentasi,train
+INT-0459,Gimana caranya biar omzet cabang 2 naik?,analisis_bisnis,,,,alfiamart2,analisis_bisnis-16,template,train
+INT-0460,Strategi apa biar gas 3 kg lebih laku?,analisis_bisnis,gas 3 kg,,,,analisis_bisnis-17,template,train
+INT-0461,"bot, perlu bikin promo apa bln depan?",analisis_bisnis,,,bulan_depan,,analisis_bisnis-18,augmentasi,train
+INT-0462,Prediksi penjualan besok berapa?,analisis_bisnis,,,besok,,analisis_bisnis-19,template,train
+INT-0463,perkiraan omzet bsk kira-kira brp?,analisis_bisnis,,,besok,,analisis_bisnis-20,augmentasi,train
+INT-0464,deterjen perlu resotck brp buat bsk,analisis_bisnis,deterjen,,besok,,analisis_bisnis-21,augmentasi,test
+INT-0465,porduk apa yg perlu distok lebih banyak besok?,analisis_bisnis,,,besok,,analisis_bisnis-22,augmentasi,train
+INT-0466,"eh bot, produk mana yang kurang laku dan sebaiknya dikkurangi stoknya?",analisis_bisnis,,,,,analisis_bisnis-23,augmentasi,train
+INT-0467,Analisis penjualan kmrn dong,analisis_bisnis,,,kemarin,,analisis_bisnis-24,template,test
+INT-0468,tern penjualan air galon mgg kemaren gmana dong?,analisis_bisnis,air galon,,minggu_lalu,,analisis_bisnis-25,augmentasi,test
+INT-0469,ringkasin kondisi toko mgg kmrn,analisis_bisnis,,,minggu_lalu,,analisis_bisnis-26,augmentasi,train
+INT-0470,Kasih insight penjualan hari ini,analisis_bisnis,,,hari_ini,,analisis_bisnis-27,template,train
+INT-0471,performa toko hr ini gmn ada masalah ngga,analisis_bisnis,,,hari_ini,,analisis_bisnis-28,augmentasi,train
+INT-0472,Kenapa omzet minggu lalu turun?,analisis_bisnis,,,minggu_lalu,,analisis_bisnis-01,template,train
+INT-0473,kenapa penjualan keemaren lebih sepi,analisis_bisnis,,,kemarin,,analisis_bisnis-02,augmentasi,test
+INT-0474,Kenapa untung pekan lalu menurun?,analisis_bisnis,,,minggu_lalu,,analisis_bisnis-03,template,train
+INT-0475,Apa penyebab penjualan shampo sachet turun kmrn?,analisis_bisnis,shampo sachet,,kemarin,,analisis_bisnis-04,augmentasi,train
+INT-0476,Kok gas 3 kg jarang laku sekarang?,analisis_bisnis,gas 3 kg,,,,analisis_bisnis-05,template,train
+INT-0477,napa alfiamart 1 lebih sepi dr cabang lian,analisis_bisnis,,,,alfiamart1,analisis_bisnis-06,augmentasi,test
+INT-0478,kenapa omset tko 2 beda jauh sm cab lain?,analisis_bisnis,,,,alfiamart2,analisis_bisnis-07,augmentasi,train
+INT-0479,Kenapa transaksi bln ini lebih sedikit dr biasanya,analisis_bisnis,,,bulan_ini,,analisis_bisnis-08,augmentasi,train
+INT-0480,Apa yang bikin deterjen lais minggu kemarin?,analisis_bisnis,deterjen,,minggu_lalu,,analisis_bisnis-09,augmentasi,train
+INT-0481,"eh bot, jelasin kenapa kemarin rame bgt",analisis_bisnis,,,kemarin,,analisis_bisnis-10,augmentasi,train
+INT-0482,produk apa yg sebaiknya dinaikn harganya donk?,analisis_bisnis,,,,,analisis_bisnis-11,augmentasi,test
+INT-0483,harga beras 5 kg perlu diturunin gak biar laku?,analisis_bisnis,beras 5 kg,,,,analisis_bisnis-12,augmentasi,train
+INT-0484,Rekomendasi harga yang pas buat roti tawar berapa?,analisis_bisnis,roti tawar,,,,analisis_bisnis-13,template,train
+INT-0485,apakah naikin hrg gas 3 kg bakal bikin penjualan turun nih?,analisis_bisnis,gas 3 kg,,,,analisis_bisnis-14,augmentasi,train
+INT-0486,gimana caranya bair omzet toko 1 naik,analisis_bisnis,,,,alfiamart1,analisis_bisnis-16,augmentasi,train
+INT-0487,"bot, strategi apa biar sabun mandi lebih laku?",analisis_bisnis,sabun mandi,,,,analisis_bisnis-17,augmentasi,train
+INT-0488,Perlu bikni promo apa bln depan,analisis_bisnis,,,bulan_depan,,analisis_bisnis-18,augmentasi,train
+INT-0489,prediksi penjualan bln depan brp,analisis_bisnis,,,bulan_depan,,analisis_bisnis-19,augmentasi,train
+INT-0490,Perkiraan omset pekan depan kira-kira brp?,analisis_bisnis,,,minggu_depan,,analisis_bisnis-20,augmentasi,train
+INT-0491,Biskuit perlu restock berapa buat bsk?,analisis_bisnis,biskuit,,besok,,analisis_bisnis-21,template,test
+INT-0492,produk apa yang perlu distok lebih banyak mgg depan?,analisis_bisnis,,,minggu_depan,,analisis_bisnis-22,augmentasi,train
+INT-0493,produk mana yang kuragn laku dan sebaiknya dikurangi stoknya,analisis_bisnis,,,,,analisis_bisnis-23,augmentasi,train
+INT-0494,analisis penjualan pkean lalu dong,analisis_bisnis,,,minggu_lalu,,analisis_bisnis-24,augmentasi,test
+INT-0495,tren penjualan minyak goreng hr ini gmmana,analisis_bisnis,minyak goreng,,hari_ini,,analisis_bisnis-25,augmentasi,test
+INT-0496,ringkasin kondisi tko bulan ini,analisis_bisnis,,,bulan_ini,,analisis_bisnis-26,augmentasi,train
+INT-0497,Kasih insight penjualan mgg ini,analisis_bisnis,,,minggu_ini,,analisis_bisnis-27,template,train
+INT-0498,Kenapa omzet kemaren turun?,analisis_bisnis,,,kemarin,,analisis_bisnis-01,template,train
+INT-0499,knp untung kmrn menurun,analisis_bisnis,,,kemarin,,analisis_bisnis-03,augmentasi,train
+INT-0500,apa penyebab penjualan minyak goreng turun 7 hr terakhir,analisis_bisnis,minyak goreng,,7_hari_terakhir,,analisis_bisnis-04,augmentasi,train
+INT-0501,Kok telur ayam jarang laku sekarang?,analisis_bisnis,telur ayam,,,,analisis_bisnis-05,template,train
+INT-0502,knp cab 1 lebih spei dr cabang lain?,analisis_bisnis,,,,alfiamart1,analisis_bisnis-06,augmentasi,test
+INT-0503,Kenapa omzet alfiamart 2 beda jauh sama cabang lain?,analisis_bisnis,,,,alfiamart2,analisis_bisnis-07,template,train
+INT-0504,napa trx tujuh hr terakhir lebih sedikit dari biasanya,analisis_bisnis,,,7_hari_terakhir,,analisis_bisnis-08,augmentasi,train
+INT-0505,apa yg bikin tepung terigu laris bln ini?,analisis_bisnis,tepung terigu,,bulan_ini,,analisis_bisnis-09,augmentasi,train
+INT-0506,Jelasin knp bulan lallu rame bgt nih,analisis_bisnis,,,bulan_lalu,,analisis_bisnis-10,augmentasi,train
+INT-0507,Harga teh pucuk perlu diturunin nggak biar laku?,analisis_bisnis,teh pucuk,,,,analisis_bisnis-12,template,train
+INT-0508,rekomendasi harga yg pas buat gula pasir bearpa,analisis_bisnis,gula pasir,,,,analisis_bisnis-13,augmentasi,train
+INT-0509,Apakah naikin harga indomie goreng bakal bikin penjualan turun?,analisis_bisnis,indomie goreng,,,,analisis_bisnis-14,template,train
+INT-0510,saran dong biar penjualan naik dong,analisis_bisnis,,,,,analisis_bisnis-15,augmentasi,train
+INT-0511,Gmana caranya biar omset alfiamart 1 naik,analisis_bisnis,,,,alfiamart1,analisis_bisnis-16,augmentasi,train
+INT-0512,Perlu bikin promo apa bln depan?,analisis_bisnis,,,bulan_depan,,analisis_bisnis-18,template,train
+INT-0513,prediksi penjualan bsk beraa,analisis_bisnis,,,besok,,analisis_bisnis-19,augmentasi,train
+INT-0514,perkiraan omset bln depan kira-kira berapa,analisis_bisnis,,,bulan_depan,,analisis_bisnis-20,augmentasi,train
+INT-0515,susu bubuk perlu restock berapa buat pekan depan ya?,analisis_bisnis,susu bubuk,,minggu_depan,,analisis_bisnis-21,augmentasi,test
+INT-0516,produk apa yg perllu distok lebih banyak bln depan,analisis_bisnis,,,bulan_depan,,analisis_bisnis-22,augmentasi,train
+INT-0517,Analisis penjualan minggu lalu dong,analisis_bisnis,,,minggu_lalu,,analisis_bisnis-24,template,test
+INT-0518,tren penjualan tepung terigu kemaren giana nih,analisis_bisnis,tepung terigu,,kemarin,,analisis_bisnis-25,augmentasi,test
+INT-0519,Ringkasin kondisi toko bulan kemarin,analisis_bisnis,,,bulan_lalu,,analisis_bisnis-26,template,train
+INT-0520,kasih insight penjualan bulan ini doonk,analisis_bisnis,,,bulan_ini,,analisis_bisnis-27,augmentasi,train
+INT-0521,Gimana cara impor produk dari Excel?,tanya_panduan,,,,,tanya_panduan-01,manual,train
+INT-0522,Cara upload file CSV produk gimana?,tanya_panduan,,,,,tanya_panduan-02,manual,train
+INT-0523,Format CSV buat impor kolomnya apa aja?,tanya_panduan,,,,,tanya_panduan-03,manual,train
+INT-0524,"Kalau impor ada baris yang ditolak, kenapa ya?",tanya_panduan,,,,,tanya_panduan-04,manual,train
+INT-0525,Cara batalin perubahan harga gimana?,tanya_panduan,,,,,tanya_panduan-05,manual,test
+INT-0526,Gimana cara ubah harga lewat aplikasi?,tanya_panduan,,,,,tanya_panduan-06,manual,train
+INT-0527,Apa itu pratinjau sebelum simpan harga?,tanya_panduan,,,,,tanya_panduan-07,manual,test
+INT-0528,Cara nambah produk baru gimana?,tanya_panduan,,,,,tanya_panduan-08,manual,train
+INT-0529,Gimana cara hapus produk?,tanya_panduan,,,,,tanya_panduan-09,manual,train
+INT-0530,Cara nonaktifin produk biar nggak muncul di kasir?,tanya_panduan,,,,,tanya_panduan-10,manual,train
+INT-0531,Bisa tambah kategori produk baru nggak?,tanya_panduan,,,,,tanya_panduan-11,manual,test
+INT-0532,Cara ngatur stok per cabang gimana?,tanya_panduan,,,,,tanya_panduan-12,manual,train
+INT-0533,"Kalau internet mati, transaksi kasir aman nggak?",tanya_panduan,,,,,tanya_panduan-13,manual,train
+INT-0534,Transaksi offline nanti kesinkron sendiri?,tanya_panduan,,,,,tanya_panduan-14,manual,train
+INT-0535,Status sinkronisasi gagal itu artinya apa?,tanya_panduan,,,,,tanya_panduan-15,manual,test
+INT-0536,Kalau sinkron gagal harus ngapain?,tanya_panduan,,,,,tanya_panduan-16,manual,test
+INT-0537,Bedanya status tertunda sama gagal apa?,tanya_panduan,,,,,tanya_panduan-17,manual,train
+INT-0538,Gimana cara cek status sinkronisasi?,tanya_panduan,,,,,tanya_panduan-18,manual,train
+INT-0539,Kenapa transaksi tadi statusnya tertunda?,tanya_panduan,,,,,tanya_panduan-19,manual,train
+INT-0540,Harga yang diubah langsung muncul di kasir nggak?,tanya_panduan,,,,,tanya_panduan-20,manual,test
+INT-0541,Kenapa harga di katalog belum berubah?,tanya_panduan,,,,,tanya_panduan-21,manual,train
+INT-0542,Katalog pelanggan bisa dibuka lewat HP?,tanya_panduan,,,,,tanya_panduan-22,manual,train
+INT-0543,Cara lihat riwayat perubahan harga di menu mana?,tanya_panduan,,,,,tanya_panduan-23,manual,train
+INT-0544,Menu dasbor penjualan ada di mana?,tanya_panduan,,,,,tanya_panduan-24,manual,train
+INT-0545,Cara baca grafik di dasbor gimana?,tanya_panduan,,,,,tanya_panduan-25,manual,train
+INT-0546,Filter di dasbor fungsinya buat apa?,tanya_panduan,,,,,tanya_panduan-26,manual,train
+INT-0547,Gimana cara upload data penjualan ke dasbor?,tanya_panduan,,,,,tanya_panduan-27,manual,train
+INT-0548,Fitur prediksi penjualan itu dihitung dari mana?,tanya_panduan,,,,,tanya_panduan-28,manual,train
+INT-0549,Gimana cara bikin akun kasir baru?,tanya_panduan,,,,,tanya_panduan-29,manual,train
+INT-0550,Login kasir pakai apa?,tanya_panduan,,,,,tanya_panduan-30,manual,test
+INT-0551,Cara ganti password gimana?,tanya_panduan,,,,,tanya_panduan-31,manual,test
+INT-0552,Kenapa kasir nggak bisa buka halaman ubah harga?,tanya_panduan,,,,,tanya_panduan-32,manual,train
+INT-0553,Cara install aplikasi kasir di HP gimana?,tanya_panduan,,,,,tanya_panduan-33,manual,train
+INT-0554,Data transaksi aman nggak kalau HP kasir mati?,tanya_panduan,,,,,tanya_panduan-34,manual,train
+INT-0555,Kok aplikasinya lemot?,tanya_panduan,,,,,tanya_panduan-35,manual,train
+INT-0556,Cara pakai chatbot ini gimana?,tanya_panduan,,,,,tanya_panduan-36,manual,train
+INT-0557,Bot ini bisa bantu apa aja?,tanya_panduan,,,,,tanya_panduan-37,manual,train
+INT-0558,Gimana cara pakai bot lewat Telegram?,tanya_panduan,,,,,tanya_panduan-38,manual,train
+INT-0559,Perintah apa aja yang bisa aku kirim ke bot?,tanya_panduan,,,,,tanya_panduan-39,manual,train
+INT-0560,Cara export laporan penjualan gimana?,tanya_panduan,,,,,tanya_panduan-40,manual,train
+INT-0561,gmn cara impr produk dari excel?,tanya_panduan,,,,,tanya_panduan-01,augmentasi,train
+INT-0562,cara upload file csv produk gimana nih,tanya_panduan,,,,,tanya_panduan-02,augmentasi,train
+INT-0563,eh bot formt csv buat impor kolomnya apa aja,tanya_panduan,,,,,tanya_panduan-03,augmentasi,train
+INT-0564,"kalau impor ada baris yg ditolak, napa ya?",tanya_panduan,,,,,tanya_panduan-04,augmentasi,train
+INT-0565,eh bot cara batalin perubahn hrg gmana,tanya_panduan,,,,,tanya_panduan-05,augmentasi,test
+INT-0566,gmn cara ubah harga lewat apliksi,tanya_panduan,,,,,tanya_panduan-06,augmentasi,train
+INT-0567,apa itu pratiinjau sebelum simpan hrg,tanya_panduan,,,,,tanya_panduan-07,augmentasi,test
+INT-0568,Cara nambah produk baru gmn?,tanya_panduan,,,,,tanya_panduan-08,augmentasi,train
+INT-0569,gmana cara hapus produk?,tanya_panduan,,,,,tanya_panduan-09,augmentasi,train
+INT-0570,cara nonaktifin produk biar ga muncul di kasir,tanya_panduan,,,,,tanya_panduan-10,augmentasi,train
+INT-0571,bisa tambah kategori produk baru ga?,tanya_panduan,,,,,tanya_panduan-11,augmentasi,test
+INT-0572,cara ngatur stok per cab gmn,tanya_panduan,,,,,tanya_panduan-12,augmentasi,train
+INT-0573,"bot, kalaau internet mati, transaksi kasir aman nggak?",tanya_panduan,,,,,tanya_panduan-13,augmentasi,train
+INT-0574,transaksi offline nanti kesinkron sendiri ya,tanya_panduan,,,,,tanya_panduan-14,augmentasi,train
+INT-0575,status sinkronisasi gagal itu artinya apa nih,tanya_panduan,,,,,tanya_panduan-15,augmentasi,test
+INT-0576,klo sinkron gagal haurs ngapain,tanya_panduan,,,,,tanya_panduan-16,augmentasi,test
+INT-0577,Bedanya status tertunda sm gagal apa?,tanya_panduan,,,,,tanya_panduan-17,augmentasi,train
+INT-0578,halo bot gmana carra cek status sinkronisasi,tanya_panduan,,,,,tanya_panduan-18,augmentasi,train
+INT-0579,napa trx tadi statusnya tertunda?,tanya_panduan,,,,,tanya_panduan-19,augmentasi,train
+INT-0580,harga yang diubaah langsung muncul di kasir nggak?,tanya_panduan,,,,,tanya_panduan-20,augmentasi,test
+INT-0581,knp harga di katalog blm berubah?,tanya_panduan,,,,,tanya_panduan-21,augmentasi,train
+INT-0582,bot katalog pelanggan bs dibuka lewat hp,tanya_panduan,,,,,tanya_panduan-22,augmentasi,train
+INT-0583,cara lihat riwayat perubahan hrg di menu maana,tanya_panduan,,,,,tanya_panduan-23,augmentasi,train
+INT-0584,mennu dasbor penjualan ada di mana,tanya_panduan,,,,,tanya_panduan-24,augmentasi,train
+INT-0585,"bot, cara baca grafik di dasbor gmn?",tanya_panduan,,,,,tanya_panduan-25,augmentasi,train
+INT-0586,filer di dasbor fungsinya buat apa?,tanya_panduan,,,,,tanya_panduan-26,augmentasi,train
+INT-0587,Gmna cara upload data penjualan ke dasbor,tanya_panduan,,,,,tanya_panduan-27,augmentasi,train
+INT-0588,fitur prediksi penjualan itu dihiung dr mana,tanya_panduan,,,,,tanya_panduan-28,augmentasi,train
+INT-0589,Gmana cara bikin akun kasir baaru ya,tanya_panduan,,,,,tanya_panduan-29,augmentasi,train
+INT-0590,logn kasir pakai apa,tanya_panduan,,,,,tanya_panduan-30,augmentasi,test
+INT-0591,craa ganti password gimana,tanya_panduan,,,,,tanya_panduan-31,augmentasi,test
+INT-0592,knp kasir gak bs buka halaman ubah harga nih?,tanya_panduan,,,,,tanya_panduan-32,augmentasi,train
+INT-0593,cara install apliaksi kasir di hp gmana,tanya_panduan,,,,,tanya_panduan-33,augmentasi,train
+INT-0594,dta transaksi aman nggak kalau hp kasir mati?,tanya_panduan,,,,,tanya_panduan-34,augmentasi,train
+INT-0595,"eh bot, kok apliksainya lemot?",tanya_panduan,,,,,tanya_panduan-35,augmentasi,train
+INT-0596,halo bot cara pakai chatbot ini gmn,tanya_panduan,,,,,tanya_panduan-36,augmentasi,train
+INT-0597,Bot ini bs banntu apa aja nih?,tanya_panduan,,,,,tanya_panduan-37,augmentasi,train
+INT-0598,gmana cara pakai bot lewat telegram?,tanya_panduan,,,,,tanya_panduan-38,augmentasi,train
+INT-0599,eh bot perintah apa aja yag bs aku kirim ke bot,tanya_panduan,,,,,tanya_panduan-39,augmentasi,train
+INT-0600,cara export laporan penjualan gmana?,tanya_panduan,,,,,tanya_panduan-40,augmentasi,train
+INT-0601,gmn craa impor produk dr excel?,tanya_panduan,,,,,tanya_panduan-01,augmentasi,train
+INT-0602,"eh bot, cara upload file csv produk gimana?",tanya_panduan,,,,,tanya_panduan-02,augmentasi,train
+INT-0603,eh bot format CSV buat impor kolomnya apa aja,tanya_panduan,,,,,tanya_panduan-03,augmentasi,train
+INT-0604,Klo impor ada baris yg ditolak kenapa ya,tanya_panduan,,,,,tanya_panduan-04,augmentasi,train
+INT-0605,halo bot cara batalin perubahan hrg gmn,tanya_panduan,,,,,tanya_panduan-05,augmentasi,test
+INT-0606,gmana cara ubah harga lewat aplikasi,tanya_panduan,,,,,tanya_panduan-06,augmentasi,train
+INT-0607,Apa itu pratinjau sebelum simpan hrg?,tanya_panduan,,,,,tanya_panduan-07,augmentasi,test
+INT-0608,"bot, gmn cara hapsu produk?",tanya_panduan,,,,,tanya_panduan-09,augmentasi,train
+INT-0609,"halo bot, cara nonaktifin produk biar nggak muncul di kasir?",tanya_panduan,,,,,tanya_panduan-10,augmentasi,train
+INT-0610,cara ngatur stok per cabang gmana,tanya_panduan,,,,,tanya_panduan-12,augmentasi,train
+INT-0611,klo internet mati transaksi kasir aman nggak,tanya_panduan,,,,,tanya_panduan-13,augmentasi,train
+INT-0612,trx offline nanti kesinkron sendiri,tanya_panduan,,,,,tanya_panduan-14,augmentasi,train
+INT-0613,staus sinkronisasi gagal itu artinya apa?,tanya_panduan,,,,,tanya_panduan-15,augmentasi,test
+INT-0614,klo sinkron gagal harus ngapain,tanya_panduan,,,,,tanya_panduan-16,augmentasi,test
+INT-0615,bedanya status terrtunda sama gagal apa?,tanya_panduan,,,,,tanya_panduan-17,augmentasi,train
+INT-0616,Gimana cara cek status sinkronisasi dong?,tanya_panduan,,,,,tanya_panduan-18,augmentasi,train
+INT-0617,knp transaksi tadi statusnya tertunda ya?,tanya_panduan,,,,,tanya_panduan-19,augmentasi,train
+INT-0618,harga yang diubah langsung mncul di kasir nggak?,tanya_panduan,,,,,tanya_panduan-20,augmentasi,test
+INT-0619,"eh bot, kenapa harga di katalog belm berubah?",tanya_panduan,,,,,tanya_panduan-21,augmentasi,train
+INT-0620,Katalog pelanggan bs dibuka lewat HP,tanya_panduan,,,,,tanya_panduan-22,augmentasi,train
+INT-0621,cara lihat riwayat perubahan harga di menu mana ya?,tanya_panduan,,,,,tanya_panduan-23,augmentasi,train
+INT-0622,menu dasbor penjualan ada di mana nih,tanya_panduan,,,,,tanya_panduan-24,augmentasi,train
+INT-0623,Cara baca grafik di dasbor gmana?,tanya_panduan,,,,,tanya_panduan-25,augmentasi,train
+INT-0624,Filter di dasbor fungsinya buat apa nih?,tanya_panduan,,,,,tanya_panduan-26,augmentasi,train
+INT-0625,gmn cara upload daata penjualan ke dasbor?,tanya_panduan,,,,,tanya_panduan-27,augmentasi,train
+INT-0626,"eh bot, fitur prediksi penjualan itu dihitung dari mana?",tanya_panduan,,,,,tanya_panduan-28,augmentasi,train
+INT-0627,gmana cara bikin akun kasir baru?,tanya_panduan,,,,,tanya_panduan-29,augmentasi,train
+INT-0628,loign kasir pakai apa,tanya_panduan,,,,,tanya_panduan-30,augmentasi,test
+INT-0629,eh bot cara ganti password gimanna,tanya_panduan,,,,,tanya_panduan-31,augmentasi,test
+INT-0630,Kenapa kasir nggak bisa buka halaman ubah hraga,tanya_panduan,,,,,tanya_panduan-32,augmentasi,train
+INT-0631,Cara install apliksai kasir di HP gmana,tanya_panduan,,,,,tanya_panduan-33,augmentasi,train
+INT-0632,Data transaksi aman ngga kalo HP kasir mati?,tanya_panduan,,,,,tanya_panduan-34,augmentasi,train
+INT-0633,kok aplikasinya lemoot,tanya_panduan,,,,,tanya_panduan-35,augmentasi,train
+INT-0634,cara pakai chatbot ini gimana dong,tanya_panduan,,,,,tanya_panduan-36,augmentasi,train
+INT-0635,"bot, bot ini bisa banntu apa aja?",tanya_panduan,,,,,tanya_panduan-37,augmentasi,train
+INT-0636,gmana cara pakai bot lewat telegram donk,tanya_panduan,,,,,tanya_panduan-38,augmentasi,train
+INT-0637,perintaah apa aja yang bs aku kirim ke bot,tanya_panduan,,,,,tanya_panduan-39,augmentasi,train
+INT-0638,cara export laporan penjualan gmn,tanya_panduan,,,,,tanya_panduan-40,augmentasi,train
+INT-0639,Gmana cara impor produk dr Excel?,tanya_panduan,,,,,tanya_panduan-01,augmentasi,train
+INT-0640,eh bot cara ulpoad file csv produk gimana,tanya_panduan,,,,,tanya_panduan-02,augmentasi,train
+INT-0641,klo imor ada baris yg ditolak knp ya,tanya_panduan,,,,,tanya_panduan-04,augmentasi,train
+INT-0642,cara batalin perubahan hrg gmana,tanya_panduan,,,,,tanya_panduan-05,augmentasi,test
+INT-0643,gimana cara ubah harga lewat aplikasi ya?,tanya_panduan,,,,,tanya_panduan-06,augmentasi,train
+INT-0644,apa itu pratinjau sebelum simpan hrg donk,tanya_panduan,,,,,tanya_panduan-07,augmentasi,test
+INT-0645,gimana craa hapus produk?,tanya_panduan,,,,,tanya_panduan-09,augmentasi,train
+INT-0646,cara nonaktifin produk biar nggak muncul di kasir ya,tanya_panduan,,,,,tanya_panduan-10,augmentasi,train
+INT-0647,Bs tambah kategori produk baru ngga,tanya_panduan,,,,,tanya_panduan-11,augmentasi,test
+INT-0648,caara ngatur stok per cab gmana,tanya_panduan,,,,,tanya_panduan-12,augmentasi,train
+INT-0649,"klo internet mati, trx kasir aman ga?",tanya_panduan,,,,,tanya_panduan-13,augmentasi,train
+INT-0650,eh bot trx offline nanti kesinkron sendiri,tanya_panduan,,,,,tanya_panduan-14,augmentasi,train
+INT-0651,Cuaca besok gimana?,di_luar_konteks,,,,,di_luar_konteks-01,manual,test
+INT-0652,Bikinin pantun dong,di_luar_konteks,,,,,di_luar_konteks-02,manual,train
+INT-0653,Siapa presiden Indonesia sekarang?,di_luar_konteks,,,,,di_luar_konteks-03,manual,test
+INT-0654,Harga emas hari ini berapa?,di_luar_konteks,,,,,di_luar_konteks-04,manual,train
+INT-0655,Kurs dollar sekarang berapa?,di_luar_konteks,,,,,di_luar_konteks-05,manual,train
+INT-0656,Harga bitcoin naik nggak?,di_luar_konteks,,,,,di_luar_konteks-06,manual,train
+INT-0657,Harga iPhone terbaru berapa?,di_luar_konteks,,,,,di_luar_konteks-07,manual,train
+INT-0658,Harga tiket pesawat ke Jakarta berapa?,di_luar_konteks,,,,,di_luar_konteks-08,manual,test
+INT-0659,Saham BBCA hari ini naik nggak?,di_luar_konteks,,,,,di_luar_konteks-09,manual,train
+INT-0660,Resep nasi goreng yang enak gimana?,di_luar_konteks,,,,,di_luar_konteks-10,manual,train
+INT-0661,Gimana cara masak rendang?,di_luar_konteks,,,,,di_luar_konteks-11,manual,train
+INT-0662,Cara bikin website gimana?,di_luar_konteks,,,,,di_luar_konteks-12,manual,train
+INT-0663,Ubah bahasa HP ke bahasa Inggris gimana?,di_luar_konteks,,,,,di_luar_konteks-13,manual,train
+INT-0664,Tolong ubah foto ini jadi kartun,di_luar_konteks,,,,,di_luar_konteks-14,manual,train
+INT-0665,Kenapa langit warnanya biru?,di_luar_konteks,,,,,di_luar_konteks-15,manual,test
+INT-0666,Kenapa bensin naik terus?,di_luar_konteks,,,,,di_luar_konteks-16,manual,train
+INT-0667,Kenapa kucingku nggak mau makan?,di_luar_konteks,,,,,di_luar_konteks-17,manual,train
+INT-0668,Rekomendasi film buat nonton malam ini,di_luar_konteks,,,,,di_luar_konteks-18,manual,train
+INT-0669,Skor bola tadi malam berapa?,di_luar_konteks,,,,,di_luar_konteks-19,manual,test
+INT-0670,Siapa yang menang piala dunia terakhir?,di_luar_konteks,,,,,di_luar_konteks-20,manual,train
+INT-0671,Tolong kerjain PR matematika anakku,di_luar_konteks,,,,,di_luar_konteks-21,manual,train
+INT-0672,Ceritain lelucon dong,di_luar_konteks,,,,,di_luar_konteks-22,manual,train
+INT-0673,Terjemahin selamat pagi ke bahasa Inggris,di_luar_konteks,,,,,di_luar_konteks-23,manual,train
+INT-0674,Jadwal sholat hari ini jam berapa?,di_luar_konteks,,,,,di_luar_konteks-24,manual,test
+INT-0675,Berapa ongkir kirim paket ke Surabaya?,di_luar_konteks,,,,,di_luar_konteks-25,manual,train
+INT-0676,Tips diet sehat apa aja?,di_luar_konteks,,,,,di_luar_konteks-26,manual,train
+INT-0677,Tolong tulisin surat lamaran kerja,di_luar_konteks,,,,,di_luar_konteks-27,manual,train
+INT-0678,Lagu yang lagi viral apa?,di_luar_konteks,,,,,di_luar_konteks-28,manual,train
+INT-0679,Kapan lebaran tahun depan?,di_luar_konteks,,,,,di_luar_konteks-29,manual,train
+INT-0680,Rekomendasi tempat liburan di Bali,di_luar_konteks,,,,,di_luar_konteks-30,manual,train
+INT-0681,Apa ibu kota Australia?,di_luar_konteks,,,,,di_luar_konteks-31,manual,train
+INT-0682,Ramalan zodiak hari ini apa?,di_luar_konteks,,,,,di_luar_konteks-32,manual,train
+INT-0683,Berita terbaru hari ini apa?,di_luar_konteks,,,,,di_luar_konteks-33,manual,train
+INT-0684,Kamu suka kopi nggak?,di_luar_konteks,,,,,di_luar_konteks-34,manual,test
+INT-0685,Gimana cara daftar BPJS?,di_luar_konteks,,,,,di_luar_konteks-35,manual,test
+INT-0686,Hitungin 125 kali 48,di_luar_konteks,,,,,di_luar_konteks-36,manual,train
+INT-0687,Cara benerin motor mogok gimana?,di_luar_konteks,,,,,di_luar_konteks-37,manual,train
+INT-0688,Bikinin puisi tentang hujan,di_luar_konteks,,,,,di_luar_konteks-38,manual,train
+INT-0689,Kamu manusia atau robot?,di_luar_konteks,,,,,di_luar_konteks-39,manual,train
+INT-0690,Kenapa HP aku cepet panas?,di_luar_konteks,,,,,di_luar_konteks-40,manual,train
+INT-0691,cuaca besok gimana ya?,di_luar_konteks,,,,,di_luar_konteks-01,augmentasi,test
+INT-0692,bikinin pantun donk,di_luar_konteks,,,,,di_luar_konteks-02,augmentasi,train
+INT-0693,"eh bot, siapa presiden indonesia skrg?",di_luar_konteks,,,,,di_luar_konteks-03,augmentasi,test
+INT-0694,hrg emas hr ini brp?,di_luar_konteks,,,,,di_luar_konteks-04,augmentasi,train
+INT-0695,Kurs dollar skrg brp?,di_luar_konteks,,,,,di_luar_konteks-05,augmentasi,train
+INT-0696,hrg bitcoin naik gak,di_luar_konteks,,,,,di_luar_konteks-06,augmentasi,train
+INT-0697,Hrg iPhone terbaru brp?,di_luar_konteks,,,,,di_luar_konteks-07,augmentasi,train
+INT-0698,Harga tiket pesawat ke Jakarta brp?,di_luar_konteks,,,,,di_luar_konteks-08,augmentasi,test
+INT-0699,"bot, saham bbca hari ini naik nggak?",di_luar_konteks,,,,,di_luar_konteks-09,augmentasi,train
+INT-0700,Resep nasi goreng yg enak gmana,di_luar_konteks,,,,,di_luar_konteks-10,augmentasi,train
+INT-0701,gimana caar masak rendang,di_luar_konteks,,,,,di_luar_konteks-11,augmentasi,train
+INT-0702,cara bkiin website gimana,di_luar_konteks,,,,,di_luar_konteks-12,augmentasi,train
+INT-0703,ubah bahaa hp ke bahasa inggris gimana?,di_luar_konteks,,,,,di_luar_konteks-13,augmentasi,train
+INT-0704,tlg ubah foto ini jd karun,di_luar_konteks,,,,,di_luar_konteks-14,augmentasi,train
+INT-0705,kenapa lnagit warnanya biru?,di_luar_konteks,,,,,di_luar_konteks-15,augmentasi,test
+INT-0706,knp bensin naik terus donk?,di_luar_konteks,,,,,di_luar_konteks-16,augmentasi,train
+INT-0707,napa kucingku gak mau makan,di_luar_konteks,,,,,di_luar_konteks-17,augmentasi,train
+INT-0708,rekomendasi film bat nonton malam ini ya,di_luar_konteks,,,,,di_luar_konteks-18,augmentasi,train
+INT-0709,Skor boola tadi malam brp ya,di_luar_konteks,,,,,di_luar_konteks-19,augmentasi,test
+INT-0710,Siapa yang menang piala dunia terakhir dong,di_luar_konteks,,,,,di_luar_konteks-20,augmentasi,train
+INT-0711,tlg kerjain pr matematika anakku nih,di_luar_konteks,,,,,di_luar_konteks-21,augmentasi,train
+INT-0712,Ceritain lelucon dog ya,di_luar_konteks,,,,,di_luar_konteks-22,augmentasi,train
+INT-0713,terjemahin selamat pagi ke bahasa inggis,di_luar_konteks,,,,,di_luar_konteks-23,augmentasi,train
+INT-0714,jdwal sholat hr ini jam brp,di_luar_konteks,,,,,di_luar_konteks-24,augmentasi,test
+INT-0715,beerapa ongkir kirim paket ke surabaya?,di_luar_konteks,,,,,di_luar_konteks-25,augmentasi,train
+INT-0716,tips diet shat apa aja dong?,di_luar_konteks,,,,,di_luar_konteks-26,augmentasi,train
+INT-0717,Tolong tulsin surat lamaran kerja,di_luar_konteks,,,,,di_luar_konteks-27,augmentasi,train
+INT-0718,lagu yg lagi viral apa?,di_luar_konteks,,,,,di_luar_konteks-28,augmentasi,train
+INT-0719,bot kapan lebaran tahun depan,di_luar_konteks,,,,,di_luar_konteks-29,augmentasi,train
+INT-0720,bot rekomendasi tempat liburan di baali,di_luar_konteks,,,,,di_luar_konteks-30,augmentasi,train
+INT-0721,"halo bot, apa ibu kta australia?",di_luar_konteks,,,,,di_luar_konteks-31,augmentasi,train
+INT-0722,ramalan zodiak hr ini apa?,di_luar_konteks,,,,,di_luar_konteks-32,augmentasi,train
+INT-0723,berita terbaru hr ini apa ya,di_luar_konteks,,,,,di_luar_konteks-33,augmentasi,train
+INT-0724,kamu suka kpi gak,di_luar_konteks,,,,,di_luar_konteks-34,augmentasi,test
+INT-0725,Gimanna cara daftar BPJS,di_luar_konteks,,,,,di_luar_konteks-35,augmentasi,test
+INT-0726,bot hitungin 125 kali 48,di_luar_konteks,,,,,di_luar_konteks-36,augmentasi,train
+INT-0727,bot cara benerin motor mogok gimna,di_luar_konteks,,,,,di_luar_konteks-37,augmentasi,train
+INT-0728,Bikinin puisi tentang hujan ya,di_luar_konteks,,,,,di_luar_konteks-38,augmentasi,train
+INT-0729,Kamu manussia atau robot,di_luar_konteks,,,,,di_luar_konteks-39,augmentasi,train
+INT-0730,knapa hp aku cepet panas?,di_luar_konteks,,,,,di_luar_konteks-40,augmentasi,train
+INT-0731,Cuaca besok gmn,di_luar_konteks,,,,,di_luar_konteks-01,augmentasi,test
+INT-0732,Siapa presiden Indonesia sekarang nih?,di_luar_konteks,,,,,di_luar_konteks-03,augmentasi,test
+INT-0733,halo bot hrg emas hr ini brp,di_luar_konteks,,,,,di_luar_konteks-04,augmentasi,train
+INT-0734,Kurs dollar sekarang berapa nih,di_luar_konteks,,,,,di_luar_konteks-05,augmentasi,train
+INT-0735,bot harga iPohne terbaru berapa,di_luar_konteks,,,,,di_luar_konteks-07,augmentasi,train
+INT-0736,harga tikt pesawat ke jakarta berapa,di_luar_konteks,,,,,di_luar_konteks-08,augmentasi,test
+INT-0737,saham bbca hr ini naik gak donk?,di_luar_konteks,,,,,di_luar_konteks-09,augmentasi,train
+INT-0738,eh bot resep nasi goreng yang enak gimnaa,di_luar_konteks,,,,,di_luar_konteks-10,augmentasi,train
+INT-0739,bot gimana cara masak rendag,di_luar_konteks,,,,,di_luar_konteks-11,augmentasi,train
+INT-0740,cara bikn website gimana,di_luar_konteks,,,,,di_luar_konteks-12,augmentasi,train
+INT-0741,eh bot ubah bahasa HP ke baasa Inggris gmn,di_luar_konteks,,,,,di_luar_konteks-13,augmentasi,train
+INT-0742,tolong ubah foto ini jaid kartun nih,di_luar_konteks,,,,,di_luar_konteks-14,augmentasi,train
+INT-0743,Napa langit warnanya biru,di_luar_konteks,,,,,di_luar_konteks-15,augmentasi,test
+INT-0744,Kenapa bensin naik teruus dong,di_luar_konteks,,,,,di_luar_konteks-16,augmentasi,train
+INT-0745,kenapa kucingku ga mau makan,di_luar_konteks,,,,,di_luar_konteks-17,augmentasi,train
+INT-0746,rkomendasi film buat nonton malam ini,di_luar_konteks,,,,,di_luar_konteks-18,augmentasi,train
+INT-0747,skor bola tadi malam berapa nih,di_luar_konteks,,,,,di_luar_konteks-19,augmentasi,test
+INT-0748,siaapa yang menang piala dunia terakhir?,di_luar_konteks,,,,,di_luar_konteks-20,augmentasi,train
+INT-0749,Tolong kerjain PR matematika anakku nih,di_luar_konteks,,,,,di_luar_konteks-21,augmentasi,train
+INT-0750,ceritain lelucon doonk,di_luar_konteks,,,,,di_luar_konteks-22,augmentasi,train
+INT-0751,halo bot terjemahin selamat pagi ke bahasa inggris,di_luar_konteks,,,,,di_luar_konteks-23,augmentasi,train
+INT-0752,bot jdwal sholat hari ini jam brp,di_luar_konteks,,,,,di_luar_konteks-24,augmentasi,test
+INT-0753,brp ognkir kirim paket ke surabaya?,di_luar_konteks,,,,,di_luar_konteks-25,augmentasi,train
+INT-0754,"bot, tpis diet sehat apa aja?",di_luar_konteks,,,,,di_luar_konteks-26,augmentasi,train
+INT-0755,tlg tulisin surat lamaran kerja nih,di_luar_konteks,,,,,di_luar_konteks-27,augmentasi,train
+INT-0756,"bot, lagu yg lg viral apa?",di_luar_konteks,,,,,di_luar_konteks-28,augmentasi,train
+INT-0757,Kapan lebaraan tahun depan nih,di_luar_konteks,,,,,di_luar_konteks-29,augmentasi,train
+INT-0758,rekomnedasi tempat liburan di bali,di_luar_konteks,,,,,di_luar_konteks-30,augmentasi,train
+INT-0759,apa ibu kota australia ya?,di_luar_konteks,,,,,di_luar_konteks-31,augmentasi,train
+INT-0760,Ramalan zodak hr ini apa,di_luar_konteks,,,,,di_luar_konteks-32,augmentasi,train
+INT-0761,halo bot berita terbaru hari ini apa,di_luar_konteks,,,,,di_luar_konteks-33,augmentasi,train
+INT-0762,Kamu suka kopi ga?,di_luar_konteks,,,,,di_luar_konteks-34,augmentasi,test
+INT-0763,gmana cara daftar bpjs,di_luar_konteks,,,,,di_luar_konteks-35,augmentasi,test
+INT-0764,eh bot hitungin 125 kali 48,di_luar_konteks,,,,,di_luar_konteks-36,augmentasi,train
+INT-0765,cara benerin motor mogok gmana,di_luar_konteks,,,,,di_luar_konteks-37,augmentasi,train
+INT-0766,eh bot kamu manusia atau robot,di_luar_konteks,,,,,di_luar_konteks-39,augmentasi,train
+INT-0767,knp hp aku cepte panas?,di_luar_konteks,,,,,di_luar_konteks-40,augmentasi,train
+INT-0768,"eh bot, cuaca besok gimana?",di_luar_konteks,,,,,di_luar_konteks-01,augmentasi,test
+INT-0769,bikiniin pantun dong,di_luar_konteks,,,,,di_luar_konteks-02,augmentasi,train
+INT-0770,sapa presiden indonesia skrg?,di_luar_konteks,,,,,di_luar_konteks-03,augmentasi,test
+INT-0771,"halo bot, harga emas hari ini berapa?",di_luar_konteks,,,,,di_luar_konteks-04,augmentasi,train
+INT-0772,kurs dollar sekarang brp donk,di_luar_konteks,,,,,di_luar_konteks-05,augmentasi,train
+INT-0773,halo bot harga bitcoin naik nggak,di_luar_konteks,,,,,di_luar_konteks-06,augmentasi,train
+INT-0774,harga iphone terbaru brp?,di_luar_konteks,,,,,di_luar_konteks-07,augmentasi,train
+INT-0775,Hrg tiket pesawat ke Jakarta brp?,di_luar_konteks,,,,,di_luar_konteks-08,augmentasi,test
+INT-0776,Saham BBCA hari ini naik nggk donk,di_luar_konteks,,,,,di_luar_konteks-09,augmentasi,train
+INT-0777,Gmana cara maask rendang dong?,di_luar_konteks,,,,,di_luar_konteks-11,augmentasi,train
+INT-0778,Cara bikin website gimana ya,di_luar_konteks,,,,,di_luar_konteks-12,augmentasi,train
+INT-0779,ubah bahasa hp ke bahasa inggris gmn?,di_luar_konteks,,,,,di_luar_konteks-13,augmentasi,train
+INT-0780,"eh bot, tolong ubah fto ini jadi kartun",di_luar_konteks,,,,,di_luar_konteks-14,augmentasi,train
