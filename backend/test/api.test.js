@@ -29,13 +29,13 @@ before(async () => {
   await pool.query(`INSERT INTO users (name,email,password_hash,role) VALUES ('Owner','owner@t.id',$1,'owner'),('Kasir','kasir@t.id',$1,'kasir')`, [hash]);
   server = createApp().listen(0);
   base = `http://localhost:${server.address().port}/api/v1`;
-  ownerToken = (await call('POST', '/auth/login', { body: { email: 'owner@t.id', password: 'rahasia123' } })).json.data.token;
-  kasirToken = (await call('POST', '/auth/login', { body: { email: 'kasir@t.id', password: 'rahasia123' } })).json.data.token;
+  ownerToken = (await call('POST', '/auth/login', { body: { username: 'owner@t.id', password: 'rahasia123' } })).json.data.token;
+  kasirToken = (await call('POST', '/auth/login', { body: { username: 'kasir@t.id', password: 'rahasia123' } })).json.data.token;
 });
 after(async () => { server.close(); await pool.end(); });
 
 test('login gagal dengan kata sandi salah', async () => {
-  const r = await call('POST', '/auth/login', { body: { email: 'owner@t.id', password: 'salah' } });
+  const r = await call('POST', '/auth/login', { body: { username: 'owner@t.id', password: 'salah' } });
   assert.equal(r.status, 401);
   assert.equal(r.json.error.code, 'UNAUTHORIZED');
 });
@@ -114,6 +114,8 @@ test('impor massal: baris valid masuk, baris salah dilaporkan', async () => {
 let minyak, txClientId;
 test('transaksi: total dihitung server, harga snapshot tersimpan', async () => {
   minyak = (await call('GET', '/products?q=minyak', { token: kasirToken })).json.data[0];
+  // Produk hasil impor mulai dari stok 0; isi stok cabang 1 (kasir@t.id tanpa username = cabang 1)
+  await call('PATCH', `/products/${minyak.id}`, { token: ownerToken, body: { stock_alfiamart1: 10 } });
   const bras = (await call('GET', '/products?q=beras', { token: kasirToken })).json.data[0];
   txClientId = randomUUID();
   const r = await call('POST', '/transactions', { token: kasirToken, body: {
@@ -148,11 +150,13 @@ test('sinkronisasi batch: synced, duplicate, failed dilaporkan per transaksi', a
 });
 
 test('total melebihi batas ditolak, bukan error server', async () => {
-  await call('PATCH', `/products/${minyak.id}`, { token: ownerToken, body: { price: 100000000 } });
+  // Stok dibuat cukup agar yang diuji benar-benar batas total, bukan stok kurang
+  await call('PATCH', `/products/${minyak.id}`, { token: ownerToken, body: { price: 100000000, stock_alfiamart1: 1000 } });
   const r = await call('POST', '/transactions', { token: kasirToken, body: {
     client_id: randomUUID(), payment_method: 'tunai', occurred_at: new Date(Date.now() - 1000).toISOString(),
     items: [{ product_id: minyak.id, qty: 1000 }] } });
   assert.equal(r.status, 400);
+  assert.equal(r.json.error.code, 'VALIDATION_ERROR');
 });
 
 test('ekspor untuk DS/AE: butuh kunci layanan atau owner', async () => {
@@ -177,4 +181,29 @@ test('waktu transaksi: toleransi jam perangkat 5 menit, masa depan ditolak', asy
   assert.equal(slightly.status, 201);
   const future = await call('POST', '/transactions', { token: kasirToken, body: mk(60 * 60 * 1000) });
   assert.equal(future.status, 400);
+});
+
+test('stok cabang: berkurang sesuai cabang kasir, stok kurang ditolak, habis = nonaktif', async () => {
+  const hash = await bcrypt.hash('rahasia123', 4);
+  await pool.query(`INSERT INTO users (name,username,password_hash,role) VALUES ('Kasir 2','alfiamartdua',$1,'kasir')`, [hash]);
+  const login = await call('POST', '/auth/login', { body: { username: 'AlfiamartDua', password: 'rahasia123' } });
+  assert.equal(login.status, 200);
+  const cabang2Token = login.json.data.token;
+
+  const created = await call('POST', '/products', { token: ownerToken, body: { sku: 'TEH', name: 'Teh botol', price: 5000, stock_alfiamart1: 3, stock_alfiamart2: 2 } });
+  assert.equal(created.json.data.stock, 5); // total selalu = cabang 1 + cabang 2
+  const id = created.json.data.id;
+  const sell = (token, qty) => call('POST', '/transactions', { token, body: {
+    client_id: randomUUID(), payment_method: 'tunai', occurred_at: new Date(Date.now() - 1000).toISOString(),
+    items: [{ product_id: id, qty }] } });
+  const stokNow = async () => {
+    const p = (await call('GET', `/products/${id}`, { token: ownerToken })).json.data;
+    return [p.stock_alfiamart1, p.stock_alfiamart2, p.stock, p.is_active];
+  };
+
+  assert.equal((await sell(cabang2Token, 2)).status, 201);
+  assert.deepEqual(await stokNow(), [3, 0, 3, true]); // hanya stok cabang 2 yang berkurang
+  assert.equal((await sell(cabang2Token, 1)).json.error.code, 'INSUFFICIENT_STOCK');
+  assert.equal((await sell(kasirToken, 3)).status, 201);
+  assert.deepEqual(await stokNow(), [0, 0, 0, false]);
 });
