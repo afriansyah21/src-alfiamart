@@ -19,12 +19,18 @@ frontend/            React + Vite + Tailwind + Axios (dasbor owner)
 cd backend
 cp .env.example .env        # isi DATABASE_URL dan JWT_SECRET
 npm install
-npm run db:init             # membuat tabel
-npm run db:seed             # data CONTOH (dummy) + akun owner dan kasir
+npm run db:init             # membuat tabel; jalankan ulang untuk memperbarui database lama (data tidak terhapus)
+npm run db:seed             # data CONTOH (dummy) + akun owner dan kasir cabang
 npm run dev                 # http://localhost:3000/api/v1/health
 ```
-Akun contoh dari seed: `owner@example.com` dan `kasir@example.com`, kata sandi `password123`
-(hanya untuk pengembangan; jangan dipakai di server publik).
+Akun contoh dari seed, semua dengan kata sandi `password123` (hanya untuk pengembangan; jangan dipakai di server publik):
+
+| Isi kolom Username | Peran | Cabang |
+|---|---|---|
+| `owner@example.com` | owner | semua |
+| `alfiamartsatu` | kasir | Alfiamart 1 |
+| `alfiamartdua` | kasir | Alfiamart 2 |
+| `kasir@example.com` | kasir | dianggap Alfiamart 1 |
 
 ### Front-end
 ```bash
@@ -41,7 +47,7 @@ npm run build && npm run preview     # http://localhost:4173 (backend tetap di :
 Cara mencoba mode offline: buka `/kasir` sekali saat online, lalu di DevTools pilih Network → Offline dan muat ulang halaman.
 Catat transaksi, kembalikan ke Online, dan transaksi terkirim otomatis.
 
-Tes otomatis backend (13 skenario, butuh PostgreSQL; **menghapus isi tabel**, jadi pakai database uji):
+Tes otomatis backend (15 skenario, butuh PostgreSQL; **menghapus isi tabel**, jadi pakai database uji):
 ```bash
 DATABASE_URL=postgres://... JWT_SECRET=x SERVICE_API_KEY=svc npm test
 ```

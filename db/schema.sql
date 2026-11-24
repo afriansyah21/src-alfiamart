@@ -60,3 +60,19 @@ CREATE TABLE IF NOT EXISTS transaction_items (
   subtotal        INTEGER NOT NULL CHECK (subtotal >= 0)
 );
 CREATE INDEX IF NOT EXISTS idx_items_transaction ON transaction_items (transaction_id);
+
+-- ---------- Akun cabang & stok per cabang ----------
+-- Ditulis sebagai ALTER ... IF NOT EXISTS agar database yang sudah ada ikut diperbarui
+-- cukup dengan menjalankan ulang `npm run db:init` (data lama tidak terhapus).
+
+-- Login memakai username (akun kasir cabang: alfiamartsatu, alfiamartdua) atau email (akun lama).
+-- Cabang kasir ditentukan dari username-nya (lihat backend/src/routes/transactions.js).
+ALTER TABLE users ADD COLUMN IF NOT EXISTS username TEXT;
+ALTER TABLE users ALTER COLUMN email DROP NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username ON users (lower(username));
+
+-- Stok per cabang. `stock` = stock_alfiamart1 + stock_alfiamart2, dijaga oleh backend.
+-- Produk yang baru masuk lewat impor CSV mulai dari stok 0.
+ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_alfiamart1 INTEGER NOT NULL DEFAULT 0 CHECK (stock_alfiamart1 >= 0);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_alfiamart2 INTEGER NOT NULL DEFAULT 0 CHECK (stock_alfiamart2 >= 0);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0);

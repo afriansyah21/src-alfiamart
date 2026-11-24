@@ -64,9 +64,10 @@ router.post('/', requireRole('owner'), validate(productCreateSchema), async (req
   try {
     const p = req.valid.body;
     const product = await withTransaction(async (c) => {
-      const s1 = p.stock_alfiamart1 !== undefined ? p.stock_alfiamart1 : (p.stock !== undefined ? p.stock : 1);
-      const s2 = p.stock_alfiamart2 !== undefined ? p.stock_alfiamart2 : 1;
-      const totalStock = p.stock !== undefined ? p.stock : (s1 + s2);
+      // Total stok selalu dihitung dari stok cabang (nilai `stock` dari klien diabaikan)
+      const s1 = p.stock_alfiamart1;
+      const s2 = p.stock_alfiamart2;
+      const totalStock = s1 + s2;
       const { rows } = await c.query(
         `INSERT INTO products (sku, name, category, unit, price, stock, stock_alfiamart1, stock_alfiamart2)
          VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING ${FIELDS}`,
