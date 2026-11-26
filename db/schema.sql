@@ -68,6 +68,7 @@ CREATE INDEX IF NOT EXISTS idx_items_transaction ON transaction_items (transacti
 -- Login memakai username (akun kasir cabang: alfiamartsatu, alfiamartdua) atau email (akun lama).
 -- Cabang kasir ditentukan dari username-nya (lihat backend/src/routes/transactions.js).
 ALTER TABLE users ADD COLUMN IF NOT EXISTS username TEXT;
+ALTER TABLE users ALTER COLUMN username DROP NOT NULL;
 ALTER TABLE users ALTER COLUMN email DROP NOT NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username ON users (lower(username));
 

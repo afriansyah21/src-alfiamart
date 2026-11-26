@@ -24,3 +24,8 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 .idea/
+
+PRD.md
+TASK.md
+ARCHITECTURE.md
+plan.md
