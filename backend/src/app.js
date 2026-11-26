@@ -6,8 +6,10 @@ import authRouter from './routes/auth.js';
 import productsRouter, { catalogRouter, priceHistoryRouter } from './routes/products.js';
 import transactionsRouter from './routes/transactions.js';
 import exportsRouter from './routes/exports.js';
+import { createChatRouter } from './routes/chat.js';
+import { askAiChat } from './services/aiClient.js';
 
-export function createApp() {
+export function createApp(options = {}) {
   const app = express();
   app.use(cors({ origin: config.corsOrigin.length ? config.corsOrigin : true }));
   app.use(express.json({ limit: '1mb' }));
@@ -20,6 +22,7 @@ export function createApp() {
   api.use('/price-history', priceHistoryRouter);
   api.use('/transactions', transactionsRouter);
   api.use('/export', exportsRouter);
+  api.use('/chat', createChatRouter({ askAiChat: options.askAiChat || askAiChat }));
   app.use('/api/v1', api);
 
   app.use((_req, _res, next) => next(notFound('Endpoint tidak ditemukan')));

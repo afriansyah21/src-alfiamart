@@ -63,6 +63,40 @@ components:
         errors:
           type: array
           items: { type: object, properties: { row: { type: integer }, sku: { type: string, nullable: true }, message: { type: string } } }
+    ChatInput:
+      type: object
+      required: [message, session_id]
+      properties:
+        message: { type: string, minLength: 1, maxLength: 500 }
+        session_id: { type: string, format: uuid }
+        channel: { type: string, enum: [web, telegram], default: web }
+    ChatAction:
+      type: object
+      nullable: true
+      properties:
+        type: { type: string, enum: [price_proposal, price_revert] }
+        product_id: { type: string, format: uuid }
+        sku: { type: string }
+        name: { type: string }
+        old_price: { type: integer }
+        new_price: { type: integer }
+        history_id: { type: integer }
+    ChatSource:
+      type: object
+      properties:
+        type: { type: string, enum: [product, guide] }
+        id: { type: string }
+        title: { type: string }
+    ChatData:
+      type: object
+      properties:
+        session_id: { type: string, format: uuid }
+        intent: { type: string }
+        confidence: { type: number, minimum: 0, maximum: 1 }
+        reply: { type: string }
+        action: { $ref: "#/components/schemas/ChatAction" }
+        sources: { type: array, items: { $ref: "#/components/schemas/ChatSource" } }
+        fallback: { type: boolean }
 paths:
   /health:
     get: { summary: Cek layanan, responses: { "200": { description: ok } } }
@@ -170,3 +204,31 @@ paths:
         - { name: page, in: query, schema: { type: integer } }
         - { name: limit, in: query, schema: { type: integer, maximum: 5000, default: 1000 } }
       responses: { "200": { description: "[{ transaction_id, occurred_at, payment_method, product_id, sku, product_name, category, unit_price, qty, subtotal }]" } }
+  /chat:
+    post:
+      summary: Kirim pesan chat (owner)
+      security: [{ bearer: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ChatInput" }
+      responses:
+        "200": { description: Jawaban chat owner, content: { application/json: { schema: { type: object, properties: { success: { type: boolean }, data: { $ref: "#/components/schemas/ChatData" } } } } } }
+        "400": { description: Payload tidak valid }
+        "401": { description: Perlu login }
+        "403": { description: Hanya owner }
+  /chat/sessions/{session_id}:
+    get:
+      summary: Membaca riwayat session milik owner
+      security: [{ bearer: [] }]
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200": { description: "data: { session_id, messages: ChatMessage[] }" }
+        "401": { description: Perlu login }
+        "403": { description: Hanya owner }
+        "404": { description: Session tidak ditemukan atau bukan milik owner }

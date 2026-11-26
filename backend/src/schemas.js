@@ -84,3 +84,13 @@ export const dateRangeQuery = Joi.object({
   page: Joi.number().integer().min(1).default(1),
   limit: Joi.number().integer().min(1).max(500).default(100),
 });
+
+export const chatSchema = Joi.object({
+  message: Joi.string().trim().min(1).max(500).required(),
+  session_id: Joi.string().guid().required(),
+  channel: Joi.string().valid('web', 'telegram').default('web'),
+});
+
+export const chatSessionParamSchema = Joi.object({
+  session_id: Joi.string().guid().required(),
+});
