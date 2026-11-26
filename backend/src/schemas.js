@@ -94,3 +94,18 @@ export const chatSchema = Joi.object({
 export const chatSessionParamSchema = Joi.object({
   session_id: Joi.string().guid().required(),
 });
+
+export const summaryQuerySchema = Joi.object({
+  type: Joi.string().valid('sales', 'price_changes').required(),
+  period: Joi.string()
+    .valid(
+      'hari_ini',
+      'kemarin',
+      '7_hari_terakhir',
+      'minggu_ini',
+      'minggu_lalu',
+      'bulan_ini',
+      'bulan_lalu'
+    )
+    .default('kemarin'),
+});

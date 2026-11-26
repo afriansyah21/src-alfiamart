@@ -8,6 +8,9 @@ import transactionsRouter from './routes/transactions.js';
 import exportsRouter from './routes/exports.js';
 import { createChatRouter } from './routes/chat.js';
 import { askAiChat } from './services/aiClient.js';
+import { createSummariesRouter } from './routes/summaries.js';
+import { getAiSummaries } from './services/aiClient.js';
+import { createSummaryCache } from './services/summaryCache.js';
 
 export function createApp(options = {}) {
   const app = express();
@@ -23,6 +26,10 @@ export function createApp(options = {}) {
   api.use('/transactions', transactionsRouter);
   api.use('/export', exportsRouter);
   api.use('/chat', createChatRouter({ askAiChat: options.askAiChat || askAiChat }));
+  api.use('/summaries', createSummariesRouter({
+    getSummaries: options.getAiSummaries || getAiSummaries,
+    cache: options.summaryCache || createSummaryCache(),
+  }));
   app.use('/api/v1', api);
 
   app.use((_req, _res, next) => next(notFound('Endpoint tidak ditemukan')));

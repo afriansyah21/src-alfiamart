@@ -232,3 +232,24 @@ paths:
         "401": { description: Perlu login }
         "403": { description: Hanya owner }
         "404": { description: Session tidak ditemukan atau bukan milik owner }
+  /summaries:
+    get:
+      summary: Ringkasan penjualan atau perubahan harga untuk owner
+      security: [{ bearer: [] }]
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema: { type: string, enum: [sales, price_changes] }
+        - name: period
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [hari_ini, kemarin, 7_hari_terakhir, minggu_ini, minggu_lalu, bulan_ini, bulan_lalu]
+            default: kemarin
+      responses:
+        "200": { description: "Ringkasan sukses atau fallback; fallback mempertahankan facts null" }
+        "400": { description: Query tidak valid }
+        "401": { description: Perlu login }
+        "403": { description: Hanya owner }

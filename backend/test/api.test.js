@@ -12,6 +12,7 @@ const { createApp } = await import('../src/app.js');
 
 let server, base, ownerToken, kasirToken, secondOwnerToken;
 let askAiChatMock;
+let getAiSummariesMock;
 
 const call = async (method, path, { token, body, headers = {} } = {}) => {
   const res = await fetch(base + path, {
@@ -41,7 +42,25 @@ before(async () => {
       fallback: false,
       error: null,
     });
-  server = createApp({ askAiChat: (body) => askAiChatMock(body) }).listen(0);
+  getAiSummariesMock = async (query) => ({
+    status: 'ok',
+    data: {
+      type: query.type,
+      period: { name: query.period },
+      facts: query.type === 'sales'
+        ? { transactions: 87, total_items: 142, revenue: 3100000 }
+        : { changes_count: 2, items: [] },
+      text: 'Ringkasan tersedia.',
+      fallback: false,
+      generated_at: '2026-11-26T12:00:00+07:00',
+    },
+    fallback: false,
+    error: null,
+  });
+  server = createApp({
+    askAiChat: (body) => askAiChatMock(body),
+    getAiSummaries: (query) => getAiSummariesMock(query),
+  }).listen(0);
   base = `http://localhost:${server.address().port}/api/v1`;
   ownerToken = (await call('POST', '/auth/login', { body: { username: 'owner@t.id', password: 'rahasia123' } })).json.data.token;
   kasirToken = (await call('POST', '/auth/login', { body: { username: 'kasir@t.id', password: 'rahasia123' } })).json.data.token;
@@ -316,5 +335,105 @@ test('fallback AI tersimpan dan pesan owner tetap tersimpan', async () => {
     assert.equal(history.json.data.messages[1].fallback, true);
   } finally {
     askAiChatMock = previousMock;
+  }
+});
+
+test('ringkasan owner sukses dan dikonfigurasi untuk cache', async () => {
+  const sent = await call('GET', '/summaries?type=sales&period=kemarin', { token: ownerToken });
+  assert.equal(sent.status, 200);
+  assert.equal(sent.json.data.type, 'sales');
+  assert.equal(sent.json.data.period.name, 'kemarin');
+  assert.equal(sent.json.data.facts.revenue, 3100000);
+  assert.equal(sent.json.meta.cached, false);
+
+  const cached = await call('GET', '/summaries?type=sales&period=kemarin', { token: ownerToken });
+  assert.equal(cached.status, 200);
+  assert.equal(cached.json.meta.cached, true);
+  assert.equal(cached.json.data.facts.revenue, 3100000);
+});
+
+test('ringkasan membatasi role dan memvalidasi query', async () => {
+  const noToken = await call('GET', '/summaries?type=sales&period=kemarin');
+  assert.equal(noToken.status, 401);
+
+  const cashier = await call('GET', '/summaries?type=sales&period=kemarin', { token: kasirToken });
+  assert.equal(cashier.status, 403);
+
+  const invalidType = await call('GET', '/summaries?type=stok&period=kemarin', { token: ownerToken });
+  assert.equal(invalidType.status, 400);
+  assert.equal(invalidType.json.error.code, 'VALIDATION_ERROR');
+
+  const invalidPeriod = await call('GET', '/summaries?type=sales&period=besok', { token: ownerToken });
+  assert.equal(invalidPeriod.status, 400);
+
+  const missingType = await call('GET', '/summaries?period=kemarin', { token: ownerToken });
+  assert.equal(missingType.status, 400);
+});
+
+test('period default dan nilai lain diteruskan ke klien AI', async () => {
+  let received;
+  const previousMock = getAiSummariesMock;
+  getAiSummariesMock = async (query) => {
+    received = query;
+    return {
+      status: 'ok',
+      data: {
+        type: query.type,
+        period: { name: query.period },
+        facts: { changes_count: 2, items: [] },
+        text: 'Ringkasan perubahan harga tersedia.',
+        fallback: false,
+        generated_at: null,
+      },
+      fallback: false,
+      error: null,
+    };
+  };
+
+  try {
+    const defaultPeriod = await call('GET', '/summaries?type=price_changes', { token: ownerToken });
+    assert.equal(defaultPeriod.status, 200);
+    assert.deepEqual(received, { type: 'price_changes', period: 'kemarin' });
+
+    const today = await call('GET', '/summaries?type=price_changes&period=hari_ini', { token: ownerToken });
+    assert.equal(today.status, 200);
+    assert.deepEqual(received, { type: 'price_changes', period: 'hari_ini' });
+  } finally {
+    getAiSummariesMock = previousMock;
+  }
+});
+
+test('fallback dan no_data tidak dicache serta fakta null dipertahankan', async () => {
+  let calls = 0;
+  const previousMock = getAiSummariesMock;
+  getAiSummariesMock = async () => {
+    calls++;
+    return {
+      status: 'bersiap',
+      data: {
+        type: 'sales',
+        period: null,
+        facts: null,
+        text: 'Layanan AI belum siap.',
+        fallback: true,
+        generated_at: null,
+      },
+      fallback: true,
+      error: { code: 'AI_UNAVAILABLE' },
+    };
+  };
+
+  try {
+    const first = await call('GET', '/summaries?type=sales&period=7_hari_terakhir', { token: ownerToken });
+    const second = await call('GET', '/summaries?type=sales&period=7_hari_terakhir', { token: ownerToken });
+    assert.equal(first.status, 200);
+    assert.equal(second.status, 200);
+    assert.equal(first.json.data.facts, null);
+    assert.equal(first.json.data.fallback, true);
+    assert.equal(first.json.meta.cached, false);
+    assert.equal(second.json.meta.cached, false);
+    assert.equal(calls, 2);
+  } finally {
+    getAiSummariesMock = previousMock;
   }
 });
