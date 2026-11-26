@@ -193,7 +193,7 @@ paths:
     get:
       summary: "Untuk DS/AE: seluruh produk (termasuk nonaktif). Basis pengetahuan RAG (AE) dan analisis (DS)"
       security: [{ serviceKey: [] }, { bearer: [] }]
-      responses: { "200": { description: "Array of Product" } }
+      responses: { "200": { description: "Array of Product dengan stock, stock_alfiamart1, dan stock_alfiamart2" } }
   /export/transactions:
     get:
       summary: "Untuk DS: satu baris per item transaksi (datar, siap pandas)"
@@ -203,7 +203,17 @@ paths:
         - { name: to, in: query, schema: { type: string, format: date-time } }
         - { name: page, in: query, schema: { type: integer } }
         - { name: limit, in: query, schema: { type: integer, maximum: 5000, default: 1000 } }
-      responses: { "200": { description: "[{ transaction_id, occurred_at, payment_method, product_id, sku, product_name, category, unit_price, qty, subtotal }]" } }
+      responses: { "200": { description: "[{ transaction_id, occurred_at, payment_method, cashier_id, cashier_name, branch, product_id, sku, product_name, category, unit_price, qty, subtotal }]" } }
+  /export/price-history:
+    get:
+      summary: "Untuk DS/AE: riwayat perubahan harga dalam format read-only"
+      security: [{ serviceKey: [] }, { bearer: [] }]
+      parameters:
+        - { name: from, in: query, schema: { type: string, format: date-time } }
+        - { name: to, in: query, schema: { type: string, format: date-time } }
+        - { name: page, in: query, schema: { type: integer, default: 1 } }
+        - { name: limit, in: query, schema: { type: integer, maximum: 5000, default: 1000 } }
+      responses: { "200": { description: "[{ id, product_id, sku, name, old_price, new_price, source, reverted, changed_by, changed_at }]" } }
   /chat:
     post:
       summary: Kirim pesan chat (owner)

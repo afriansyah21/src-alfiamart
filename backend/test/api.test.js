@@ -196,10 +196,27 @@ test('total melebihi batas ditolak, bukan error server', async () => {
 test('ekspor untuk DS/AE: butuh kunci layanan atau owner', async () => {
   assert.equal((await call('GET', '/export/products')).status, 401);
   assert.equal((await call('GET', '/export/products', { token: kasirToken })).status, 403);
+  const products = await call('GET', '/export/products', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } });
+  assert.equal(products.status, 200);
+  const exportedProduct = products.json.data.find((p) => p.stock_alfiamart1 !== undefined);
+  assert.ok(exportedProduct);
+  assert.equal(exportedProduct.stock, exportedProduct.stock_alfiamart1 + exportedProduct.stock_alfiamart2);
   const withKey = await call('GET', '/export/transactions', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } });
   assert.equal(withKey.status, 200);
   assert.ok(withKey.json.data.length >= 3);
   assert.ok('category' in withKey.json.data[0] && 'subtotal' in withKey.json.data[0]);
+  assert.ok(withKey.json.data.every((row) => row.branch === 'alfiamart1' || row.branch === 'alfiamart2'));
+  assert.ok(withKey.json.data.every((row) => row.cashier_id && row.cashier_name));
+
+  const paginated = await call('GET', '/export/transactions?page=1&limit=5000', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } });
+  assert.equal(paginated.status, 200);
+  assert.equal(paginated.json.meta.limit, 5000);
+  assert.equal((await call('GET', '/export/transactions?limit=5001', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } })).status, 400);
+
+  const history = await call('GET', '/export/price-history?page=1&limit=5000', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } });
+  assert.equal(history.status, 200);
+  assert.ok(history.json.meta.limit === 5000);
+  assert.ok(history.json.data.every((row) => 'old_price' in row && 'new_price' in row && 'reverted' in row));
 });
 
 test('kasir hanya melihat transaksinya sendiri; endpoint tak dikenal -> 404', async () => {
