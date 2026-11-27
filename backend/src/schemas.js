@@ -84,3 +84,28 @@ export const dateRangeQuery = Joi.object({
   page: Joi.number().integer().min(1).default(1),
   limit: Joi.number().integer().min(1).max(500).default(100),
 });
+
+export const chatSchema = Joi.object({
+  message: Joi.string().trim().min(1).max(500).required(),
+  session_id: Joi.string().guid().required(),
+  channel: Joi.string().valid('web', 'telegram').default('web'),
+});
+
+export const chatSessionParamSchema = Joi.object({
+  session_id: Joi.string().guid().required(),
+});
+
+export const summaryQuerySchema = Joi.object({
+  type: Joi.string().valid('sales', 'price_changes').required(),
+  period: Joi.string()
+    .valid(
+      'hari_ini',
+      'kemarin',
+      '7_hari_terakhir',
+      'minggu_ini',
+      'minggu_lalu',
+      'bulan_ini',
+      'bulan_lalu'
+    )
+    .default('kemarin'),
+});

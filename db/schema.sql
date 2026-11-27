@@ -68,6 +68,7 @@ CREATE INDEX IF NOT EXISTS idx_items_transaction ON transaction_items (transacti
 -- Login memakai username (akun kasir cabang: alfiamartsatu, alfiamartdua) atau email (akun lama).
 -- Cabang kasir ditentukan dari username-nya (lihat backend/src/routes/transactions.js).
 ALTER TABLE users ADD COLUMN IF NOT EXISTS username TEXT;
+ALTER TABLE users ALTER COLUMN username DROP NOT NULL;
 ALTER TABLE users ALTER COLUMN email DROP NOT NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username ON users (lower(username));
 
@@ -76,3 +77,26 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username ON users (lower(username));
 ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_alfiamart1 INTEGER NOT NULL DEFAULT 0 CHECK (stock_alfiamart1 >= 0);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS stock_alfiamart2 INTEGER NOT NULL DEFAULT 0 CHECK (stock_alfiamart2 >= 0);
 ALTER TABLE products ADD COLUMN IF NOT EXISTS stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0);
+
+-- Riwayat percakapan owner dan jawaban AI
+CREATE TABLE IF NOT EXISTS chat_sessions (
+  id UUID PRIMARY KEY,
+  owner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_chat_sessions_owner ON chat_sessions (owner_id, updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS chat_messages (
+  id BIGSERIAL PRIMARY KEY,
+  session_id UUID NOT NULL REFERENCES chat_sessions(id) ON DELETE CASCADE,
+  role TEXT NOT NULL CHECK (role IN ('user', 'assistant')),
+  content TEXT NOT NULL CHECK (char_length(content) > 0),
+  intent TEXT,
+  confidence DOUBLE PRECISION CHECK (confidence IS NULL OR (confidence >= 0 AND confidence <= 1)),
+  action JSONB,
+  sources JSONB NOT NULL DEFAULT '[]'::jsonb,
+  fallback BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_chat_messages_session_created ON chat_messages (session_id, created_at ASC);

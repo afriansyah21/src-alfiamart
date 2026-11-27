@@ -10,7 +10,9 @@ import { randomUUID } from 'node:crypto';
 const { pool } = await import('../src/db.js');
 const { createApp } = await import('../src/app.js');
 
-let server, base, ownerToken, kasirToken;
+let server, base, ownerToken, kasirToken, secondOwnerToken;
+let askAiChatMock;
+let getAiSummariesMock;
 
 const call = async (method, path, { token, body, headers = {} } = {}) => {
   const res = await fetch(base + path, {
@@ -24,13 +26,45 @@ const call = async (method, path, { token, body, headers = {} } = {}) => {
 
 before(async () => {
   await pool.query(fs.readFileSync(new URL('../../db/schema.sql', import.meta.url), 'utf8'));
-  await pool.query('TRUNCATE transaction_items, transactions, price_history, products, users RESTART IDENTITY CASCADE');
+  await pool.query('TRUNCATE chat_messages, chat_sessions, transaction_items, transactions, price_history, products, users RESTART IDENTITY CASCADE');
   const hash = await bcrypt.hash('rahasia123', 4);
-  await pool.query(`INSERT INTO users (name,email,password_hash,role) VALUES ('Owner','owner@t.id',$1,'owner'),('Kasir','kasir@t.id',$1,'kasir')`, [hash]);
-  server = createApp().listen(0);
+  await pool.query(`INSERT INTO users (name,email,password_hash,role) VALUES ('Owner','owner@t.id',$1,'owner'),('Kasir','kasir@t.id',$1,'kasir'),('Owner 2','owner2@t.id',$1,'owner')`, [hash]);
+  askAiChatMock = async (body) => ({
+      status: 'ok',
+      data: {
+        intent: 'cek_penjualan',
+        confidence: 0.9,
+        reply: `Jawaban aman untuk: ${body.message}`,
+        action: null,
+        sources: [{ type: 'guide', id: 'chat-test', title: 'Tes chat' }],
+        fallback: false,
+      },
+      fallback: false,
+      error: null,
+    });
+  getAiSummariesMock = async (query) => ({
+    status: 'ok',
+    data: {
+      type: query.type,
+      period: { name: query.period },
+      facts: query.type === 'sales'
+        ? { transactions: 87, total_items: 142, revenue: 3100000 }
+        : { changes_count: 2, items: [] },
+      text: 'Ringkasan tersedia.',
+      fallback: false,
+      generated_at: '2026-11-26T12:00:00+07:00',
+    },
+    fallback: false,
+    error: null,
+  });
+  server = createApp({
+    askAiChat: (body) => askAiChatMock(body),
+    getAiSummaries: (query) => getAiSummariesMock(query),
+  }).listen(0);
   base = `http://localhost:${server.address().port}/api/v1`;
   ownerToken = (await call('POST', '/auth/login', { body: { username: 'owner@t.id', password: 'rahasia123' } })).json.data.token;
   kasirToken = (await call('POST', '/auth/login', { body: { username: 'kasir@t.id', password: 'rahasia123' } })).json.data.token;
+  secondOwnerToken = (await call('POST', '/auth/login', { body: { username: 'owner2@t.id', password: 'rahasia123' } })).json.data.token;
 });
 after(async () => { server.close(); await pool.end(); });
 
@@ -162,10 +196,27 @@ test('total melebihi batas ditolak, bukan error server', async () => {
 test('ekspor untuk DS/AE: butuh kunci layanan atau owner', async () => {
   assert.equal((await call('GET', '/export/products')).status, 401);
   assert.equal((await call('GET', '/export/products', { token: kasirToken })).status, 403);
+  const products = await call('GET', '/export/products', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } });
+  assert.equal(products.status, 200);
+  const exportedProduct = products.json.data.find((p) => p.stock_alfiamart1 !== undefined);
+  assert.ok(exportedProduct);
+  assert.equal(exportedProduct.stock, exportedProduct.stock_alfiamart1 + exportedProduct.stock_alfiamart2);
   const withKey = await call('GET', '/export/transactions', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } });
   assert.equal(withKey.status, 200);
   assert.ok(withKey.json.data.length >= 3);
   assert.ok('category' in withKey.json.data[0] && 'subtotal' in withKey.json.data[0]);
+  assert.ok(withKey.json.data.every((row) => row.branch === 'alfiamart1' || row.branch === 'alfiamart2'));
+  assert.ok(withKey.json.data.every((row) => row.cashier_id && row.cashier_name));
+
+  const paginated = await call('GET', '/export/transactions?page=1&limit=5000', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } });
+  assert.equal(paginated.status, 200);
+  assert.equal(paginated.json.meta.limit, 5000);
+  assert.equal((await call('GET', '/export/transactions?limit=5001', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } })).status, 400);
+
+  const history = await call('GET', '/export/price-history?page=1&limit=5000', { headers: { 'X-Service-Key': process.env.SERVICE_API_KEY } });
+  assert.equal(history.status, 200);
+  assert.ok(history.json.meta.limit === 5000);
+  assert.ok(history.json.data.every((row) => 'old_price' in row && 'new_price' in row && 'reverted' in row));
 });
 
 test('kasir hanya melihat transaksinya sendiri; endpoint tak dikenal -> 404', async () => {
@@ -206,4 +257,200 @@ test('stok cabang: berkurang sesuai cabang kasir, stok kurang ditolak, habis = n
   assert.equal((await sell(cabang2Token, 1)).json.error.code, 'INSUFFICIENT_STOCK');
   assert.equal((await sell(kasirToken, 3)).status, 201);
   assert.deepEqual(await stokNow(), [0, 0, 0, false]);
+});
+
+let chatSessionId;
+
+test('chat owner sukses, pesan dan jawaban tersimpan, history dapat dibaca', async () => {
+  chatSessionId = randomUUID();
+  const sent = await call('POST', '/chat', {
+    token: ownerToken,
+    body: { message: 'Omzet kemarin berapa?', session_id: chatSessionId, channel: 'web' },
+  });
+
+  assert.equal(sent.status, 200);
+  assert.equal(sent.json.data.session_id, chatSessionId);
+  assert.equal(sent.json.data.reply, 'Jawaban aman untuk: Omzet kemarin berapa?');
+  assert.equal(sent.json.data.fallback, false);
+
+  const history = await call('GET', `/chat/sessions/${chatSessionId}`, { token: ownerToken });
+  assert.equal(history.status, 200);
+  assert.equal(history.json.data.session_id, chatSessionId);
+  assert.equal(history.json.data.messages.length, 2);
+  assert.deepEqual(history.json.data.messages.map((message) => message.role), ['user', 'assistant']);
+  assert.equal(history.json.data.messages[0].content, 'Omzet kemarin berapa?');
+  assert.equal(history.json.data.messages[1].intent, 'cek_penjualan');
+});
+
+test('chat membatasi role dan validasi input', async () => {
+  const noToken = await call('POST', '/chat', {
+    body: { message: 'Halo', session_id: randomUUID(), channel: 'web' },
+  });
+  assert.equal(noToken.status, 401);
+
+  const cashier = await call('POST', '/chat', {
+    token: kasirToken,
+    body: { message: 'Halo', session_id: randomUUID(), channel: 'web' },
+  });
+  assert.equal(cashier.status, 403);
+
+  const invalidMessage = await call('POST', '/chat', {
+    token: ownerToken,
+    body: { message: '   ', session_id: randomUUID(), channel: 'web' },
+  });
+  assert.equal(invalidMessage.status, 400);
+  assert.equal(invalidMessage.json.error.code, 'VALIDATION_ERROR');
+
+  const invalidSession = await call('POST', '/chat', {
+    token: ownerToken,
+    body: { message: 'Halo', session_id: 'bukan-uuid', channel: 'web' },
+  });
+  assert.equal(invalidSession.status, 400);
+
+  const invalidChannel = await call('POST', '/chat', {
+    token: ownerToken,
+    body: { message: 'Halo', session_id: randomUUID(), channel: 'sms' },
+  });
+  assert.equal(invalidChannel.status, 400);
+});
+
+test('owner tidak dapat membaca session milik owner lain', async () => {
+  const forbidden = await call('GET', `/chat/sessions/${chatSessionId}`, { token: secondOwnerToken });
+  assert.equal(forbidden.status, 404);
+  assert.equal(forbidden.json.error.code, 'NOT_FOUND');
+});
+
+test('fallback AI tersimpan dan pesan owner tetap tersimpan', async () => {
+  const fallbackSession = randomUUID();
+  const previousMock = askAiChatMock;
+  askAiChatMock = async () => ({
+    status: 'lambat',
+    data: {
+      intent: 'di_luar_konteks',
+      confidence: 0,
+      reply: 'Jawaban membutuhkan waktu lebih lama dari biasanya.',
+      action: null,
+      sources: [],
+      fallback: true,
+    },
+    fallback: true,
+    error: { code: 'AI_TIMEOUT' },
+  });
+
+  try {
+    const sent = await call('POST', '/chat', {
+      token: ownerToken,
+      body: { message: 'Pesan sebelum timeout', session_id: fallbackSession, channel: 'web' },
+    });
+    assert.equal(sent.status, 200);
+    assert.equal(sent.json.data.fallback, true);
+
+    const history = await call('GET', `/chat/sessions/${fallbackSession}`, { token: ownerToken });
+    assert.equal(history.status, 200);
+    assert.equal(history.json.data.messages.length, 2);
+    assert.equal(history.json.data.messages[0].content, 'Pesan sebelum timeout');
+    assert.equal(history.json.data.messages[1].fallback, true);
+  } finally {
+    askAiChatMock = previousMock;
+  }
+});
+
+test('ringkasan owner sukses dan dikonfigurasi untuk cache', async () => {
+  const sent = await call('GET', '/summaries?type=sales&period=kemarin', { token: ownerToken });
+  assert.equal(sent.status, 200);
+  assert.equal(sent.json.data.type, 'sales');
+  assert.equal(sent.json.data.period.name, 'kemarin');
+  assert.equal(sent.json.data.facts.revenue, 3100000);
+  assert.equal(sent.json.meta.cached, false);
+
+  const cached = await call('GET', '/summaries?type=sales&period=kemarin', { token: ownerToken });
+  assert.equal(cached.status, 200);
+  assert.equal(cached.json.meta.cached, true);
+  assert.equal(cached.json.data.facts.revenue, 3100000);
+});
+
+test('ringkasan membatasi role dan memvalidasi query', async () => {
+  const noToken = await call('GET', '/summaries?type=sales&period=kemarin');
+  assert.equal(noToken.status, 401);
+
+  const cashier = await call('GET', '/summaries?type=sales&period=kemarin', { token: kasirToken });
+  assert.equal(cashier.status, 403);
+
+  const invalidType = await call('GET', '/summaries?type=stok&period=kemarin', { token: ownerToken });
+  assert.equal(invalidType.status, 400);
+  assert.equal(invalidType.json.error.code, 'VALIDATION_ERROR');
+
+  const invalidPeriod = await call('GET', '/summaries?type=sales&period=besok', { token: ownerToken });
+  assert.equal(invalidPeriod.status, 400);
+
+  const missingType = await call('GET', '/summaries?period=kemarin', { token: ownerToken });
+  assert.equal(missingType.status, 400);
+});
+
+test('period default dan nilai lain diteruskan ke klien AI', async () => {
+  let received;
+  const previousMock = getAiSummariesMock;
+  getAiSummariesMock = async (query) => {
+    received = query;
+    return {
+      status: 'ok',
+      data: {
+        type: query.type,
+        period: { name: query.period },
+        facts: { changes_count: 2, items: [] },
+        text: 'Ringkasan perubahan harga tersedia.',
+        fallback: false,
+        generated_at: null,
+      },
+      fallback: false,
+      error: null,
+    };
+  };
+
+  try {
+    const defaultPeriod = await call('GET', '/summaries?type=price_changes', { token: ownerToken });
+    assert.equal(defaultPeriod.status, 200);
+    assert.deepEqual(received, { type: 'price_changes', period: 'kemarin' });
+
+    const today = await call('GET', '/summaries?type=price_changes&period=hari_ini', { token: ownerToken });
+    assert.equal(today.status, 200);
+    assert.deepEqual(received, { type: 'price_changes', period: 'hari_ini' });
+  } finally {
+    getAiSummariesMock = previousMock;
+  }
+});
+
+test('fallback dan no_data tidak dicache serta fakta null dipertahankan', async () => {
+  let calls = 0;
+  const previousMock = getAiSummariesMock;
+  getAiSummariesMock = async () => {
+    calls++;
+    return {
+      status: 'bersiap',
+      data: {
+        type: 'sales',
+        period: null,
+        facts: null,
+        text: 'Layanan AI belum siap.',
+        fallback: true,
+        generated_at: null,
+      },
+      fallback: true,
+      error: { code: 'AI_UNAVAILABLE' },
+    };
+  };
+
+  try {
+    const first = await call('GET', '/summaries?type=sales&period=7_hari_terakhir', { token: ownerToken });
+    const second = await call('GET', '/summaries?type=sales&period=7_hari_terakhir', { token: ownerToken });
+    assert.equal(first.status, 200);
+    assert.equal(second.status, 200);
+    assert.equal(first.json.data.facts, null);
+    assert.equal(first.json.data.fallback, true);
+    assert.equal(first.json.meta.cached, false);
+    assert.equal(second.json.meta.cached, false);
+    assert.equal(calls, 2);
+  } finally {
+    getAiSummariesMock = previousMock;
+  }
 });
